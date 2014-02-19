@@ -53,6 +53,10 @@ let g:pymode_rope_completion = 0
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:syntastic_python_checkers = []
+let g:ycm_key_list_select_completion = ['<Enter>', '<Down>']
+let g:UltiSnipsExpandTrigger="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-s-tab>"
 let moria_style = 'dark'
 colo moria
 
