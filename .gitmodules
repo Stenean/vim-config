@@ -15,7 +15,7 @@
 	url = git://github.com/klen/python-mode.git
 [submodule "bundle/rope-vim"]
 	path = bundle/rope-vim
-	url = https://github.com/sontek/rope-vim.git
+	url = https://github.com/python-rope/ropevim.git
 [submodule "bundle/syntastic"]
 	path = bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
@@ -34,12 +34,9 @@
 [submodule "bundle/YouCompleteMe"]
 	path = bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
-[submodule "The-NERD-tree"]
-	path = The-NERD-tree
-	url = https://github.com/vim-scripts/The-NERD-tree.git/
 [submodule "bundle/The-NERD-tree"]
 	path = bundle/The-NERD-tree
-	url = https://github.com/vim-scripts/The-NERD-tree.git/
+	url = https://github.com/vim-scripts/The-NERD-tree.git
 [submodule "bundle/ack.vim"]
 	path = bundle/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
