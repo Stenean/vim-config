@@ -159,12 +159,9 @@ map k gk
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 "map <space> /
 "map <c-space> ?
-<<<<<<< HEAD
 
-noremap <silent> <C-.> :bnext<CR>
-noremap <silent> <C-,> :bprevious<CR>
-=======
->>>>>>> origin/master
+"noremap <silent> <C-.> :bnext<CR>
+"noremap <silent> <C-,> :bprevious<CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
