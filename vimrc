@@ -11,6 +11,9 @@ syntax on
 filetype plugin on
 filetype indent on
 
+set nocompatible
+set number
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -76,6 +79,8 @@ set novisualbell
 set t_vb=
 set tm=500
 
+set switchbuf=useopen
+
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
@@ -100,8 +105,8 @@ hi Todo         ctermfg=1
 " Enable syntax highlighting
 syntax enable
 
-colorscheme moria
 let moria_style = 'dark'
+colorscheme moria
 set background=dark
 
 " Set extra options when running in GUI mode
@@ -118,7 +123,6 @@ set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -165,8 +169,11 @@ map j gj
 map k gk
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+"map <space> /
+"map <c-space> ?
+
+noremap <silent> <C-.> :bnext<CR>
+noremap <silent> <C-,> :bprevious<CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -261,8 +268,10 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
-"Open vimgrep and put the cursor in the right position
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+func! OpenNERDTree()
+    exe "NERDTree"
+    exe "wincmd p"
+endfunc
 
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
@@ -270,7 +279,7 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd vimenter * if !argc() | NERDTree | endif
+autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 map <F9> :MBEToggle<cr>
@@ -311,7 +320,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-s-tab>"
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+map <leader>g :vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
 
 " Vimgreps in the current file
 map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
@@ -379,7 +388,7 @@ function! VisualSelection(direction) range
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
     elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' ./**/*.*')
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     elseif a:direction == 'f'
