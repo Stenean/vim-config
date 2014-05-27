@@ -4,7 +4,11 @@
 " Sets how many lines of history VIM has to remember
 set history=700
 
+filetype off
+
 call pathogen#infect()
+call pathogen#helptags()
+
 syntax on
 
 " Enable filetype plugins
@@ -277,6 +281,16 @@ map <leader>gu :GundoToggle<CR>
 map <leader>j :RopeGotoDefinition<CR>
 map <leader>r :RopeRename<CR>
 
+noremap <C-Down> <C-W>j
+noremap <C-Up> <C-W>k
+noremap <C-Left> <C-W>h
+noremap <C-Right> <C-W>l
+noremap <C-PageUp> :bnext<CR>
+noremap <C-PageDown> :bprev<CR>
+nnoremap y "+y
+vnoremap y "+y
+nnoremap G :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
 let g:miniBufExplAutoStart=1
 let g:miniBufExplBuffersNeeded=1
 let g:pymode_trim_whitespaces = 1
@@ -284,14 +298,16 @@ let g:pymode_options = 1
 let g:pymode_indent = 1
 let g:pep8_map='<leader>8'
 let g:pymode_doc = 1
+let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257']
-let g:pymode_lint_write = 1
+let g:pymode_lint_on_write = 1
 let g:pymode_virtualenv = 0
 let g:pymode_rope_goto_definition_bind = ''
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
+let g:pymode_rope = 1
 let g:pymode_rope_completion = 0
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
