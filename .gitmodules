@@ -28,18 +28,12 @@
 [submodule "bundle/vim-django"]
 	path = bundle/vim-django
 	url = https://github.com/cwood/vim-django.git
-[submodule "bundle/vim-virtualenv"]
-	path = bundle/vim-virtualenv
-	url = https://github.com/jmcantrell/vim-virtualenv.git
 [submodule "bundle/YouCompleteMe"]
 	path = bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
 [submodule "bundle/The-NERD-tree"]
 	path = bundle/The-NERD-tree
 	url = https://github.com/vim-scripts/The-NERD-tree.git
-[submodule "bundle/ack.vim"]
-	path = bundle/ack.vim
-	url = https://github.com/mileszs/ack.vim.git
 [submodule "bundle/minibufexpl.vim"]
 	path = bundle/minibufexpl.vim
 	url = https://github.com/fholgado/minibufexpl.vim.git
@@ -55,6 +49,3 @@
 [submodule "bundle/vim-misc"]
 	path = bundle/vim-misc
 	url = https://github.com/xolox/vim-misc.git
-[submodule "bundle/vim-session"]
-	path = bundle/vim-session
-	url = https://github.com/xolox/vim-session.git
