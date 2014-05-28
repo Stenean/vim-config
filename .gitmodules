@@ -43,3 +43,6 @@
 [submodule "bundle/vim-snippets"]
 	path = bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
+[submodule "bundle/vim-virtualenv"]
+	path = bundle/vim-virtualenv
+	url = https://github.com/jmcantrell/vim-virtualenv.git
