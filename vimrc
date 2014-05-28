@@ -87,8 +87,9 @@ set switchbuf=useopen
 
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
+let g:miniBufExplMapCTabSwitchBufs = 0
+let g:miniBufExplModSelTarget = 0
+let g:django_project_directory = expand('~/Projects/')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -281,14 +282,12 @@ map <leader>gu :GundoToggle<CR>
 map <leader>j :RopeGotoDefinition<CR>
 map <leader>r :RopeRename<CR>
 
-noremap <C-Down> <C-W>j
-noremap <C-Up> <C-W>k
-noremap <C-Left> <C-W>h
-noremap <C-Right> <C-W>l
+map <C-Down> <C-W>j
+map <C-Up> <C-W>k
+map <C-Left> <C-W>h
+map <C-Right> <C-W>l
 noremap <C-PageUp> :bnext<CR>
 noremap <C-PageDown> :bprev<CR>
-nnoremap y "+y
-vnoremap y "+y
 nnoremap G :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 let g:miniBufExplAutoStart=1
