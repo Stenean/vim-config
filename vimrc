@@ -89,7 +89,6 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 0
 let g:miniBufExplModSelTarget = 0
-let g:django_project_directory = expand('~/Projects/')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -228,7 +227,7 @@ set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
 set statusline+=%=      "left/right separator
-set statusline+=%{virtualenv#statusline()}\ 
+set statusline+=[%{virtualenv#statusline()}]\ 
 set statusline+=%{fugitive#statusline()}\ 
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
@@ -301,7 +300,7 @@ let g:pymode_doc = 1
 let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257']
 let g:pymode_lint_on_write = 1
-let g:pymode_virtualenv = 0
+let g:pymode_virtualenv = 0 
 let g:pymode_rope_goto_definition_bind = ''
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
@@ -317,6 +316,7 @@ let g:ycm_key_list_previous_completion = ['<Up>']
 let g:UltiSnipsExpandTrigger="<c-tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-s-tab>"
+let g:django_project_directory = expand('~/Projects/'. $USER . '/')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
