@@ -61,8 +61,11 @@ let g:ycm_key_list_select_completion = ['<Enter>', '<Down>']
 let g:UltiSnipsExpandTrigger="<c-tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-s-tab>"
-let moria_style = 'dark'
-colo moria
+" let moria_style = 'dark'
+" colorscheme moria
+syntax enable
+set background=light
+colo solarized
 
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo

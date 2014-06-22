@@ -96,10 +96,13 @@ let g:miniBufExplModSelTarget = 0
 " Enable syntax highlighting
 syntax enable
 
-let moria_style = 'dark'
-colorscheme moria
+" let moria_style = 'dark'
+let g:solarized_termcolors=256
 set background=dark
 set t_Co=256
+
+" colorscheme moria
+colorscheme solarized
 
 " Set extra options when running in GUI mode
 if has("gui_running")
