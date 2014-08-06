@@ -97,7 +97,7 @@ let g:miniBufExplModSelTarget = 0
 syntax enable
 
 " let moria_style = 'dark'
-let g:solarized_termcolors=256
+" let g:solarized_termcolors=256
 set background=dark
 set t_Co=256
 
@@ -269,6 +269,25 @@ func! OpenNERDTree()
     exe "wincmd p"
 endfunc
 
+func! RefreshMinBuff()
+    exe "MBEClose"
+    exe "MBEOpen"
+endfunc
+
+func! OpenTreeOrGundo(to_open)
+    if a:to_open == 'NERDTreeToggle'
+        exe "GundoHide"
+        exe "NERDTreeToggle"
+        :call RefreshMinBuff()
+        exe "wincmd p"
+    endif
+    if a:to_open == 'GundoToggle'
+        exe "NERDTreeClose"
+        exe "GundoToggle"
+        :call RefreshMinBuff()
+    endif
+endfunc
+
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -279,9 +298,9 @@ autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 map <F9> :MBEToggle<cr>
-map <F8> :NERDTreeToggle<CR>
+map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
 map <F7> <Plug>TaskList
-map <leader>gu :GundoToggle<CR>
+map <leader>gu :call OpenTreeOrGundo('GundoToggle')<CR>
 map <leader>j :RopeGotoDefinition<CR>
 map <leader>r :RopeRename<CR>
 
@@ -300,8 +319,8 @@ let g:pymode_options = 1
 let g:pymode_indent = 1
 let g:pep8_map='<leader>8'
 let g:pymode_doc = 1
-let g:pymode_lint = 1
-let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257']
+let g:pymode_lint = 0
+let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257'] 
 let g:pymode_lint_on_write = 1
 let g:pymode_virtualenv = 0 
 let g:pymode_rope_goto_definition_bind = ''
@@ -313,7 +332,7 @@ let g:pymode_rope = 1
 let g:pymode_rope_completion = 0
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:syntastic_python_checkers = []
+let g:syntastic_python_checkers = ['pep8', 'pylint', 'python']
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:UltiSnipsExpandTrigger="<c-tab>"
