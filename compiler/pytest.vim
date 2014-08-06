@@ -17,12 +17,13 @@ set cpo-=C
 
 CompilerSet makeprg=py.test\ --tb=short\ -q
 
-CompilerSet errorformat=
-  \%*[_]\ %m\ %*[_],
-  \%A%>%f:%l:\ %.%#,
-  \%-Z>%*[\ ]%m,
-  \E%m,
-  \%-G%.%#
+"CompilerSet errorformat=
+"  \%*[_]\ %m\ %*[_],
+"  \%A%>%f:%l:\ %.%#,
+"  \%-Z>%*[\ ]%m,
+"  \E%m,
+"  \%-G%.%#
 
+CompilerSet errorformat=%A%>%f:%l:\ %m
 let &cpo = s:cpo_save
 unlet s:cpo_save
