@@ -46,9 +46,6 @@
 [submodule "bundle/vim-virtualenv"]
 	path = bundle/vim-virtualenv
 	url = https://github.com/jmcantrell/vim-virtualenv.git
-[submodule "bundle/pytest-compiler"]
-	path = bundle/pytest-compiler
-	url = https://github.com/vim-scripts/pytest-compiler.git
 [submodule "bundle/vim-makegreen"]
 	path = bundle/vim-makegreen
 	url = https://github.com/reinh/vim-makegreen.git
