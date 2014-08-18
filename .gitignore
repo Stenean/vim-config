@@ -1,3 +1,4 @@
-backup
+backup/
+undo/
 *.swp
 *.tmp

@@ -29,6 +29,14 @@ let g:mapleader = "\\"
 " Fast saving
 nmap <leader>w :w!<cr>
 
+" Yanks to global system clipboard
+let s:uname = system("uname")
+if s:uname == "Darwin\n"
+    " Do Mac stuff here
+    set clipboard=unnamed
+else
+    set clipboard=unnamedplus
+endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -89,6 +97,7 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 0
 let g:miniBufExplModSelTarget = 0
+let g:signify_vcs_list = [ 'git' ]
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
 
@@ -103,6 +112,7 @@ let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.whitespace = 'Ξ'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -138,6 +148,10 @@ set ffs=unix,dos,mac
 set nobackup
 set nowb
 set noswapfile
+set undofile "so is persistent undo ...
+set undolevels=1000 "maximum number of changes that can be undone
+set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+set undodir=/$HOME/.vim/undo/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
