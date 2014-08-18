@@ -166,7 +166,7 @@ set smarttab
 set shiftwidth=4
 set tabstop=8
 set softtabstop=4
- 
+
 " Linebreak on 500 characters
 set lbr
 set tw=99
@@ -189,6 +189,12 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
+
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 "map <space> /
@@ -256,8 +262,8 @@ set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
 set statusline+=%=      "left/right separator
-set statusline+=%{strlen(virtualenv#statusline())?[virtualenv#statusline()]:''}\ 
-set statusline+=%{fugitive#statusline()}\ 
+set statusline+=%{strlen(virtualenv#statusline())?[virtualenv#statusline()]:''}\
+set statusline+=%{fugitive#statusline()}\
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file%{fugitive#statusline()}
@@ -289,6 +295,8 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.html :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
 
 func! OpenNERDTree()
     exe "NERDTree"
@@ -324,6 +332,13 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+" For all file types highlight trailing whitespaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
 map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
 map <F7> <Plug>TaskList
@@ -345,9 +360,9 @@ let g:pymode_indent = 1
 let g:pep8_map='<leader>8'
 let g:pymode_doc = 1
 let g:pymode_lint = 1
-let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257'] 
+let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257']
 let g:pymode_lint_on_write = 1
-let g:pymode_virtualenv = 0 
+let g:pymode_virtualenv = 0
 let g:pymode_rope_goto_definition_bind = ''
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
