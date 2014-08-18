@@ -335,12 +335,17 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 "let g:syntastic_python_checkers = ['pep257', 'pep8', 'pyflakes', 'pylint', 'python']
 let g:syntastic_python_checkers = []
+let g:ycm_key_invoke_completion = '<Nul>'
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:UltiSnipsExpandTrigger="<c-tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-s-tab>"
+let g:ycm_use_ultisnips_completer = 1
+"" Ultisnips
+let g:UltiSnipsExpandTrigger = "<S-Tab>"
+let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-C-Tab>"
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
+"" TaskList
+let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
