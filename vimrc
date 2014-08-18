@@ -90,7 +90,19 @@ let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 0
 let g:miniBufExplModSelTarget = 0
 let g:airline_powerline_fonts = 0
+let g:airline#extensions#tabline#enabled = 1
 
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.whitespace = 'Ξ'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -278,13 +290,13 @@ func! OpenTreeOrGundo(to_open)
     if a:to_open == 'NERDTreeToggle'
         exe "GundoHide"
         exe "NERDTreeToggle"
-        :call RefreshMinBuff()
+        "":call RefreshMinBuff()
         exe "wincmd p"
     endif
     if a:to_open == 'GundoToggle'
         exe "NERDTreeClose"
         exe "GundoToggle"
-        :call RefreshMinBuff()
+        "":call RefreshMinBuff()
     endif
 endfunc
 
@@ -311,8 +323,8 @@ noremap <C-PageUp> :bnext<CR>
 noremap <C-PageDown> :bprev<CR>
 nnoremap G :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-let g:miniBufExplAutoStart=1
-let g:miniBufExplBuffersNeeded=1
+let g:miniBufExplAutoStart=0
+let g:miniBufExplBuffersNeeded=0
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 1
 let g:pymode_indent = 1
