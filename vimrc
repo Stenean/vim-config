@@ -89,6 +89,7 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 0
 let g:miniBufExplModSelTarget = 0
+let g:airline_powerline_fonts = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -200,7 +201,6 @@ map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
   set stal=2
 catch
 endtry
@@ -230,7 +230,7 @@ set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
 set statusline+=%=      "left/right separator
-set statusline+=[%{virtualenv#statusline()}]\ 
+set statusline+=%{strlen(virtualenv#statusline())?[virtualenv#statusline()]:''}\ 
 set statusline+=%{fugitive#statusline()}\ 
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
