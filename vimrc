@@ -222,7 +222,7 @@ set laststatus=2
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
-set statusline=%t       "tail of the filename
+set statusline=%f       "tail of the filename
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
 set statusline+=%{&ff}] "file format
 set statusline+=%h      "help file flag
@@ -302,8 +302,6 @@ map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
 map <F7> <Plug>TaskList
 map <leader>gu :call OpenTreeOrGundo('GundoToggle')<CR>
-map <leader>j :RopeGotoDefinition<CR>
-map <leader>r :RopeRename<CR>
 
 map <C-Down> <C-W>j
 map <C-Up> <C-W>k
@@ -356,6 +354,7 @@ vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 " Open vimgrep and put the cursor in the right position
 map <leader>g :vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
 
+map <leader>gp :vimgrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
 map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
@@ -373,8 +372,21 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 " To go to the previous search results do:
 "   <leader>p
 "
-map <leader>cc :botright cope<cr>
-map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+
+func! Ctoggle(to_do)
+    if a:to_do == "open"
+        exe "botright cope"
+    endif
+    if a:to_do == "close"
+        exe "cclose"
+        exe "wincmd l"
+    endif
+endfunc
+
+"map <leader>co :botright cope<cr>
+"map <leader>cc :cclose<cr>
+map <leader>co :call Ctoggle('open')<cr>
+map <leader>cc :call Ctoggle('close')<cr>
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
