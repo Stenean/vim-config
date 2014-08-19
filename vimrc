@@ -153,6 +153,7 @@ set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 set undodir=/$HOME/.vim/undo/
 set viewdir=/$HOME/.vim/view/
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -331,6 +332,8 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd BufWrite * mkview
+autocmd BufNewFile,BufRead * silent loadview
 
 " For all file types highlight trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
