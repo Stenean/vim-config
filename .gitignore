@@ -1,5 +1,5 @@
 backup/
-undodir/
-viewdir/
+undo/
+view/
 *.swp
 *.tmp
