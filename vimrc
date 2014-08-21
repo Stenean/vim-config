@@ -12,6 +12,7 @@ call pathogen#helptags()
 syntax on
 
 " Enable filetype plugins
+filetype on
 filetype plugin on
 filetype indent on
 
