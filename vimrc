@@ -359,14 +359,16 @@ nnoremap G :YcmCompleter GoTo<CR>
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
 let g:pymode_trim_whitespaces = 1
-let g:pymode_options = 1
+let g:pymode_options = 0
 let g:pymode_indent = 1
-let g:pep8_map='<leader>8'
+let g:pymode_breakpoint_cmd = 'import wdb; wdb.set_trace() #BREAKPOINT'
 let g:pymode_doc = 1
 let g:pymode_lint = 1
-let g:pymode_lint_checkers = ['pyflakes','pylint','pep8','mccabe','pep257']
+let g:pymode_lint_message = 1
+let g:pymode_lint_checkers = ['pyflakes','pep8','mccabe','pep257','pylint']
 let g:pymode_lint_on_write = 1
-let g:pymode_virtualenv = 1
+let g:pymode_lint_ignore = "W0142,W0403,R0201,W0212,W0613,W0232,R0903,W0614,C0111,C0301,R0913,C0103,F0401,W0402,R09"
+let g:pymode_virtualenv = 0
 let g:pymode_rope_goto_definition_bind = ''
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
@@ -378,20 +380,19 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
-"let g:syntastic_python_checkers = ['pep257', 'pep8', 'pyflakes', 'pylint', 'python']
+" let g:syntastic_python_checkers = ['pep257', 'pep8', 'pyflakes', 'pylint', 'python']
 let g:syntastic_python_checkers = []
 let g:ycm_key_invoke_completion = '<Nul>'
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
-"" Ultisnips
+" Ultisnips
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-C-Tab>"
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
 "" TaskList
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
