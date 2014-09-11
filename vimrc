@@ -354,7 +354,7 @@ map <C-Left> <C-W>h
 map <C-Right> <C-W>l
 noremap <C-PageUp> :bnext<CR>
 noremap <C-PageDown> :bprev<CR>
-nnoremap G :YcmCompleter GoTo<CR>
+" nnoremap G :YcmCompleter GoTo<CR>
 
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
@@ -375,17 +375,19 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_rope = 1
-let g:pymode_rope_completion = 0
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
+let g:pymode_rope_completion = 1
+let g:jedi#goto_assignments_command = "G"
+let g:jedi#use_tabs_not_buffers = 0
+" let g:ycm_add_preview_to_completeopt = 1
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_seed_identifiers_with_syntax = 1
+" let g:ycm_collect_identifiers_from_tags_files = 1
 " let g:syntastic_python_checkers = ['pep257', 'pep8', 'pyflakes', 'pylint', 'python']
 let g:syntastic_python_checkers = []
-let g:ycm_key_invoke_completion = '<Nul>'
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_use_ultisnips_completer = 1
+" let g:ycm_key_invoke_completion = '<Nul>'
+" let g:ycm_key_list_select_completion = ['<Down>']
+" let g:ycm_key_list_previous_completion = ['<Up>']
+" let g:ycm_use_ultisnips_completer = 1
 " Ultisnips
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
