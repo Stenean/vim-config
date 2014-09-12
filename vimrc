@@ -355,6 +355,7 @@ map <C-Right> <C-W>l
 noremap <C-PageUp> :bnext<CR>
 noremap <C-PageDown> :bprev<CR>
 " nnoremap G :YcmCompleter GoTo<CR>
+nnoremap <leader>C :PymodeLint<CR>
 
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
@@ -366,16 +367,16 @@ let g:pymode_doc = 1
 let g:pymode_lint = 1
 let g:pymode_lint_message = 1
 let g:pymode_lint_checkers = ['pyflakes','pep8','mccabe','pep257','pylint']
-let g:pymode_lint_on_write = 1
+let g:pymode_lint_on_write = 0
 let g:pymode_lint_ignore = "W0142,W0403,R0201,W0212,W0613,W0232,R0903,W0614,C0111,C0301,R0913,C0103,F0401,W0402,R09"
 let g:pymode_virtualenv = 0
-let g:pymode_rope_goto_definition_bind = ''
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
+let g:pymode_rope_goto_definition_bind = ''
 let g:jedi#popup_on_dot = 0
 let g:jedi#goto_assignments_command = "G"
 let g:jedi#use_tabs_not_buffers = 0
