@@ -101,6 +101,12 @@ let g:miniBufExplModSelTarget = 0
 let g:signify_vcs_list = [ 'git' ]
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
@@ -377,11 +383,6 @@ let g:jedi#popup_on_dot = 1
 let g:jedi#show_call_signatures = 0
 let g:jedi#goto_assignments_command = "G"
 let g:jedi#use_tabs_not_buffers = 0
-" let g:ycm_add_preview_to_completeopt = 1
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_seed_identifiers_with_syntax = 1
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:syntastic_python_checkers = ['pep257', 'pep8', 'pyflakes', 'pylint', 'python']
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1
@@ -390,10 +391,6 @@ let g:syntastic_style_error_symbol = "S✗"
 let g:syntastic_warning_symbol = "⚠ "
 let g:syntastic_style_warning_symbol = "S⚠"
 let g:syntastic_always_populate_loc_list = 1
-" let g:ycm_key_invoke_completion = '<Nul>'
-" let g:ycm_key_list_select_completion = ['<Down>']
-" let g:ycm_key_list_previous_completion = ['<Up>']
-" let g:ycm_use_ultisnips_completer = 1
 " Ultisnips
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
