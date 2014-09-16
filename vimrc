@@ -382,7 +382,7 @@ let g:jedi#use_tabs_not_buffers = 0
 " let g:ycm_seed_identifiers_with_syntax = 1
 " let g:ycm_collect_identifiers_from_tags_files = 1
 " let g:syntastic_python_checkers = ['pep257', 'pep8', 'pyflakes', 'pylint', 'python']
-let g:syntastic_python_checkers = ['flake8', 'pylint']
+let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_error_symbol = "✗ "
@@ -440,10 +440,21 @@ func! Ctoggle(to_do)
     endif
 endfunc
 
+func! Ltoggle(to_do)
+    if a:to_do == "open"
+        exe "botright lopen"
+    endif
+    if a:to_do == "close"
+        exe "lclose"
+        exe "wincmd l"
+    endif
+endfunc
 "map <leader>co :botright cope<cr>
 "map <leader>cc :cclose<cr>
 map <leader>co :call Ctoggle('open')<cr>
 map <leader>cc :call Ctoggle('close')<cr>
+map <leader>lo :call Ltoggle('open')<cr>
+map <leader>lc :call Ltoggle('close')<cr>
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
