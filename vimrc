@@ -12,9 +12,7 @@ call pathogen#helptags()
 syntax on
 
 " Enable filetype plugins
-filetype on
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 set nocompatible
 set number
@@ -341,6 +339,11 @@ autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 autocmd BufWrite * mkview
 autocmd BufNewFile,BufRead * silent loadview
+
+" Cofee make
+autocmd QuickFixCmdPost * nested cwindow | redraw!
+autocmd BufWritePost *.coffee make!
+autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
 " For all file types highlight trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
