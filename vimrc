@@ -332,13 +332,14 @@ autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
+autocmd FileType python setl foldmethod=indent
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd BufWrite * mkview
-autocmd BufNewFile,BufRead * silent loadview
+autocmd BufWinLeave * mkview
+autocmd BufWinEnter * silent loadview
 
 " Cofee make
 autocmd QuickFixCmdPost * nested cwindow | redraw!
