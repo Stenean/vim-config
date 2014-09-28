@@ -4,17 +4,44 @@
 " Sets how many lines of history VIM has to remember
 set history=700
 
+set nocompatible
 filetype off
 
-call pathogen#infect()
-call pathogen#helptags()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Bundle 'gmarik/Vundle.vim'
+
+Bundle 'vim-scripts/TaskList.vim'
+Bundle 'klen/python-mode'
+Bundle 'scrooloose/syntastic'
+Bundle 'vim-scripts/tComment'
+Bundle 'hsanson/vim-android'
+Bundle 'cwood/vim-django'
+Bundle 'vim-scripts/The-NERD-tree'
+Bundle 'fholgado/minibufexpl.vim'
+Bundle 'sjl/gundo.vim'
+Bundle 'Raimondi/delimitMate'
+Bundle 'SirVer/ultisnips'
+Bundle 'xolox/vim-misc'
+Bundle 'tpope/vim-fugitive'
+Bundle 'honza/vim-snippets'
+Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'reinh/vim-makegreen'
+Bundle 'bling/vim-airline'
+Bundle 'mhinz/vim-signify'
+Bundle 'pangloss/vim-javascript'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'kien/ctrlp.vim'
+Bundle 'Valloric/YouCompleteMe'
+
+call vundle#end()
 
 syntax on
 
 " Enable filetype plugins
 filetype plugin indent on
 
-set nocompatible
 set number
 
 " Set to auto read when a file is changed from the outside
