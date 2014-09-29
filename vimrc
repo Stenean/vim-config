@@ -434,6 +434,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-C-Tab>"
+let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips/'
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
 "" TaskList
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
