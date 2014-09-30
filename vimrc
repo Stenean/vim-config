@@ -359,7 +359,7 @@ autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
-autocmd FileType python setl foldmethod=expr
+autocmd FileType python setlocal foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -372,6 +372,7 @@ autocmd BufWinEnter * silent loadview
 autocmd QuickFixCmdPost * nested cwindow | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 
 " For all file types highlight trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
