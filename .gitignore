@@ -3,3 +3,5 @@ undo/
 view/
 *.swp
 *.tmp
+bundle/
+!bundle/Vundle.vim
