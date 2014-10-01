@@ -360,6 +360,7 @@ autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal foldmethod=expr
+autocmd BufWinEnter *.py setl foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -372,7 +373,6 @@ autocmd BufWinEnter * silent loadview
 autocmd QuickFixCmdPost * nested cwindow | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
-autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 
 " For all file types highlight trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -464,31 +464,35 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 "   <leader>p
 "
 
-func! Ctoggle(to_do)
-    if a:to_do == "open"
-        exe "botright cope"
-    endif
-    if a:to_do == "close"
-        exe "cclose"
-        exe "wincmd l"
-    endif
-endfunc
+function! GetBufferList()
+  redir =>buflist
+  silent! ls
+  redir END
+  return buflist
+endfunction
 
-func! Ltoggle(to_do)
-    if a:to_do == "open"
-        exe "botright lopen"
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
     endif
-    if a:to_do == "close"
-        exe "lclose"
-        exe "wincmd l"
-    endif
-endfunc
-"map <leader>co :botright cope<cr>
-"map <leader>cc :cclose<cr>
-map <leader>co :call Ctoggle('open')<cr>
-map <leader>cc :call Ctoggle('close')<cr>
-map <leader>lo :call Ltoggle('open')<cr>
-map <leader>lc :call Ltoggle('close')<cr>
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+
+map <silent> <leader>l :call ToggleList("Lista lokacji", 'l')<CR>
+map <silent> <leader>c :call ToggleList("Lista quickfix", 'c')<CR>
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
