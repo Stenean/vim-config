@@ -63,6 +63,11 @@ if s:uname == "Darwin\n"
 else
     set clipboard=unnamedplus
 endif
+
+let g:skipview_files = [
+\ '[EXAMPLE PLUGIN BUFFER]'
+\ ]
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -331,43 +336,19 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.html :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 
-func! OpenNERDTree()
-    exe "NERDTree"
-    exe "wincmd p"
-endfunc
-
-func! RefreshMinBuff()
-    exe "MBEClose"
-    exe "MBEOpen"
-endfunc
-
-func! OpenTreeOrGundo(to_open)
-    if a:to_open == 'NERDTreeToggle'
-        exe "GundoHide"
-        exe "NERDTreeToggle"
-        "":call RefreshMinBuff()
-        exe "wincmd p"
-    endif
-    if a:to_open == 'GundoToggle'
-        exe "NERDTreeClose"
-        exe "GundoToggle"
-        "":call RefreshMinBuff()
-    endif
-endfunc
-
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal foldmethod=expr
-autocmd BufWinEnter *.py setl foldmethod=expr
+autocmd BufReadPre *.py setl foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd BufWinLeave * mkview
-autocmd BufWinEnter * silent loadview
+autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
+autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
 
 " Cofee make
 autocmd QuickFixCmdPost * nested cwindow | redraw!
@@ -377,7 +358,7 @@ autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 " For all file types highlight trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter ?* if MakeViewCheck() | match ExtraWhitespace /\s\+$/ | endif
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
@@ -463,33 +444,6 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 " To go to the previous search results do:
 "   <leader>p
 "
-
-function! GetBufferList()
-  redir =>buflist
-  silent! ls
-  redir END
-  return buflist
-endfunction
-
-function! ToggleList(bufname, pfx)
-  let buflist = GetBufferList()
-  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-    if bufwinnr(bufnum) != -1
-      exec(a:pfx.'close')
-      return
-    endif
-  endfor
-  if a:pfx == 'l' && len(getloclist(0)) == 0
-      echohl ErrorMsg
-      echo "Location List is Empty."
-      return
-  endif
-  let winnr = winnr()
-  exec(a:pfx.'open')
-  if winnr() != winnr
-    wincmd p
-  endif
-endfunction
 
 map <silent> <leader>l :call ToggleList("Lista lokacji", 'l')<CR>
 map <silent> <leader>c :call ToggleList("Lista quickfix", 'c')<CR>
@@ -578,4 +532,79 @@ function! <SID>BufcloseCloseIt()
    if buflisted(l:currentBufNum)
      execute("bdelete! ".l:currentBufNum)
    endif
+endfunction
+
+func! OpenNERDTree()
+    exe "NERDTree"
+    exe "wincmd p"
+endfunc
+
+func! RefreshMinBuff()
+    exe "MBEClose"
+    exe "MBEOpen"
+endfunc
+
+func! OpenTreeOrGundo(to_open)
+    if a:to_open == 'NERDTreeToggle'
+        exe "GundoHide"
+        exe "NERDTreeToggle"
+        "":call RefreshMinBuff()
+        exe "wincmd p"
+    endif
+    if a:to_open == 'GundoToggle'
+        exe "NERDTreeClose"
+        exe "GundoToggle"
+        "":call RefreshMinBuff()
+    endif
+endfunc
+
+function! GetBufferList()
+  redir =>buflist
+  silent! ls
+  redir END
+  return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
+    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+
+function! MakeViewCheck()
+    if has('quickfix') && &buftype =~ 'nofile'
+        " Buffer is marked as not a file
+        return 0
+    endif
+    if empty(glob(expand('%:p')))
+        " File does not exist on disk
+        return 0
+    endif
+    if expand('%:p:h') == '/tmp' 
+        " We're in a temp dir
+        return 0
+    endif
+    if expand('%:p:h') == '/var/tmp'
+        " Also in temp dir
+        return 0
+    endif
+    if index(g:skipview_files, expand('%')) >= 0
+        " File is in skip list
+        return 0
+    endif
+    return 1
 endfunction
