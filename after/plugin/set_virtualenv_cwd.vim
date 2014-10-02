@@ -20,5 +20,6 @@ def append_to_sys(string):
     sys.path.insert(0, string)
 
 
+append_to_sys(strip_slash(os.getcwd()))
 append_to_sys(strip_slash(''))
 EOF

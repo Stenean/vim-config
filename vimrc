@@ -315,14 +315,14 @@ map 0 ^
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+vmap <C-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
   nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
+  vmap <D-j> <C-j>
+  vmap <D-k> <C-k>
 endif
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
@@ -396,7 +396,10 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_invoke_completion = '<Nul>'
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_cache_omnifunc = 0
 let g:ycm_use_ultisnips_completer = 1
+let g:ycm_server_use_vim_stdout = 0
+let g:ycm_server_log_level = 'debug'
 " let g:jedi#popup_on_dot = 1
 " let g:jedi#show_call_signatures = 0
 " let g:jedi#goto_assignments_command = "G"
@@ -608,3 +611,11 @@ function! MakeViewCheck()
     endif
     return 1
 endfunction
+
+function! ClearJediCache()
+    let jedi_cache_path = expand("~/.cache/jedi")
+    if isdirectory(jedi_cache_path) == 1
+        exec 'silent ! rm -rf ' . jedi_cache_path . "/*"
+    endif
+endfunction
+:call ClearJediCache()
