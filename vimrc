@@ -30,6 +30,7 @@ Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'reinh/vim-makegreen'
 Bundle 'bling/vim-airline'
 Bundle 'mhinz/vim-signify'
+Bundle 'majutsushi/tagbar'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
@@ -364,7 +365,8 @@ autocmd BufWinLeave * call clearmatches()
 
 map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
-map <F7> <Plug>TaskList
+map <F7> :TagbarToggle<CR>
+map <F6> <Plug>TaskList
 map <leader>gu :call OpenTreeOrGundo('GundoToggle')<CR>
 
 map <C-Down> <C-W>j
@@ -421,6 +423,9 @@ let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips/'
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
 "" TaskList
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
+"" GUndo
+let g:gundo_width = 30
+let g:gundo_preview_bottom = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
