@@ -346,10 +346,11 @@ autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
+autocmd vimenter * if !argc() | :call Autorun() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
 autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
+autocmd BufEnter * nested :call tagbar#autoopen(0)
 
 " Cofee make
 autocmd QuickFixCmdPost * nested cwindow | redraw!
@@ -426,6 +427,8 @@ let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
 "" GUndo
 let g:gundo_width = 30
 let g:gundo_preview_bottom = 1
+"" Tagbar
+let g:tagbar_show_linenumbers = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -624,4 +627,8 @@ function! ClearJediCache()
         exec 'silent ! rm -rf ' . jedi_cache_path . "/*"
     endif
 endfunction
-:call ClearJediCache()
+
+function! Autorun()
+    :call ClearJediCache()
+    :call OpenNERDTree()
+endfunction
