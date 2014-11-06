@@ -351,9 +351,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
 autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
 autocmd BufEnter * nested :call tagbar#autoopen(0)
+autocmd BufReadPost quickfix :call OpenQuickfix()
 
 " Cofee make
-autocmd QuickFixCmdPost * nested cwindow | redraw!
+autocmd QuickFixCmdPost * nested botright cwindow | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
@@ -534,6 +535,9 @@ function! <SID>BufcloseCloseIt()
    if buflisted(l:alternateBufNum)
      buffer #
    else
+       if buflisted(l:currentBufNum - 1)
+           buffer l:currentBufNum - 1
+       endif
      bnext
    endif
 
@@ -591,7 +595,7 @@ function! ToggleList(bufname, pfx)
       return
   endif
   let winnr = winnr()
-  exec(a:pfx.'open')
+  exec('botright '.a:pfx.'open')
   if winnr() != winnr
     wincmd p
   endif
@@ -631,4 +635,9 @@ endfunction
 function! Autorun()
     :call ClearJediCache()
     :call OpenNERDTree()
+endfunction
+
+function! OpenQuickfix()
+    exe 'cclose'
+    exe 'botright copen'
 endfunction
