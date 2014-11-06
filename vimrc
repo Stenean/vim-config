@@ -596,7 +596,6 @@ function! ToggleList(bufname, pfx)
   endif
   let winnr = winnr()
   exec('botright '.a:pfx.'open')
-  echo winnr() . ', ' . winnr
   if winnr() != winnr
     exe winnr . 'wincmd w'
   endif
