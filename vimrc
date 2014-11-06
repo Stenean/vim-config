@@ -350,7 +350,7 @@ autocmd vimenter * if !argc() | :call Autorun() | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
 autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
-autocmd BufEnter * nested :call tagbar#autoopen(0)
+autocmd FileType * nested :call tagbar#autoopen(0)
 autocmd BufReadPost quickfix :call OpenQuickfix()
 
 " Cofee make
@@ -596,8 +596,9 @@ function! ToggleList(bufname, pfx)
   endif
   let winnr = winnr()
   exec('botright '.a:pfx.'open')
+  echo winnr() . ', ' . winnr
   if winnr() != winnr
-    wincmd p
+    exe winnr . 'wincmd w'
   endif
 endfunction
 
