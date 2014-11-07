@@ -125,6 +125,8 @@ set tm=500
 
 set switchbuf=useopen
 
+set viewoptions=folds,cursor
+
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 0
@@ -276,7 +278,7 @@ try
 catch
 endtry
 
-    " Return to last edit position when opening files (You want this!)
+" Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
    \ if line("'\"") > 0 && line("'\"") <= line("$") |
    \   exe "normal! g`\"" |
@@ -346,15 +348,15 @@ autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd vimenter * if !argc() | :call Autorun() | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
-autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
-autocmd FileType * nested :call tagbar#autoopen(0)
+autocmd VimEnter * if !argc() | :call Autorun() | endif
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview | endif
+autocmd VimEnter ?* if MakeViewCheck() | silent loadview | endif
+autocmd BufEnter * nested if (winnr("$") < 3) | :call tagbar#autoopen(1) | endif
 autocmd BufReadPost quickfix :call OpenQuickfix()
 
 " Cofee make
-autocmd QuickFixCmdPost * nested botright cwindow | redraw!
+autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
@@ -429,7 +431,9 @@ let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
 let g:gundo_width = 30
 let g:gundo_preview_bottom = 1
 "" Tagbar
-let g:tagbar_show_linenumbers = 1
+let g:tagbar_autoshowtag = 2
+"" CtrlP
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -437,11 +441,11 @@ let g:tagbar_show_linenumbers = 1
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
+map <leader>g :noautocmd vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
 
-map <leader>gp :vimgrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :noautocmd vimgrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
-map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+map <leader><space> :noautocmd vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -507,7 +511,7 @@ function! VisualSelection(direction) range
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
     elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' ./**/*.*')
+        call CmdLine("noautocmd vimgrep " . '/'. l:pattern . '/' . ' ./**/*.*')
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     elseif a:direction == 'f'
@@ -537,8 +541,9 @@ function! <SID>BufcloseCloseIt()
    else
        if buflisted(l:currentBufNum - 1)
            buffer l:currentBufNum - 1
+       else
+           bnext
        endif
-     bnext
    endif
 
    if bufnr("%") == l:currentBufNum
