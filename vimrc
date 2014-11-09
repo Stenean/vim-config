@@ -30,6 +30,7 @@ Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'reinh/vim-makegreen'
 Bundle 'bling/vim-airline'
 Bundle 'mhinz/vim-signify'
+Bundle 'majutsushi/tagbar'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
@@ -123,6 +124,8 @@ set t_vb=
 set tm=500
 
 set switchbuf=useopen
+
+set viewoptions=folds,cursor
 
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
@@ -275,7 +278,7 @@ try
 catch
 endtry
 
-    " Return to last edit position when opening files (You want this!)
+" Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
    \ if line("'\"") > 0 && line("'\"") <= line("$") |
    \   exe "normal! g`\"" |
@@ -341,17 +344,19 @@ autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 " autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal foldmethod=expr
-autocmd BufWinEnter *.py setl foldmethod=expr
+autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd vimenter * if !argc() | :call OpenNERDTree() | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd BufWritePost,BufLeave,WinLeave ?* if MakeViewCheck() | mkview | endif
-autocmd BufWinEnter ?* if MakeViewCheck() | silent loadview | endif
+autocmd VimEnter * if !argc() | :call Autorun() | endif
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview | endif
+autocmd VimEnter ?* if MakeViewCheck() | silent loadview | endif
+autocmd BufEnter * nested if (winnr("$") < 3) | :call tagbar#autoopen(1) | endif
+autocmd BufReadPost quickfix :call OpenQuickfix()
 
 " Cofee make
-autocmd QuickFixCmdPost * nested cwindow | redraw!
+autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
@@ -364,7 +369,8 @@ autocmd BufWinLeave * call clearmatches()
 
 map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
-map <F7> <Plug>TaskList
+map <F7> :TagbarToggle<CR>
+map <F6> <Plug>TaskList
 map <leader>gu :call OpenTreeOrGundo('GundoToggle')<CR>
 
 map <C-Down> <C-W>j
@@ -388,7 +394,7 @@ let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
-let g:pymode_rope = 1
+let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_rope_goto_definition_bind = ''
 let g:ycm_add_preview_to_completeopt = 1
@@ -396,10 +402,11 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_invoke_completion = '<Nul>'
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_cache_omnifunc = 0
+let g:ycm_cache_omnifunc = 1
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_use_vim_stdout = 0
 let g:ycm_server_log_level = 'debug'
+let g:ycm_auto_trigger = 0
 " let g:jedi#popup_on_dot = 1
 " let g:jedi#show_call_signatures = 0
 " let g:jedi#goto_assignments_command = "G"
@@ -420,6 +427,13 @@ let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips/'
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
 "" TaskList
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
+"" GUndo
+let g:gundo_width = 30
+let g:gundo_preview_bottom = 1
+"" Tagbar
+let g:tagbar_autoshowtag = 2
+"" CtrlP
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -427,11 +441,11 @@ let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
+map <leader>g :noautocmd vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
 
-map <leader>gp :vimgrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :noautocmd vimgrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
-map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+map <leader><space> :noautocmd vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -497,7 +511,7 @@ function! VisualSelection(direction) range
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
     elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' ./**/*.*')
+        call CmdLine("noautocmd vimgrep " . '/'. l:pattern . '/' . ' ./**/*.*')
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     elseif a:direction == 'f'
@@ -525,7 +539,11 @@ function! <SID>BufcloseCloseIt()
    if buflisted(l:alternateBufNum)
      buffer #
    else
-     bnext
+       if buflisted(l:currentBufNum - 1)
+           buffer l:currentBufNum - 1
+       else
+           bnext
+       endif
    endif
 
    if bufnr("%") == l:currentBufNum
@@ -582,9 +600,9 @@ function! ToggleList(bufname, pfx)
       return
   endif
   let winnr = winnr()
-  exec(a:pfx.'open')
+  exec('botright '.a:pfx.'open')
   if winnr() != winnr
-    wincmd p
+    exe winnr . 'wincmd w'
   endif
 endfunction
 
@@ -618,4 +636,13 @@ function! ClearJediCache()
         exec 'silent ! rm -rf ' . jedi_cache_path . "/*"
     endif
 endfunction
-:call ClearJediCache()
+
+function! Autorun()
+    :call ClearJediCache()
+    :call OpenNERDTree()
+endfunction
+
+function! OpenQuickfix()
+    exe 'cclose'
+    exe 'botright copen'
+endfunction
