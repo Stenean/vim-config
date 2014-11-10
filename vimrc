@@ -446,11 +446,11 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :noautocmd vimgrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
+map <leader>g :NoAutoVimGrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
 
-map <leader>gp :noautocmd vimgrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :NoAutoVimGrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
-map <leader><space> :noautocmd vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -516,7 +516,7 @@ function! VisualSelection(direction) range
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
     elseif a:direction == 'gv'
-        call CmdLine("noautocmd vimgrep " . '/'. l:pattern . '/' . ' ./**/*.*')
+        call CmdLine("NoAutoVimGrep " . '/'. l:pattern . '/ ./**/*.*')
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     elseif a:direction == 'f'
@@ -541,15 +541,10 @@ function! <SID>BufcloseCloseIt()
    let l:currentBufNum = bufnr("%")
    let l:alternateBufNum = bufnr("#")
 
-   echomsg "bufflisted: ".buflisted(l:alternateBufNum).", currBuffNum: ".l:currentBufNum.", altBuffNum: ".l:alternateBufNum.", prevBuffNum: ".l:currentBufNum - 1
    if buflisted(l:alternateBufNum)
      buffer #
    else
-       if buflisted(l:currentBufNum - 1)
-           buffer l:currentBufNum - 1
-       else
-           bnext
-       endif
+     bprevious
    endif
 
    if bufnr("%") == l:currentBufNum
@@ -563,7 +558,7 @@ endfunction
 
 func! OpenNERDTree()
     exe "NERDTree"
-    exe "wincmd p"
+    exe "2wincmd w"
 endfunc
 
 func! RefreshMinBuff()
@@ -576,12 +571,13 @@ func! OpenTreeOrGundo(to_open)
         exe "GundoHide"
         exe "NERDTreeToggle"
         "":call RefreshMinBuff()
-        exe "wincmd p"
+        exe "2wincmd w"
     endif
     if a:to_open == 'GundoToggle'
         exe "NERDTreeClose"
         exe "GundoToggle"
         "":call RefreshMinBuff()
+        exe "2wincmd w"
     endif
 endfunc
 
@@ -648,7 +644,14 @@ function! Autorun()
     :call OpenNERDTree()
 endfunction
 
+command! -nargs=0 BCopen call OpenQuickfix()
 function! OpenQuickfix()
     exe 'cclose'
     exe 'botright copen'
+endfunction
+
+command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
+function! <SID>MyVimGrep(pattern, ...)
+    exe 'noautocmd vimgrep ' . a:pattern . 'j ' . join(a:000)
+    exe 'BCopen'
 endfunction
