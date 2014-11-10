@@ -432,6 +432,7 @@ let g:gundo_width = 30
 let g:gundo_preview_bottom = 1
 "" Tagbar
 let g:tagbar_autoshowtag = 2
+let g:tagbar_width = 30
 "" CtrlP
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
