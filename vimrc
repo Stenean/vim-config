@@ -34,6 +34,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
+Bundle 'elzr/vim-json'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
@@ -360,6 +361,9 @@ autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
 
+" Json fold
+autocmd BufNewFile,BufReadPost *.json setl foldmethod=syntax
+
 " For all file types highlight trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
@@ -537,6 +541,7 @@ function! <SID>BufcloseCloseIt()
    let l:currentBufNum = bufnr("%")
    let l:alternateBufNum = bufnr("#")
 
+   echomsg "bufflisted: ".buflisted(l:alternateBufNum).", currBuffNum: ".l:currentBufNum.", altBuffNum: ".l:alternateBufNum.", prevBuffNum: ".l:currentBufNum - 1
    if buflisted(l:alternateBufNum)
      buffer #
    else
