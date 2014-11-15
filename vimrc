@@ -321,6 +321,8 @@ nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
 vmap <C-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
+vnoremap <C-h> <gv
+vnoremap <C-l> >gv
 
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
