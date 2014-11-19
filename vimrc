@@ -448,9 +448,9 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left>
+map <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
 
-map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
 map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
