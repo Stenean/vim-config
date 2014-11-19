@@ -448,9 +448,9 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :NoAutoVimGrep // ./**/*.*<left><left><left><left><left><left><left><left><left><left>
+map <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left>
 
-map <leader>gp :NoAutoVimGrep // ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
 map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
@@ -518,7 +518,7 @@ function! VisualSelection(direction) range
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
     elseif a:direction == 'gv'
-        call CmdLine("NoAutoVimGrep " . '/'. l:pattern . '/ ./**/*.*')
+        call CmdLine("NoAutoVimGrep " . '/'. l:pattern . '/j ./**/*.*')
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     elseif a:direction == 'f'
@@ -653,7 +653,7 @@ function! OpenQuickfix()
 endfunction
 
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
-function! <SID>MyVimGrep(pattern, ...)
-    exe 'noautocmd vimgrep ' . a:pattern . 'j ' . join(a:000)
+function! <SID>MyVimGrep(...)
+    exe 'noautocmd vimgrep '. join(a:000)
     exe 'BCopen'
 endfunction
