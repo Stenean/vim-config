@@ -355,7 +355,6 @@ autocmd VimEnter * if !argc() | :call Autorun() | endif
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview | endif
 autocmd VimEnter ?* if MakeViewCheck() | silent loadview | endif
-autocmd BufEnter * nested if (winnr("$") < 3) | :call tagbar#autoopen(1) | endif
 autocmd BufReadPost quickfix :call OpenQuickfix()
 
 " Cofee make
@@ -405,7 +404,6 @@ let g:pymode_rope_completion = 0
 let g:pymode_rope_goto_definition_bind = ''
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_key_invoke_completion = '<Nul>'
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_cache_omnifunc = 1
@@ -418,6 +416,7 @@ let g:ycm_auto_trigger = 0
 " let g:jedi#goto_assignments_command = "G"
 " let g:jedi#use_tabs_not_buffers = 0
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_python_exec = '/usr/bin/python2.7'
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_error_symbol = "✗ "
@@ -451,6 +450,8 @@ vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 map <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
 
 map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left><left>
+
+map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
 map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
 
