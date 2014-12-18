@@ -14,6 +14,7 @@ Bundle 'gmarik/Vundle.vim'
 
 Bundle 'vim-scripts/TaskList.vim'
 Bundle 'klen/python-mode'
+Bundle 'fisadev/vim-isort'
 Bundle 'scrooloose/syntastic'
 Bundle 'vim-scripts/tComment'
 Bundle 'hsanson/vim-android'
@@ -440,6 +441,8 @@ let g:tagbar_autoshowtag = 2
 let g:tagbar_width = 30
 "" CtrlP
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
+"" Isort options
+let g:vim_isort_map = '<C-i>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
