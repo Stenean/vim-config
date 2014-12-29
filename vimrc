@@ -36,6 +36,7 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'elzr/vim-json'
+Bundle 'tpope/vim-dispatch'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
@@ -570,6 +571,7 @@ endfunc
 func! RefreshMinBuff()
     exe "MBEClose"
     exe "MBEOpen"
+    exe "2wincmd w"
 endfunc
 
 func! OpenTreeOrGundo(to_open)
@@ -599,6 +601,7 @@ function! ToggleList(bufname, pfx)
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
       exec(a:pfx.'close')
+      exe '2wincmd w'
       return
     endif
   endfor
@@ -623,7 +626,7 @@ function! MakeViewCheck()
         " File does not exist on disk
         return 0
     endif
-    if expand('%:p:h') == '/tmp' 
+    if expand('%:p:h') == '/tmp'
         " We're in a temp dir
         return 0
     endif
