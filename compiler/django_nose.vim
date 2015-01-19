@@ -12,11 +12,5 @@ if exists(":CompilerSet") != 2 " older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-let s:cpo_save = &cpo
-set cpo-=C
-
 CompilerSet efm=%f:%l:\ fail:\ %m,%f:%l:\ error:\ %m
-CompilerSet makeprg=$DJANGO_MANAGEMENT_COMMAND\ test\ -v\ 0\ --with-doctest\ --with-machineout\ $*
-
-let &cpo = s:cpo_save
-unlet s:cpo_save
+CompilerSet makeprg=$DJANGO_MANAGEMENT_COMMAND\ test\ $*\ -v\ 0\ --with-doctest\ --with-machineout
