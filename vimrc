@@ -351,6 +351,7 @@ autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal foldmethod=expr
 autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType coffee set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd VimEnter * if !argc() | :call Autorun() | endif
@@ -363,6 +364,7 @@ autocmd BufReadPost quickfix :call OpenQuickfix()
 autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 
 " Json fold
 autocmd BufNewFile,BufReadPost *.json setl foldmethod=syntax
@@ -656,7 +658,7 @@ endfunction
 command! -nargs=0 BCopen call OpenQuickfix()
 function! OpenQuickfix()
     exe 'cclose'
-    exe 'botright copen'
+    exe 'botright cwindow'
 endfunction
 
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
