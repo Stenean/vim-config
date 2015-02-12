@@ -381,6 +381,7 @@ map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
 map <F7> :TagbarToggle<CR>
 map <F6> <Plug>TaskList
 map <leader>gu :call OpenTreeOrGundo('GundoToggle')<CR>
+cmap w!! w !sudo tee % >/dev/null
 
 map <C-Down> <C-W>j
 map <C-Up> <C-W>k
