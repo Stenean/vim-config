@@ -652,7 +652,7 @@ function! ClearJediCache()
 endfunction
 
 function! Autorun()
-    :call ClearJediCache()
+    ":call ClearJediCache()
     :call OpenNERDTree()
 endfunction
 
