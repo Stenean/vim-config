@@ -333,6 +333,7 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.html :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
