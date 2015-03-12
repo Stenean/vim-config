@@ -61,13 +61,7 @@ let g:mapleader = "\\"
 nmap <leader>w :w!<cr>
 
 " Yanks to global system clipboard
-let s:uname = system("uname")
-if s:uname == "Darwin\n"
-    " Do Mac stuff here
-    set clipboard=unnamed
-else
-    set clipboard=unnamedplus
-endif
+set clipboard=unnamedplus
 
 let g:skipview_files = [
 \ '[EXAMPLE PLUGIN BUFFER]'
