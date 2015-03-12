@@ -37,6 +37,7 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'elzr/vim-json'
 Bundle 'tpope/vim-dispatch'
+Bundle 'mbbill/undotree'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
@@ -370,10 +371,10 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 map <F9> :MBEToggle<cr>
-map <F8> :call OpenTreeOrGundo('NERDTreeToggle')<CR>
+map <F8> :call OpenTreeOrUndo()<CR>
 map <F7> :TagbarToggle<CR>
 map <F6> <Plug>TaskList
-map <leader>gu :call OpenTreeOrGundo('GundoToggle')<CR>
+map <leader>gu :call OpenTreeOrUndo()<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 map <C-Down> <C-W>j
@@ -570,18 +571,24 @@ func! RefreshMinBuff()
     exe "2wincmd w"
 endfunc
 
-func! OpenTreeOrGundo(to_open)
-    if a:to_open == 'NERDTreeToggle'
-        exe "GundoHide"
-        exe "NERDTreeToggle"
-        "":call RefreshMinBuff()
-        exe "2wincmd w"
-    endif
-    if a:to_open == 'GundoToggle'
+func! OpenTreeOrUndo()
+    if !exists('g:nerd_tree_open')
+        let g:nerd_tree_open = 1
+        exe "UndotreeHide"
         exe "NERDTreeClose"
-        exe "GundoToggle"
-        "":call RefreshMinBuff()
+        exe "NERDTreeToggle"
+    endif
+
+    if g:nerd_tree_open == 0
+        let g:nerd_tree_open = 1
+        exe "UndotreeHide"
+        exe "NERDTreeToggle"
         exe "2wincmd w"
+    else
+        let g:nerd_tree_open = 0
+        exe "NERDTreeClose"
+        exe "UndotreeShow"
+        exe "3wincmd w"
     endif
 endfunc
 
