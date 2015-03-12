@@ -563,6 +563,7 @@ endfunction
 func! OpenNERDTree()
     exe "NERDTree"
     exe "2wincmd w"
+    let g:nerd_tree_open = 1
 endfunc
 
 func! RefreshMinBuff()
