@@ -61,7 +61,7 @@ let g:mapleader = "\\"
 nmap <leader>w :w!<cr>
 
 " Yanks to global system clipboard
-set clipboard=unnamedplus
+set clipboard^=unnamedplus
 
 let g:skipview_files = [
 \ '[EXAMPLE PLUGIN BUFFER]'
