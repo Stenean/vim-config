@@ -371,12 +371,16 @@ map <F6> <Plug>TaskList
 map <leader>gu :call OpenTreeOrUndo()<CR>
 cmap w!! w !sudo tee % >/dev/null
 
-map <C-Down> <C-W>j
-map <C-Up> <C-W>k
-map <C-Left> <C-W>h
-map <C-Right> <C-W>l
-noremap <C-PageUp> :bnext<CR>
-noremap <C-PageDown> :bprev<CR>
+set <xF1>=[1;5C
+set <xF2>=[1;5D
+
+map <xF1> <C-Right>
+map <xF2> <C-Left>
+map! <xF1> <C-Right>
+map! <xF2> <C-Left>
+
+nnoremap <silent> <C-Right> :bnext<CR>
+nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap G :YcmCompleter GoTo<CR>
 
 let g:miniBufExplAutoStart=0
