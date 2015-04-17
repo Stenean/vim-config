@@ -407,6 +407,7 @@ let g:ycm_cache_omnifunc = 1
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_use_vim_stdout = 0
 let g:ycm_server_log_level = 'debug'
+let g:ycm_disable_for_files_larger_than_kb = 0
 let g:ycm_auto_trigger = 0
 " let g:jedi#popup_on_dot = 1
 " let g:jedi#show_call_signatures = 0
