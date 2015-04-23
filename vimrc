@@ -412,7 +412,7 @@ let g:ycm_auto_trigger = 0
 " let g:jedi#show_call_signatures = 0
 " let g:jedi#goto_assignments_command = "G"
 " let g:jedi#use_tabs_not_buffers = 0
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['flake8', 'frosted']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
 let g:syntastic_aggregate_errors = 1
@@ -422,6 +422,9 @@ let g:syntastic_style_error_symbol = "S✗"
 let g:syntastic_warning_symbol = "⚠ "
 let g:syntastic_style_warning_symbol = "S⚠"
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_html_tidy_exec = 'tidy5'
 " Ultisnips
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
