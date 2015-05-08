@@ -383,8 +383,10 @@ nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap G :YcmCompleter GoTo<CR>
 
+" MinBufExpl
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
+" Python mode
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 0
 let g:pymode_indent = 1
@@ -399,19 +401,15 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_rope_goto_definition_bind = ''
+" YouCompleteMe
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_cache_omnifunc = 1
 let g:ycm_use_ultisnips_completer = 1
-let g:ycm_server_use_vim_stdout = 0
 let g:ycm_server_log_level = 'debug'
 let g:ycm_auto_trigger = 0
-" let g:jedi#popup_on_dot = 1
-" let g:jedi#show_call_signatures = 0
-" let g:jedi#goto_assignments_command = "G"
-" let g:jedi#use_tabs_not_buffers = 0
+" Syntatic
 let g:syntastic_python_checkers = ['flake8', 'frosted']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
@@ -456,7 +454,7 @@ map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><
 
 map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
-map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+map <leader><space> :vimgrep // <C-R>%OH<right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -522,7 +520,10 @@ function! VisualSelection(direction) range
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
     elseif a:direction == 'gv'
-        call CmdLine("NoAutoVimGrep " . '/'. l:pattern . '/j ./**/*.*')
+        call inputsave()
+        let l:dir = input('Enter subpath, without enclosing / (default: ""): ', '')
+        call inputrestore()
+        call CmdLine("NoAutoVimGrep " . '/'. l:pattern . '/j ' . l:dir  . '/**/*.*')
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     elseif a:direction == 'f'
