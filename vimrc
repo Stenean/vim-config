@@ -15,7 +15,6 @@ Bundle 'gmarik/Vundle.vim'
 Bundle 'vim-scripts/TaskList.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'vim-scripts/The-NERD-tree'
-Bundle 'vim-scripts/SearchComplete'
 
 Bundle 'klen/python-mode'
 Bundle 'fisadev/vim-isort'
