@@ -410,7 +410,6 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
-let g:ycm_auto_trigger = 0
 " Syntatic
 let g:syntastic_python_checkers = ['flake8', 'frosted']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
@@ -429,7 +428,7 @@ let g:syntastic_html_tidy_exec = 'tidy5'
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-C-Tab>"
-let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips/'
+" Django-vim
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
 "" TaskList
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
@@ -658,7 +657,7 @@ function! ClearJediCache()
 endfunction
 
 function! Autorun()
-    :call ClearJediCache()
+    ":call ClearJediCache()
     :call OpenNERDTree()
 endfunction
 
