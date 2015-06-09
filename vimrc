@@ -442,6 +442,10 @@ let g:tagbar_width = 30
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 "" Isort options
 let g:vim_isort_map = '<C-i>'
+"" sesstion options
+set sessionoptions-=tabpages
+set sessionoptions-=blank
+set sessionoptions-=options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
