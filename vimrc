@@ -128,24 +128,9 @@ set switchbuf=useopen
 
 set viewoptions=folds,cursor
 
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 0
-let g:miniBufExplModSelTarget = 0
-let g:signify_vcs_list = [ 'git' ]
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#virtualenv#enabled = 1
-let g:airline#extensions#whitespace#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#branch#displayed_head_limit = 15
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
+set sessionoptions-=tabpages
+set sessionoptions-=blank
+set sessionoptions-=options
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -386,12 +371,22 @@ nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap G :YcmCompleter GoTo<CR>
 
+nnoremap <space> za
+vnoremap <space> zf
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " MinBufExpl
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
+
 " Python mode
 let g:pymode_trim_whitespaces = 1
-let g:pymode_options = 0
+let g:pymode_options = 1
+let g:pymode_options_max_line_length = 99
+let g:pymode_options_colorcolumn = 1
 let g:pymode_indent = 1
 let g:pymode_breakpoint_cmd = 'import ipdb; ipdb.set_trace() # BREAKPOINT HARDCODED'
 let g:pymode_doc = 1
@@ -404,12 +399,14 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_rope_goto_definition_bind = ''
+
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
+
 " Syntatic
 let g:syntastic_python_checkers = ['flake8', 'frosted']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
@@ -424,28 +421,56 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_html_tidy_exec = 'tidy5'
+
 " Ultisnips
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-C-Tab>"
+
 " Django-vim
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
-"" TaskList
+
+" TaskList
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
-"" GUndo
+
+" GUndo
 let g:gundo_width = 30
 let g:gundo_preview_bottom = 1
-"" Tagbar
+
+" Tagbar
 let g:tagbar_autoshowtag = 2
 let g:tagbar_width = 30
-"" CtrlP
+
+" CtrlP
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
-"" Isort options
+
+" Isort options
 let g:vim_isort_map = '<C-i>'
-"" sesstion options
-set sessionoptions-=tabpages
-set sessionoptions-=blank
-set sessionoptions-=options
+
+" MinBufExpl settings
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 0
+let g:miniBufExplModSelTarget = 0
+
+" ??
+let g:signify_vcs_list = [ 'git' ]
+
+" airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#branch#displayed_head_limit = 15
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -492,7 +517,6 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
