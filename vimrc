@@ -128,9 +128,13 @@ set switchbuf=useopen
 
 set viewoptions=folds,cursor
 
+" Set appropriate session options
 set sessionoptions-=tabpages
 set sessionoptions-=blank
 set sessionoptions-=options
+
+" Color column for 99 characters
+set colorcolumn=99
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
