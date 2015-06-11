@@ -384,7 +384,7 @@ let g:miniBufExplBuffersNeeded=0
 
 " Python mode
 let g:pymode_trim_whitespaces = 1
-let g:pymode_options = 1
+let g:pymode_options = 0
 let g:pymode_options_max_line_length = 99
 let g:pymode_options_colorcolumn = 1
 let g:pymode_indent = 1
