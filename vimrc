@@ -133,8 +133,8 @@ set sessionoptions-=tabpages
 set sessionoptions-=blank
 set sessionoptions-=options
 
-" Color column for 99 characters
-set colorcolumn=99
+" Color column for 100 characters
+set colorcolumn=100
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
