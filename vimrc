@@ -41,6 +41,7 @@ Bundle 'tpope/vim-dispatch'
 Bundle 'mbbill/undotree'
 Bundle 'edsono/vim-matchit'
 Bundle 'tpope/vim-surround'
+Bundle 'xolox/vim-session'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
@@ -129,9 +130,9 @@ set switchbuf=useopen
 set viewoptions=folds,cursor
 
 " Set appropriate session options
-set sessionoptions-=tabpages
 set sessionoptions-=blank
 set sessionoptions-=options
+set sessionoptions-=curdir
 
 " Color column for 100 characters
 set colorcolumn=100
@@ -475,6 +476,24 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 
+" vim-session settings
+let g:session_autoload = 'yes'
+let g:session_autosave = 'yes'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => per directory session management
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Check whether the current working directory contains a ".vimsessions"
+" directory. It it does, we'll configure the vim-session plug-in to load
+" its sessions from the ".vimsessions" directory.
+" From: https://github.com/xolox/vim-session/issues/49
+" let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+let s:local_session_directory = xolox#misc#path#merge($HOME . '/.vim/sessions', getcwd())
+if isdirectory(s:local_session_directory)
+  let g:session_directory = s:local_session_directory
+endif
+unlet s:local_session_directory
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -703,4 +722,17 @@ command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
 function! <SID>MyVimGrep(...)
     exe 'noautocmd vimgrep '. join(a:000)
     exe 'BCopen'
+endfunction
+
+command! -nargs=0 CreateSessionDir call MKSessionDir()
+function! MKSessionDir()
+  let b:sessiondir = xolox#misc#path#merge($HOME . '/.vim/sessions', getcwd())
+  if (filewritable(b:sessiondir) != 2)
+    exe 'silent !mkdir -p ' b:sessiondir
+    redraw!
+    echom 'Creating dir ' . b:sessiondir . '. Setting isntead of ' . g:session_directory
+  else
+    echom 'Directory ' . b:sessiondir . ' exists! Setting instead of ' . g:session_directory
+  endif
+  let g:session_directory = b:sessiondir
 endfunction
