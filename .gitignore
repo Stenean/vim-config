@@ -4,3 +4,4 @@ view/
 *.swp
 *.tmp
 bundle/
+sessions/
