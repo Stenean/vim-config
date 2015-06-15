@@ -1,7 +1,7 @@
-backup/
-undo/
-view/
+backup/*
+undo/*
+view/*
 *.swp
 *.tmp
-bundle/
-sessions/
+bundle/*
+sessions/*
