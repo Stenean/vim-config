@@ -81,7 +81,7 @@ set so=7
 set wildmenu
 
 " Ignore compiled files
-set wildignore=*.o,*~,*.pyc,**/migrations/**
+set wildignore=*.o,*~,*.pyc,migrations/**
 
 "Always show current position
 set ruler
