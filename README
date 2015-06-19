@@ -6,3 +6,6 @@ Syntastic:
     pip install flake8 frosted
     #frozen
     git clone https://github.com/htacg/tidy-html5
+
+Isort:
+    pip install isort
