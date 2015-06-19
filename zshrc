@@ -73,6 +73,10 @@ function workon_cwd {
             ENV_NAME=`cat "$PROJECT_ROOT/.venv"`
         fi
 
+        if [ "$CD_VIRTUAL_ENV" != "$ENV_NAME" -a "$CD_VIRTUAL_ENV" != "" ]; then
+            deactivate && unset CD_VIRTUAL_ENV
+        fi
+
         # Activate the environment only if it is not already active
         if [ "$VIRTUAL_ENV" != "$WORKON_HOME/$ENV_NAME" -a "$VIRTUAL_ENV" != "$PROJECT_HOME/$ENV_NAME" ]; then
             if [ -e "$WORKON_HOME/$ENV_NAME/bin/activate" ]; then
