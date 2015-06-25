@@ -13,4 +13,4 @@ if exists(":CompilerSet") != 2 " older Vim always used :setlocal
 endif
 
 CompilerSet efm=%f:%l:\ fail:\ %m,%f:%l:\ error:\ %m
-CompilerSet makeprg=$DJANGO_MANAGEMENT_COMMAND\ test\ $*\ -v\ 0\ --with-doctest\ --with-machineout
+CompilerSet makeprg=$DJANGO_MANAGEMENT_COMMAND\ test\ -v\ 0\ --with-doctest\ --with-machineout\ $*

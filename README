@@ -9,3 +9,7 @@ Syntastic:
 
 Isort:
     pip install isort
+
+make:
+    pip install nose
+    pip install git+git://github.com/lambdalisue/nose-machineout.git#egg=nose_machineout
