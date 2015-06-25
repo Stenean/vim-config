@@ -170,9 +170,9 @@ def write_init_body(name, args, parents, snip):
 	parents = [p for p in parents if p != 'object']
 
 	if parents:
-		snip.rv += 'super(' + name + ', self).__init__('
-		snip.rv += ', '.join(args)
-		snip.rv += ')\n' + snip.mkline('', indent='')
+		snip += ('super(' + name + ', self).__init__(%s)' %
+			 ', '.join(map(str, args)))
+		snip.rv += '\n' + snip.mkline('', indent='')
 
 	for arg in args:
 		snip += "self.%(arg)s = %(arg)s" % {'arg': arg}
