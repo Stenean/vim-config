@@ -42,6 +42,7 @@ Bundle 'mbbill/undotree'
 Bundle 'edsono/vim-matchit'
 Bundle 'tpope/vim-surround'
 Bundle 'xolox/vim-session'
+Bundle 'marijnh/tern_for_vim'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
