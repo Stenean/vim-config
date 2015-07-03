@@ -701,6 +701,16 @@ function! MakeViewCheck()
     return 1
 endfunction
 
+function! KillYcmd()
+    :redir @a
+    :YcmDebugInfo
+    :redir END
+    let ycmd_state = filter(split(@a, '\n'), 'v:val =~ "Server process ID"')
+    if len(ycmd_state) == 1
+        let ycmd_state =  join(ycmd_state)
+    endif
+endfunction
+
 function! ClearJediCache()
     let jedi_cache_path = expand("~/.cache/jedi")
     if isdirectory(jedi_cache_path) == 1
