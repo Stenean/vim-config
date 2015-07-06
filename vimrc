@@ -748,7 +748,7 @@ endfunction
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
 function! <SID>MyVimGrep(...)
     exe 'noautocmd vimgrep '. join(a:000)
-    exe 'copen'
+    exe 'cwindow'
     exe 'BCopen'
 endfunction
 
