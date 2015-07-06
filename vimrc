@@ -512,7 +512,7 @@ map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><
 
 map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
 " Vimgreps in the current file
-map <leader><space> :vimgrep // <C-R>%OH<right><right><right><right><right><right><right><right><right>
+map <leader><space> :NoAutoVimGrep // <C-R>%OH<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -748,6 +748,7 @@ endfunction
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
 function! <SID>MyVimGrep(...)
     exe 'noautocmd vimgrep '. join(a:000)
+    exe 'copen'
     exe 'BCopen'
 endfunction
 
