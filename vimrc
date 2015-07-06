@@ -384,6 +384,10 @@ vnoremap <space> zf
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Local settings
+let g:location_list_name = 'Lista lokacji'
+let g:quickfix_list_name = 'Lista quickfix'
+
 " MinBufExpl
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
@@ -525,8 +529,8 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 "   <leader>p
 "
 
-map <silent> <leader>l :call ToggleList("Lista lokacji", 'l')<CR>
-map <silent> <leader>c :call ToggleList("Lista quickfix", 'c')<CR>
+map <silent> <leader>l :call ToggleList(g:location_list_name, 'l')<CR>
+map <silent> <leader>c :call ToggleList(g:quickfix_list_name, 'c')<CR>
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
@@ -660,6 +664,7 @@ function! ToggleList(bufname, pfx)
   let buflist = GetBufferList()
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
+      exe bufnum.'wincmd w'
       exec(a:pfx.'close')
       exe '2wincmd w'
       return
@@ -671,7 +676,7 @@ function! ToggleList(bufname, pfx)
       return
   endif
   let winnr = winnr()
-  exec('botright '.a:pfx.'open')
+  exec('botright '.a:pfx.'open 10')
   if winnr() != winnr
     exe '2wincmd w'
   endif
@@ -725,8 +730,19 @@ endfunction
 
 command! -nargs=0 BCopen call OpenQuickfix()
 function! OpenQuickfix()
-    exe 'cclose'
-    exe 'botright cwindow'
+  let buflist = GetBufferList()
+  for bufname in [g:location_list_name, g:quickfix_list_name]
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+      if bufname =~ g:location_list_name && len(getloclist(0)) != 0
+        exe 'lclose'
+        exe 'botright lopen 10'
+      endif
+      if bufname =~ g:quickfix_list_name
+        exe 'cclose'
+        exe 'botright cwindow 10'
+      endif
+    endfor
+  endfor
 endfunction
 
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
