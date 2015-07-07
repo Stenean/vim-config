@@ -342,6 +342,8 @@ autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview |
 autocmd VimEnter ?* if MakeViewCheck() | silent loadview | endif
 autocmd BufReadPost quickfix :call OpenQuickfix()
 
+autocmd VimEnter * :call KillYcmd()
+
 " Cofee make
 autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
 autocmd BufWritePost *.coffee make!
@@ -707,13 +709,20 @@ function! MakeViewCheck()
 endfunction
 
 function! KillYcmd()
-    :redir @a
-    :YcmDebugInfo
-    :redir END
-    let ycmd_state = filter(split(@a, '\n'), 'v:val =~ "Server process ID"')
-    if len(ycmd_state) == 1
-        let ycmd_state =  join(ycmd_state)
-    endif
+    let pid_pairs = {}
+    let existing_ycmds = split(system('ps xo ppid,pid,cmd | grep ycmd | grep -v grep'), '\n')
+    for pair in map(existing_ycmds, 'split(matchstr(v:val, "^\\s*\\d\\+\\s*\\d\\+"), "\\s\\+")')
+      let pid_pairs[str2nr(pair[1])] = str2nr(pair[0])
+    endfor
+    for [pid, parent] in items(pid_pairs)
+      let parent_cmd = split(system('ps axo pid,cmd | grep -v grep |  grep ' . parent), '\n')[0]
+      if parent_cmd !~ 'vim'
+        echom 'Killing ' . pid . ', becouse parent "' . parent_cmd . '" is not vim'
+        let l:kill_cmd = 'silent ! kill -9 ' . pid
+        echom l:kill_cmd
+        exec l:kill_cmd
+      endif
+    endfor
 endfunction
 
 function! ClearJediCache()
