@@ -362,6 +362,10 @@ autocmd BufWinEnter ?* if MakeViewCheck() | match ExtraWhitespace /\s\+$/ | endi
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
+" fugitive options
+autocmd BufReadPost fugitive://* set bufhidden=delete
+autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
+
 map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrUndo()<CR>
 map <F7> :TagbarToggle<CR>
