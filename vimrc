@@ -12,6 +12,8 @@ call vundle#begin()
 
 Bundle 'gmarik/Vundle.vim'
 
+Bundle 'xolox/vim-misc'
+
 Bundle 'vim-scripts/TaskList.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'vim-scripts/The-NERD-tree'
@@ -25,15 +27,12 @@ Bundle 'fholgado/minibufexpl.vim'
 Bundle 'sjl/gundo.vim'
 Bundle 'raimondi/delimitmate'
 Bundle 'SirVer/ultisnips'
-Bundle 'xolox/vim-misc'
 Bundle 'tpope/vim-fugitive'
 Bundle 'honza/vim-snippets'
-Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'reinh/vim-makegreen'
 Bundle 'bling/vim-airline'
 Bundle 'mhinz/vim-signify'
 Bundle 'majutsushi/tagbar'
-Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'elzr/vim-json'
@@ -43,6 +42,8 @@ Bundle 'edsono/vim-matchit'
 Bundle 'tpope/vim-surround'
 Bundle 'xolox/vim-session'
 Bundle 'marijnh/tern_for_vim'
+Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'pangloss/vim-javascript'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
@@ -486,6 +487,10 @@ endif
 " vim-session settings
 let g:session_autoload = 'yes'
 let g:session_autosave = 'yes'
+
+" vim-javascript
+let javascript_enable_domhtmlcss = 1
+let b:javascript_fold = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => per directory session management
