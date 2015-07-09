@@ -53,6 +53,7 @@ syntax on
 " Enable filetype plugins
 filetype plugin indent on
 
+
 set number
 
 " Set to auto read when a file is changed from the outside
