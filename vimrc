@@ -753,11 +753,11 @@ function! OpenQuickfix()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
       if bufname =~ g:location_list_name && len(getloclist(0)) != 0
         exe 'lclose'
-        exe 'botright lopen 10'
+        exe 'botright lopen'
       endif
       if bufname =~ g:quickfix_list_name
         exe 'cclose'
-        exe 'botright cwindow 10'
+        exe 'botright cwindow'
       endif
     endfor
   endfor
