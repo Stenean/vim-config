@@ -687,7 +687,8 @@ function! ToggleList(bufname, pfx)
       return
   endif
   let winnr = winnr()
-  exec('botright '.a:pfx.'open 10')
+  exe '2wincmd w'
+  exec('botright '.a:pfx.'open')
   if winnr() != winnr
     exe '2wincmd w'
   endif
@@ -753,6 +754,7 @@ function! OpenQuickfix()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
       if bufname =~ g:location_list_name && len(getloclist(0)) != 0
         exe 'lclose'
+        exe '2wincmd w'
         exe 'botright lopen'
       endif
       if bufname =~ g:quickfix_list_name
