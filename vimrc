@@ -290,7 +290,6 @@ set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
 set statusline+=%=      "left/right separator
-set statusline+=%{strlen(virtualenv#statusline())?[virtualenv#statusline()]:''}\
 set statusline+=%{fugitive#statusline()}\
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
@@ -425,8 +424,8 @@ let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
 
-" Syntatic
-let g:syntastic_python_checkers = ['flake8', 'frosted']
+" Syntastic
+let g:syntastic_python_checkers = ['flake8', 'frosted', 'python']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
 let g:syntastic_aggregate_errors = 1
