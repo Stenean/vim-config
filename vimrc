@@ -633,6 +633,7 @@ endfunction
 
 func! OpenNERDTree()
     exe "NERDTree"
+    exe "normal 35\<C-W>|"
     exe "2wincmd w"
     let g:nerd_tree_open = 1
 endfunc
@@ -649,17 +650,21 @@ func! OpenTreeOrUndo()
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
+        exe "normal 35\<C-W>|"
     endif
 
     if g:nerd_tree_open == 0
         let g:nerd_tree_open = 1
         exe "UndotreeHide"
         exe "NERDTreeToggle"
+        exe "normal 35\<C-W>|"
         exe "2wincmd w"
     else
         let g:nerd_tree_open = 0
         exe "NERDTreeClose"
         exe "UndotreeShow"
+        exe "1wincmd w"
+        exe "normal 35\<C-W>|"
         exe "3wincmd w"
     endif
 endfunc
