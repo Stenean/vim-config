@@ -15,4 +15,4 @@ make:
     pip install git+git://github.com/lambdalisue/nose-machineout.git#egg=nose_machineout
 
 tern_for_vim:
-    npm install in tern_for_vim
+    npm install tern_for_vim
