@@ -10,7 +10,7 @@ endif
 
 execute "pyfile ".fnameescape(fnamemodify(expand("<sfile>"), ":h")."/../python/import_search.py")
 
-command! -nargs=1 FindImport :call FindImportPython(<q-args>)
+command! -nargs=1 FindImport :call FindImportPython(<args>)
 function! FindImportPython(name)
     let l:cmd = "find_import('" . a:name . "')"
     let l:output = pyeval(l:cmd)
@@ -19,3 +19,9 @@ function! FindImportPython(name)
     call inputrestore()
     return output
 endfunction
+
+vnoremap <leader>i :<C-U>
+  \let old_reg = getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy
+  \:FindImport @"<CR>
+  \:call setreg('"', old_reg, old_regtype)<CR>
