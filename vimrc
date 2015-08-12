@@ -327,16 +327,18 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.html :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 
-autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
+autocmd Filetype java setl omnifunc=javacomplete#Complete
+autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
 " autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal foldmethod=expr
 autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType coffee set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType javascript setl shiftwidth=2 expandtab
+autocmd FileType coffee setl omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html setl omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html setl shiftwidth=2 expandtab
+autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
 autocmd VimEnter * if !argc() | :call Autorun() | endif
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview | endif
