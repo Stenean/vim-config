@@ -3,6 +3,7 @@ import re
 import sys
 import os
 
+# add use case, where import name is defined in filename not, in .py file itself - top level modules
 
 def find_import(name):
     matches = []
