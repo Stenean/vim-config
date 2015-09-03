@@ -3,8 +3,8 @@ import re
 import sys
 import os
 
-# add use case, where import name is defined in filename not, in .py file itself - top level modules
 
+# add use case, where import name is defined in filename not, in .py file itself - top level modules
 def find_import(name):
     matches = []
 
@@ -31,14 +31,20 @@ def find_import_path(base_path, file_path):
 
 
 def find_missing_import(name, regexp=None):
-    compiled = re.compile(r'(?P<def>def\s|class\s)?\s*' + name + r'(?(def)\(|\s*=(?!=))')
+    compiled = re.compile(r'(?P<def>def\s|class\s)?\s*' + name + r'\s*(?(def)\(|=(?!=))')
     found_defs = []
     found = []
 
     for base_path in sys.path:
-        for filepath in _filtered_py_walk(base_path):
-            for line in _search_file(filepath, compiled):
-                found.append((base_path, filepath, line))
+        for filepath, filename in _filtered_py_walk(base_path):
+            fullpath = os.path.join(filepath, filename)
+
+            add_found = _additional_checks(filepath, filename, name)
+            if add_found:
+                found.append((base_path, add_found[0], add_found[1]))
+
+            for line in _search_file(fullpath, compiled):
+                found.append((base_path, fullpath, line))
 
     for item in found:
         if 'def ' in item[2] or 'class ' in item[2]:
@@ -48,6 +54,16 @@ def find_missing_import(name, regexp=None):
         return found_defs
     else:
         return found
+
+
+def _additional_checks(filepath, filename, name):
+    newpath, newname = os.path.split(filepath)
+
+    if name == filename[:-3]:
+        return filepath, 'class %s(' % name
+
+    if '__init__' == filename[:-3] and name == newname:
+        return '%s.py' % filepath, 'class %s(' % name
 
 
 def _search_file(filepath, compiled):
@@ -69,4 +85,4 @@ def _filtered_py_walk(base_path, excludes=None):
             if filename[-3:] != '.py':
                 continue
 
-            yield os.path.join(path, filename)
+            yield path, filename
