@@ -628,7 +628,7 @@ self.assertIsNotNone(${0:expression})
 endsnippet
 
 snippet testcase "pyunit testcase" b
-class Test${1:Class}(${2:unittest.TestCase}):
+class Test${1:Case}(${2:TestCase}):
 
 	`!p snip.rv = triple_quotes(snip)`${3:Test case docstring.}`!p snip.rv = triple_quotes(snip)`
 
@@ -640,6 +640,34 @@ class Test${1:Class}(${2:unittest.TestCase}):
 
 	def test_${6:name}(self):
 		${7:pass}
+endsnippet
+
+snippet testtdc "tearDownClass" b
+@classmethod
+def tearDownClass(cls, *args, **kwargs):
+    super(${1}, cls).tearDownClass(*args, **kwargs)
+    ${2}
+endsnippet
+
+snippet testsuc "setUpClass" b
+@classmethod
+def setUpClass(cls, *args, **kwargs):
+    super(${1}, cls).setUpClass(*args, **kwargs)
+    ${2}
+endsnippet
+
+snippet testtd "tearDown" b
+@classmethod
+def tearDown(self, *args, **kwargs):
+    super(${1}, self).tearDown(*args, **kwargs)
+    ${2}
+endsnippet
+
+snippet testsu "setUp" b
+@classmethod
+def setUp(self, *args, **kwargs):
+    super(${1}, self).setUp(*args, **kwargs)
+    ${2}
 endsnippet
 
 snippet " "triple quoted string (double quotes)" b
