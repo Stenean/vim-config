@@ -657,14 +657,12 @@ def setUpClass(cls, *args, **kwargs):
 endsnippet
 
 snippet testtd "tearDown" b
-@classmethod
 def tearDown(self, *args, **kwargs):
     super(${1}, self).tearDown(*args, **kwargs)
     ${2}
 endsnippet
 
 snippet testsu "setUp" b
-@classmethod
 def setUp(self, *args, **kwargs):
     super(${1}, self).setUp(*args, **kwargs)
     ${2}
