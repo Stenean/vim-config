@@ -484,7 +484,7 @@ let g:airline#extensions#virtualenv#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#branch#displayed_head_limit = 15
+let g:airline#extensions#branch#displayed_head_limit = 16
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
