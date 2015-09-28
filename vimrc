@@ -21,6 +21,7 @@ Bundle 'vim-scripts/The-NERD-tree'
 Bundle 'klen/python-mode'
 Bundle 'fisadev/vim-isort'
 Bundle 'scrooloose/syntastic'
+Bundle 'chrisbra/csv.vim'
 Bundle 'hsanson/vim-android'
 Bundle 'cwood/vim-django'
 Bundle 'fholgado/minibufexpl.vim'
@@ -282,19 +283,19 @@ set laststatus=2
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
-set statusline=%f       "tail of the filename
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}] "file format
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
-set statusline+=%y      "filetype
-set statusline+=%=      "left/right separator
-set statusline+=%{fugitive#statusline()}\
-set statusline+=%c,     "cursor column
-set statusline+=%l/%L   "cursor line/total lines
-set statusline+=\ %P    "percent through file%{fugitive#statusline()}
-
+" set statusline=%f       "tail of the filename
+" set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+" set statusline+=%{&ff}] "file format
+" set statusline+=%h      "help file flag
+" set statusline+=%m      "modified flag
+" set statusline+=%r      "read only flag
+" set statusline+=%y      "filetype
+" set statusline+=%=      "left/right separator
+" set statusline+=%{fugitive#statusline()}\
+" set statusline+=%c,     "cursor column
+" set statusline+=%l/%L   "cursor line/total lines
+" set statusline+=\ %P    "percent through file%{fugitive#statusline()}
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
