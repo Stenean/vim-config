@@ -763,7 +763,7 @@ function! OpenQuickfix()
       if bufname =~ g:location_list_name && len(getloclist(0)) != 0
         exe 'lclose'
         exe '2wincmd w'
-        exe 'botright lopen'
+        exe 'lopen'
       endif
       if bufname =~ g:quickfix_list_name
         exe 'cclose'
