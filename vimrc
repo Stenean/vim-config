@@ -481,11 +481,14 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#virtualenv#enabled = 0
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#branch#displayed_head_limit = 16
+let g:airline#extensions#branch#displayed_head_limit = 8
+let g:airline#extensions#branch#format = 1
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline_exclude_preview = 1
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
