@@ -45,6 +45,7 @@ Bundle 'xolox/vim-session'
 Bundle 'marijnh/tern_for_vim'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
+Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
@@ -407,7 +408,7 @@ let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 0
 let g:pymode_options_max_line_length = 99
 let g:pymode_options_colorcolumn = 1
-let g:pymode_indent = 1
+let g:pymode_indent = 0
 let g:pymode_breakpoint_cmd = 'import ipdb; ipdb.set_trace() # BREAKPOINT HARDCODED'
 let g:pymode_doc = 1
 let g:pymode_lint = 0
