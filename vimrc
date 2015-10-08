@@ -768,10 +768,12 @@ function! OpenQuickfix()
         exe 'lclose'
         exe '2wincmd w'
         exe 'lopen'
+        exe '2wincmd w'
       endif
       if bufname =~ g:quickfix_list_name
         exe 'cclose'
         exe 'botright cwindow'
+        exe '2wincmd w'
       endif
     endfor
   endfor
