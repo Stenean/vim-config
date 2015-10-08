@@ -268,10 +268,10 @@ catch
 endtry
 
 " Return to last edit position when opening files (You want this!)
-autocmd BufReadPost * :call JumpToLastPosition()
-   " \ if line("'\"") > 0 && line("'\"") <= line("$") |
-   " \   exe "normal! g`\"" |
-   " \ endif
+autocmd BufReadPost *
+   \ if line("'\"") > 0 && line("'\"") <= line("$") |
+   \   exe "normal! g`\"" |
+   \ endif
 "Remember info about open buffers on close
 set viminfo^=%
 
@@ -642,7 +642,6 @@ func! OpenNERDTree()
     exe "NERDTree"
     exe "normal 35\<C-W>|"
     exe "2wincmd w"
-    call JumpToLastPosition()
     let g:nerd_tree_open = 1
 endfunc
 
@@ -650,7 +649,6 @@ func! RefreshMinBuff()
     exe "MBEClose"
     exe "MBEOpen"
     exe "2wincmd w"
-    call JumpToLastPosition()
 endfunc
 
 func! OpenTreeOrUndo()
@@ -668,7 +666,6 @@ func! OpenTreeOrUndo()
         exe "NERDTreeToggle"
         exe "normal 35\<C-W>|"
         exe "2wincmd w"
-        call JumpToLastPosition()
     else
         let g:nerd_tree_open = 0
         exe "NERDTreeClose"
@@ -676,7 +673,6 @@ func! OpenTreeOrUndo()
         exe "1wincmd w"
         exe "normal 35\<C-W>|"
         exe "3wincmd w"
-        call JumpToLastPosition()
     endif
 endfunc
 
@@ -694,7 +690,6 @@ function! ToggleList(bufname, pfx)
       exe bufnum.'wincmd w'
       exec(a:pfx.'close')
       exe '2wincmd w'
-      call JumpToLastPosition()
       return
     endif
   endfor
@@ -709,7 +704,6 @@ function! ToggleList(bufname, pfx)
   if winnr() != winnr
     exe '2wincmd w'
   endif
-  call JumpToLastPosition()
 endfunction
 
 function! MakeViewCheck()
@@ -775,13 +769,11 @@ function! OpenQuickfix()
         exe '2wincmd w'
         exe 'lopen'
         exe '2wincmd w'
-        call JumpToLastPosition()
       endif
       if bufname =~ g:quickfix_list_name
         exe 'cclose'
         exe 'botright cwindow'
         exe '2wincmd w'
-        call JumpToLastPosition()
       endif
     endfor
   endfor
@@ -805,10 +797,4 @@ function! MKSessionDir()
     echom 'Directory ' . b:sessiondir . ' exists! Setting instead of ' . g:session_directory
   endif
   let g:session_directory = b:sessiondir
-endfunction
-
-function JumpToLastPosition()
-  if line("'\"") > 0 && line("'\"") <= line("$")
-    exe "normal! g`\""
-  endif
 endfunction
