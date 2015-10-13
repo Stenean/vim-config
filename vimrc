@@ -430,7 +430,7 @@ let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
 
 " Syntastic
-let g:syntastic_python_checkers = ['flake8', 'frosted', 'python']
+let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
 let g:syntastic_aggregate_errors = 1
