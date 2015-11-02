@@ -19,7 +19,7 @@ Bundle 'vim-scripts/TaskList.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'vim-scripts/The-NERD-tree'
 
-Bundle 'klen/python-mode'
+" Bundle 'klen/python-mode'
 Bundle 'fisadev/vim-isort'
 Bundle 'scrooloose/syntastic'
 Bundle 'chrisbra/csv.vim'
@@ -47,15 +47,17 @@ Bundle 'marijnh/tern_for_vim'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'hynek/vim-python-pep8-indent'
+Bundle 'tmhedberg/SimpylFold'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
+
+let python_highlight_all=1
 
 syntax on
 
 " Enable filetype plugins
 filetype plugin indent on
-
 
 set number
 
@@ -76,6 +78,8 @@ set clipboard^=unnamedplus
 let g:skipview_files = [
 \ '[EXAMPLE PLUGIN BUFFER]'
 \ ]
+
+let NERDTreeIgnore=['\.pyc$', '\~$']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -330,6 +334,15 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.html :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
 
+" python file settings
+au BufNewFile,BufRead *.py :call SetPythonSettings()
+
+" js file settings
+au BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
+
+autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+
 autocmd Filetype java setl omnifunc=javacomplete#Complete
 autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
 " autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -370,8 +383,19 @@ autocmd BufWinLeave * call clearmatches()
 autocmd BufReadPost fugitive://* set bufhidden=delete
 autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
 
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
 map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrUndo()<CR>
+map <S-F8> :call CloseTreeOrUndo()<CR>
 map <F7> :TagbarToggle<CR>
 map <F6> <Plug>TaskList
 map <leader>gu :call OpenTreeOrUndo()<CR>
@@ -503,6 +527,9 @@ let g:session_autosave = 'yes'
 " vim-javascript
 let javascript_enable_domhtmlcss = 1
 let b:javascript_fold = 1
+
+" SimplyFold
+let g:SimpylFold_docstring_preview = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => per directory session management
@@ -658,22 +685,37 @@ func! OpenTreeOrUndo()
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
-        exe "normal 35\<C-W>|"
+        exe "normal 30\<C-W>|"
     endif
 
     if g:nerd_tree_open == 0
         let g:nerd_tree_open = 1
         exe "UndotreeHide"
         exe "NERDTreeToggle"
-        exe "normal 35\<C-W>|"
+        exe "normal 30\<C-W>|"
         exe "2wincmd w"
     else
         let g:nerd_tree_open = 0
         exe "NERDTreeClose"
         exe "UndotreeShow"
         exe "1wincmd w"
-        exe "normal 35\<C-W>|"
+        exe "normal 30\<C-W>|"
         exe "3wincmd w"
+    endif
+endfunc
+
+func! CloseTreeOrUndo()
+    if !exists('g:nerd_tree_open')
+        let g:nerd_tree_open = 1
+        exe "UndotreeHide"
+        exe "NERDTreeClose"
+    endif
+
+    if g:nerd_tree_open == 0
+        exe "UndotreeHide"
+    else
+        let g:nerd_tree_open = 0
+        exe "NERDTreeClose"
     endif
 endfunc
 
@@ -797,3 +839,19 @@ function! MKSessionDir()
   endif
   let g:session_directory = b:sessiondir
 endfunction
+
+func! SetPythonSettings()
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=99
+    setl fileformat=unix
+    setl expandtab
+    setl autoindent
+endfunc
+
+func! SetJSSEttings()
+    setl tabstop=2
+    setl softtabstop=2
+    setl shiftwidth=2
+endfunc
