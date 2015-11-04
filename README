@@ -11,8 +11,7 @@ Isort:
     pip install isort
 
 make:
-    pip install nose
-    pip install git+git://github.com/lambdalisue/nose-machineout.git#egg=nose_machineout
+    pip install nose django_nose git+git://github.com/lambdalisue/nose-machineout.git#egg=nose_machineout
 
 tern_for_vim:
     npm install tern_for_vim
