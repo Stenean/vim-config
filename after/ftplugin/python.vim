@@ -1,2 +1,2 @@
 " compiler pytest
-compiler django_nose
+compiler django
