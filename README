@@ -15,3 +15,7 @@ make:
 
 tern_for_vim:
     npm install tern_for_vim
+
+tmux:
+    wa
+    powerline
