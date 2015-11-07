@@ -1,6 +1,5 @@
 kchmck/vim-coffee-script:
-    npm install -g coffee-script
-    npm install -g coffeelint
+    npm install -g coffee-script coffeelint
 
 Syntastic:
     pip install flake8 frosted
