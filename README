@@ -13,7 +13,7 @@ make:
     pip install nose django_nose git+git://github.com/lambdalisue/nose-machineout.git#egg=nose_machineout
 
 tern_for_vim:
-    npm install tern_for_vim
+    run 'npm install' in bundle/tern_for_vim directory
 
 tmux:
     wa
