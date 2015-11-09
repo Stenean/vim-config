@@ -65,3 +65,9 @@ cd() {
 
 # You may need to manually set your language environment
 export LANG=pl_PL.UTF-8
+
+alias ll="ls -la"
+alias clearpyc="find . -name '*.pyc' -delete"
+alias tmux="TERM='xterm-256color' tmux"
+
+. /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
