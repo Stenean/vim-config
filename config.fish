@@ -7,3 +7,6 @@ alias tmux "env TERM=xterm-256color tmux"
 eval (python -m virtualfish compat_aliases auto_activation)
 set fish_function_path $fish_function_path "/usr/local/lib/python2.7/dist-packages/powerline/bindings/fish"
 powerline-setup
+
+set -x PATH "$HOME/.pyenv/bin" $PATH
+status --is-interactive; and . (pyenv init -|psub)

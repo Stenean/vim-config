@@ -20,4 +20,4 @@ tmux:
 
 system:
     sudo -H pip install httpie powerline-status
-    sudo apt-get install xombrero
+    sudo apt-get install xombrero ncdu htop
