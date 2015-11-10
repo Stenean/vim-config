@@ -74,4 +74,3 @@ alias tmux="TERM='xterm-256color' tmux"
 
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
