@@ -48,6 +48,7 @@ Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'tmhedberg/SimpylFold'
+Bundle 'ekalinin/Dockerfile.vim'
 Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
