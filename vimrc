@@ -345,13 +345,12 @@ autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
 autocmd Filetype java setl omnifunc=javacomplete#Complete
 autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
-" autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal foldmethod=expr
 autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
-autocmd FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType javascript setl shiftwidth=2 expandtab
-autocmd FileType coffee setl omnifunc=javascriptcomplete#CompleteJS
+
+autocmd FileType javascript :call tern#Enable()
+
 autocmd FileType html setl omnifunc=htmlcomplete#CompleteTags
 autocmd FileType html setl shiftwidth=2 expandtab
 autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
@@ -364,6 +363,7 @@ autocmd BufReadPost quickfix :call OpenQuickfix()
 autocmd VimEnter * :call KillYcmd()
 
 " Cofee make
+autocmd FileType coffee :call tern#Enable()
 autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
 autocmd BufWritePost *.coffee make!
 autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
@@ -393,7 +393,6 @@ if 'VIRTUAL_ENV' in os.environ:
   execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-map <F9> :MBEToggle<cr>
 map <F8> :call OpenTreeOrUndo()<CR>
 map <S-F8> :call CloseTreeOrUndo()<CR>
 map <F7> :TagbarToggle<CR>
@@ -427,24 +426,6 @@ let g:quickfix_list_name = 'Lista quickfix'
 " MinBufExpl
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
-
-" Python mode
-let g:pymode_trim_whitespaces = 1
-let g:pymode_options = 0
-let g:pymode_options_max_line_length = 99
-let g:pymode_options_colorcolumn = 1
-let g:pymode_indent = 0
-let g:pymode_breakpoint_cmd = 'import ipdb; ipdb.set_trace() # BREAKPOINT HARDCODED'
-let g:pymode_doc = 1
-let g:pymode_lint = 0
-let g:pymode_virtualenv = 1
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-let g:pymode_rope = 0
-let g:pymode_rope_completion = 0
-let g:pymode_rope_goto_definition_bind = ''
 
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -530,6 +511,9 @@ let b:javascript_fold = 1
 
 " SimplyFold
 let g:SimpylFold_docstring_preview = 1
+
+" Tern for vim
+let tern_show_signature_in_pum = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => per directory session management
