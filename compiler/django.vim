@@ -17,20 +17,20 @@ setlocal makeprg=$DJANGO_DIR/start.py\ test\ -v\ 0\ $*
 "late error messages that I found could occur e.g.
 "with wxPython and that prevent one from using :clast
 "to go to the relevant file and line of the traceback.
-" setlocal errorformat=
-" 	\%A\ \ File\ \"%f\"\\\,\ line\ %l\\\,%m,
-" 	\%C\ \ \ \ %.%#,
-" 	\%+Z%.%#Error\:\ %.%#,
-" 	\%A\ \ File\ \"%f\"\\\,\ line\ %l,
-" 	\%+C\ \ %.%#,
-" 	\%-C%p^,
-" 	\%Z%m,
-" 	\%-G%.%#
-setlocal efm=
-        \%-G\.%\\+,
-        \%C\ %.%#,
-        \%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,
-        \%Z%[%^\ ]%\\@=%m,
+setlocal errorformat=
+	\%A\ \ File\ \"%f\"\\\,\ line\ %l\\\,%m,
+	\%C\ \ \ \ %.%#,
+	\%+Z%.%#Error\:\ %.%#,
+	\%A\ \ File\ \"%f\"\\\,\ line\ %l,
+	\%+C\ \ %.%#,
+	\%-C%p^,
+	\%Z%m,
+	\%-G%.%#
+" setlocal efm=
+"         \%-G\.%\\+,
+"         \%C\ %.%#,
+"         \%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,
+"         \%Z%[%^\ ]%\\@=%m,
 let &cpo = s:cpo_save
 unlet s:cpo_save
 
