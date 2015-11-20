@@ -530,6 +530,9 @@ let g:SimpylFold_docstring_preview = 1
 " Tern for vim
 let tern_show_signature_in_pum = 1
 
+" texvim
+let g:vimtex_latexmk_options = "-pdf -e '$pdflatex=q/xelatex %O %S/' "
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => per directory session management
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
