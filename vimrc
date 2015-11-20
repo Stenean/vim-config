@@ -421,8 +421,13 @@ vnoremap <space> zf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Local settings
-let g:location_list_name = 'Lista lokacji'
-let g:quickfix_list_name = 'Lista quickfix'
+if $LANGUAGE == 'pl_PL'
+    let g:location_list_name = 'Lista lokacji'
+    let g:quickfix_list_name = 'Lista quickfix'
+elseif $LANGUAGE == 'en_US'
+    let g:location_list_name = 'Location List'
+    let g:quickfix_list_name = 'Quickfix List'
+endif
 
 " MinBufExpl
 let g:miniBufExplAutoStart=0
