@@ -390,9 +390,13 @@ py << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
+  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
+  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
+  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
+  for activate_dir in [pyenv_base_dir, project_base_dir]:
+    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
+    if os.path.exists(activate_this):
+      execfile(activate_this, dict(__file__=activate_this))
 EOF
 
 map <F8> :call OpenTreeOrUndo()<CR>
