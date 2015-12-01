@@ -1,4 +1,5 @@
 # Path to your oh-my-zsh installation.
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -72,7 +73,6 @@ alias tmux="TERM='xterm-256color' tmux"
 
 . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
 
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenvwrapper -)"
+pyenv virtualenvwrapper
