@@ -21,3 +21,10 @@ tmux:
 system:
     sudo -H pip install httpie powerline-status
     sudo apt-get install xombrero ncdu htop
+
+pyenv:
+    to shell init:
+        export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+        export PATH="$HOME/.pyenv/bin:$PATH"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenvwrapper -)"
