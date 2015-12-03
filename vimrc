@@ -743,9 +743,7 @@ function! ToggleList(bufname, pfx)
         echom 'No open buffer with number '.bufnum
       endtry
       exec(a:pfx.'close')
-      if winnr() != winnr
-        exe '2wincmd w'
-      endif
+      exe '2wincmd w'
       return
     endif
   endfor
