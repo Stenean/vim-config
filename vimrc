@@ -734,11 +734,18 @@ endfunction
 
 function! ToggleList(bufname, pfx)
   let buflist = GetBufferList()
+  let winnr = winnr()
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
-      exe bufnum.'wincmd w'
+      try
+        exe bufnum.'wincmd w'
+      catch
+        echom 'No open buffer with number '.bufnum
+      endtry
       exec(a:pfx.'close')
-      exe '2wincmd w'
+      if winnr() != winnr
+        exe '2wincmd w'
+      endif
       return
     endif
   endfor
