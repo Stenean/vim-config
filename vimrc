@@ -24,10 +24,17 @@ Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'Shougo/context_filetype.vim'
+Bundle 'Shougo/neoinclude.vim'
+Bundle 'Shougo/neco-syntax'
+Bundle 'Shougo/vimproc.vim'
+
 Bundle 'bling/vim-airline'
 Bundle 'chrisbra/csv.vim'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'cwood/vim-django'
+Bundle 'davidhalter/jedi-vim'
 Bundle 'edsono/vim-matchit'
 Bundle 'ekalinin/Dockerfile.vim'
 Bundle 'elzr/vim-json'
@@ -50,7 +57,6 @@ Bundle 'scrooloose/syntastic'
 Bundle 'SirVer/ultisnips'
 Bundle 'sjl/gundo.vim'
 Bundle 'tmhedberg/SimpylFold'
-Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
 
@@ -345,6 +351,12 @@ au BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
 autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
 autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
 autocmd Filetype java setl omnifunc=javacomplete#Complete
 autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
 autocmd FileType python set switchbuf=useopen
@@ -416,7 +428,7 @@ map! <xF2> <C-Left>
 
 nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
-nnoremap G :YcmCompleter GoTo<CR>
+nnoremap G :call jedi#goto_definitions()<CR>
 
 nnoremap <space> za
 vnoremap <space> zf
@@ -444,6 +456,32 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+" Auto close preview
+let g:neocomplete#enable_auto_close_preview = 1
+" Disable automatic completion
+let g:neocomplete#disable_auto_complete = 1
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Jedi disable completion
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
 
 " Syntastic
 let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
@@ -558,7 +596,7 @@ unlet s:local_session_directory
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-map <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
+noremap <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
 
 map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left><left>
 
@@ -609,6 +647,20 @@ map <leader>q :e ~/buffer<cr>
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
+
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" <TAB>: completion.
+inoremap <expr><C-Space> neocomplete#start_manual_complete()
+imap <C-@> <C-Space>
+inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
@@ -861,3 +913,9 @@ func! SetJSSEttings()
     setl softtabstop=2
     setl shiftwidth=2
 endfunc
+
+function! s:my_cr_function()
+  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction

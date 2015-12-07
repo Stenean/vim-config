@@ -5,3 +5,4 @@ view/*
 *.tmp
 bundle/*
 sessions/*
+.netrwhist
