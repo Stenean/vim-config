@@ -415,7 +415,6 @@ map <F8> :call OpenTreeOrUndo()<CR>
 map <S-F8> :call CloseTreeOrUndo()<CR>
 map <F7> :TagbarToggle<CR>
 map <F6> <Plug>TaskList
-map <leader>gu :call OpenTreeOrUndo()<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 set <xF1>=[1;5C
@@ -464,10 +463,6 @@ let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
 " Auto close preview
 let g:neocomplete#enable_auto_close_preview = 1
 " Disable automatic completion
@@ -478,6 +473,8 @@ if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+let g:neocomplete#enable_auto_select = 1
 
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
