@@ -58,10 +58,10 @@ function workon_cwd {
 }
 
 # New cd function that does the virtualenv magic
-cd() {
-    builtin cd "$@"
-    workon_cwd
-}
+# cd() {
+#     builtin cd "$@"
+#     workon_cwd
+# }
 
 # You may need to manually set your language environment
 export LANG=pl_PL.UTF-8
@@ -72,5 +72,9 @@ alias tmux="TERM='xterm-256color' tmux"
 
 . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
 
-export PATH="$HOME/.pyenv/bin:$PATH"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+pyenv virtualenvwrapper
