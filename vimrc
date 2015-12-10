@@ -38,6 +38,7 @@ Bundle 'davidhalter/jedi-vim'
 Bundle 'edsono/vim-matchit'
 Bundle 'ekalinin/Dockerfile.vim'
 Bundle 'elzr/vim-json'
+Bundle 'fidian/hexmode'
 Bundle 'fisadev/vim-isort'
 Bundle 'honza/vim-snippets'
 Bundle 'hsanson/vim-android'
@@ -151,6 +152,9 @@ set viewoptions=folds,cursor
 set sessionoptions-=blank
 set sessionoptions-=options
 set sessionoptions-=curdir
+set sessionoptions-=tabpages
+set sessionoptions-=help
+set sessionoptions-=buffers
 
 " Color column for 100 characters
 set colorcolumn=100
@@ -558,6 +562,8 @@ endif
 " vim-session settings
 let g:session_autoload = 'yes'
 let g:session_autosave = 'yes'
+let g:session_persist_font = 0
+let g:session_persist_colors = 0
 
 " vim-javascript
 let javascript_enable_domhtmlcss = 1
