@@ -807,6 +807,7 @@ function! ToggleList(bufname, pfx)
       exec(a:pfx.'close')
       try
         exe '2wincmd w'
+      catch
       endtry
       return
     endif
@@ -875,6 +876,7 @@ function! OpenQuickfix()
         exe 'lclose'
         try
           exe '2wincmd w'
+        catch
         endtry
         exe 'lopen'
       endif
