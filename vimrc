@@ -379,8 +379,6 @@ autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview |
 autocmd VimEnter ?* if MakeViewCheck() | silent loadview | endif
 autocmd BufReadPost quickfix :call OpenQuickfix()
 
-autocmd VimEnter * :call KillYcmd()
-
 " Cofee make
 autocmd FileType coffee :call tern#Enable()
 autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
@@ -454,20 +452,12 @@ endif
 let g:miniBufExplAutoStart=0
 let g:miniBufExplBuffersNeeded=0
 
-" YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_use_ultisnips_completer = 1
-let g:ycm_server_log_level = 'debug'
-
 " Neocomplete
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 " Auto close preview
 let g:neocomplete#enable_auto_close_preview = 1
 " Disable automatic completion
@@ -486,7 +476,6 @@ let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*f
 
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
 let g:jedi#show_call_signatures = 2
 let g:jedi#popup_select_first = 0
 
@@ -736,14 +725,20 @@ endfunction
 func! OpenNERDTree()
     exe "NERDTree"
     exe "normal 35\<C-W>|"
-    exe "2wincmd w"
+    try
+        exe "2wincmd w"
+    catch
+    endtry
     let g:nerd_tree_open = 1
 endfunc
 
 func! RefreshMinBuff()
     exe "MBEClose"
     exe "MBEOpen"
-    exe "2wincmd w"
+    try
+        exe "2wincmd w"
+    catch
+    endtry
 endfunc
 
 func! OpenTreeOrUndo()
@@ -760,14 +755,20 @@ func! OpenTreeOrUndo()
         exe "UndotreeHide"
         exe "NERDTreeToggle"
         exe "normal 30\<C-W>|"
-        exe "2wincmd w"
+        try
+            exe "2wincmd w"
+        catch
+        endtry
     else
         let g:nerd_tree_open = 0
         exe "NERDTreeClose"
         exe "UndotreeShow"
         exe "1wincmd w"
         exe "normal 30\<C-W>|"
-        exe "3wincmd w"
+        try
+            exe "3wincmd w"
+        catch
+        endtry
     endif
 endfunc
 
@@ -804,7 +805,9 @@ function! ToggleList(bufname, pfx)
         echom 'No open buffer with number '.bufnum
       endtry
       exec(a:pfx.'close')
-      exe '2wincmd w'
+      try
+        exe '2wincmd w'
+      endtry
       return
     endif
   endfor
@@ -814,10 +817,16 @@ function! ToggleList(bufname, pfx)
       return
   endif
   let winnr = winnr()
-  exe '2wincmd w'
+  try
+    exe '2wincmd w'
+  catch
+  endtry
   exec('botright '.a:pfx.'open')
   if winnr() != winnr
-    exe '2wincmd w'
+    try
+      exe '2wincmd w'
+    catch
+    endtry
   endif
 endfunction
 
@@ -845,23 +854,6 @@ function! MakeViewCheck()
     return 1
 endfunction
 
-function! KillYcmd()
-    let pid_pairs = {}
-    let existing_ycmds = split(system('ps xo ppid,pid,cmd | grep ycmd | grep -v grep'), '\n')
-    for pair in map(existing_ycmds, 'split(matchstr(v:val, "^\\s*\\d\\+\\s*\\d\\+"), "\\s\\+")')
-      let pid_pairs[str2nr(pair[1])] = str2nr(pair[0])
-    endfor
-    for [pid, parent] in items(pid_pairs)
-      let parent_cmd = split(system('ps axo pid,cmd | grep -v grep |  grep ' . parent), '\n')[0]
-      if parent_cmd !~ 'vim'
-        echom 'Killing ' . pid . ', becouse parent "' . parent_cmd . '" is not vim'
-        let l:kill_cmd = 'silent ! kill -9 ' . pid
-        echom l:kill_cmd
-        exec l:kill_cmd
-      endif
-    endfor
-endfunction
-
 function! ClearJediCache()
     let jedi_cache_path = expand("~/.cache/jedi")
     if isdirectory(jedi_cache_path) == 1
@@ -870,8 +862,8 @@ function! ClearJediCache()
 endfunction
 
 function! Autorun()
-    ":call ClearJediCache()
-    :call OpenNERDTree()
+    " :call ClearJediCache()
+    " :call OpenNERDTree()
 endfunction
 
 command! -nargs=0 BCopen call OpenQuickfix()
@@ -881,7 +873,9 @@ function! OpenQuickfix()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
       if bufname =~ g:location_list_name && len(getloclist(0)) != 0
         exe 'lclose'
-        exe '2wincmd w'
+        try
+          exe '2wincmd w'
+        endtry
         exe 'lopen'
       endif
       if bufname =~ g:quickfix_list_name
