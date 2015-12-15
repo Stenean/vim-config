@@ -64,6 +64,7 @@ call vundle#end()
 let python_highlight_all=1
 
 syntax on
+syntax enable
 
 " Enable filetype plugins
 filetype plugin indent on
@@ -358,7 +359,7 @@ autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType python setlocal omnifunc=jedi#completions
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd Filetype java setl omnifunc=javacomplete#Complete
@@ -478,11 +479,16 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-let g:neocomplete#enable_auto_select = 1
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
 let g:jedi#auto_vim_configuration = 0
+let g:jedi#show_call_signatures = 2
+let g:jedi#popup_select_first = 0
 
 " Syntastic
 let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
@@ -657,9 +663,9 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-" <TAB>: completion.
 inoremap <expr><C-Space> neocomplete#start_manual_complete()
 imap <C-@> <C-Space>
+" <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
