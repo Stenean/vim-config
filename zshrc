@@ -1,5 +1,20 @@
+# User configuration
+
+export PATH="/home/kuba/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+# export MANPATH="/usr/local/man:$MANPATH"
+export EDITOR='vim'
+
+export PROJECT_HOME="$HOME/Projects"
+
+if [ ! -f ~/.zgen/zgen.zsh ]; then
+  pushd ~
+  git clone git@github.com:tarjoilija/zgen.git .zgen
+  popd
+fi
+source ~/.zgen/zgen.zsh
+
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -9,21 +24,43 @@ ZSH_THEME="agnoster"
 
 DEFAULT_USER="kuba"
 
+AUTOSUGGESTION_HIGHLIGHT_COLOR="fg=10"
+AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
+AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git, command-not-found, docker, jsontools, python, suprevisor, virtualenvwrapper)
+# plugins=(git, command-not-found, docker, jsontools, python, suprevisor, virtualenvwrapper)
 
-# User configuration
+if ! zgen saved; then
+    echo "Creating a zgen save"
 
-export PATH="/home/kuba/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
-# export MANPATH="/usr/local/man:$MANPATH"
-export EDITOR='vim'
+    zgen oh-my-zsh
 
-export PROJECT_HOME="$HOME/Projects"
+    zgen oh-my-zsh plugins/git
+    zgen oh-my-zsh plugins/command-not-found
+    zgen oh-my-zsh plugins/docker
+    zgen oh-my-zsh plugins/jsontools
+    zgen oh-my-zsh plugins/python
+    zgen oh-my-zsh plugins/suprevisor
+    zgen oh-my-zsh plugins/virtualenvwrapper
 
-source $ZSH/oh-my-zsh.sh
+    zgen load zsh-users/zsh-syntax-highlighting
+
+    # autosuggestions should be loaded last
+    zgen load tarruda/zsh-autosuggestions
+    zgen save
+fi
+
+# zgen init
+zle-line-init() {
+    zle autosuggest-start
+}
+zle -N zle-line-init
+
+# source $ZSH/oh-my-zsh.sh
 
 function workon_cwd {
     # Check that this is a Git repo
