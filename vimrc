@@ -477,7 +477,6 @@ let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*f
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
 let g:jedi#show_call_signatures = 2
-let g:jedi#popup_select_first = 0
 
 " Syntastic
 let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
