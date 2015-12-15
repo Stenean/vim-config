@@ -223,6 +223,8 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
+set completeopt+=longest
+
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
@@ -359,13 +361,13 @@ autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal omnifunc=jedi#completions
+autocmd FileType python setlocal foldmethod=expr
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd Filetype java setl omnifunc=javacomplete#Complete
 autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
-autocmd FileType python set switchbuf=useopen
-autocmd FileType python setlocal foldmethod=expr
 autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 
 autocmd FileType javascript :call tern#Enable()
@@ -476,6 +478,7 @@ let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*f
 
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
 let g:jedi#show_call_signatures = 2
 
 " Syntastic
