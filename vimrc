@@ -743,48 +743,45 @@ func! RefreshMinBuff()
 endfunc
 
 func! OpenTreeOrUndo()
+    echom "Toggeling nerd tree or undo"
     if !exists('g:nerd_tree_open')
+        echom "Opening nerd tree"
         let g:nerd_tree_open = 1
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
         exe "normal 30\<C-W>|"
-    endif
-
-    if g:nerd_tree_open == 0
-        let g:nerd_tree_open = 1
-        exe "UndotreeHide"
-        exe "NERDTreeToggle"
-        exe "normal 30\<C-W>|"
-        try
-            exe "2wincmd w"
-        catch
-        endtry
     else
-        let g:nerd_tree_open = 0
-        exe "NERDTreeClose"
-        exe "UndotreeShow"
-        exe "1wincmd w"
-        exe "normal 30\<C-W>|"
-        try
+        if g:nerd_tree_open == 0
+            echom "Opening nerd tree"
+            let g:nerd_tree_open = 1
+            exe "UndotreeHide"
+            exe "NERDTreeToggle"
+            exe "normal 30\<C-W>|"
+            exe "2wincmd w"
+        else
+            echo "Opening undo tree"
+            let g:nerd_tree_open = 0
+            exe "NERDTreeClose"
+            exe "UndotreeShow"
+            exe "1wincmd w"
+            exe "normal 30\<C-W>|"
             exe "3wincmd w"
-        catch
-        endtry
+        endif
     endif
 endfunc
 
 func! CloseTreeOrUndo()
     if !exists('g:nerd_tree_open')
-        let g:nerd_tree_open = 1
         exe "UndotreeHide"
         exe "NERDTreeClose"
-    endif
-
-    if g:nerd_tree_open == 0
-        exe "UndotreeHide"
     else
-        let g:nerd_tree_open = 0
-        exe "NERDTreeClose"
+        if g:nerd_tree_open == 0
+            exe "UndotreeHide"
+        else
+            let g:nerd_tree_open = 0
+            exe "NERDTreeClose"
+        endif
     endif
 endfunc
 
