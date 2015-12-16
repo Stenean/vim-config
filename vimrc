@@ -415,19 +415,19 @@ if 'VIRTUAL_ENV' in os.environ:
       execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-map <F8> :call OpenTreeOrUndo()<CR>
-map <S-F8> :call CloseTreeOrUndo()<CR>
-map <F7> :TagbarToggle<CR>
-map <F6> <Plug>TaskList
+noremap <F8> :call OpenTreeOrUndo()<CR>
+noremap <S-F8> :call CloseTreeOrUndo()<CR>
+noremap <F7> :TagbarToggle<CR>
+noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
 
 set <xF1>=[1;5C
 set <xF2>=[1;5D
 
-map <xF1> <C-Right>
-map <xF2> <C-Left>
-map! <xF1> <C-Right>
-map! <xF2> <C-Left>
+noremap <xF1> <C-Right>
+noremap <xF2> <C-Left>
+noremap! <xF1> <C-Right>
+noremap! <xF2> <C-Left>
 
 nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
@@ -435,6 +435,8 @@ nnoremap G :call jedi#goto_definitions()<CR>
 
 nnoremap <space> za
 vnoremap <space> zf
+
+inoremap jk <esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
