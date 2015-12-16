@@ -449,10 +449,6 @@ elseif $LANGUAGE == 'en_US'
     let g:quickfix_list_name = 'Quickfix List'
 endif
 
-" MinBufExpl
-let g:miniBufExplAutoStart=0
-let g:miniBufExplBuffersNeeded=0
-
 " Neocomplete
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
@@ -473,11 +469,18 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
 endif
+
+if !exists('g:neocomplcache_omni_functions')
+    let g:neocomplcache_omni_functions = {}
+endif
+let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+
 let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
 let g:jedi#auto_vim_configuration = 0
+let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = 2
 
 " Syntastic
@@ -527,12 +530,6 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
 
 " Isort options
 let g:vim_isort_map = '<C-i>'
-
-" MinBufExpl settings
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 0
-let g:miniBufExplModSelTarget = 0
 
 " ??
 let g:signify_vcs_list = [ 'git' ]
@@ -731,15 +728,6 @@ func! OpenNERDTree()
     catch
     endtry
     let g:nerd_tree_open = 1
-endfunc
-
-func! RefreshMinBuff()
-    exe "MBEClose"
-    exe "MBEOpen"
-    try
-        exe "2wincmd w"
-    catch
-    endtry
 endfunc
 
 func! OpenTreeOrUndo()
