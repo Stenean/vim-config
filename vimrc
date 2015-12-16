@@ -155,6 +155,7 @@ set sessionoptions-=options
 set sessionoptions-=curdir
 set sessionoptions-=tabpages
 set sessionoptions-=help
+set sessionoptions-=resize
 set sessionoptions-=buffers
 
 " Color column for 100 characters
@@ -292,8 +293,6 @@ autocmd BufReadPost *
    \ if line("'\"") > 0 && line("'\"") <= line("$") |
    \   exe "normal! g`\"" |
    \ endif
-"Remember info about open buffers on close
-set viminfo^=%
 
 """"""""""""""""""""""""""""""
 " => Status line
