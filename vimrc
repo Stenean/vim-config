@@ -64,7 +64,6 @@ call vundle#end()
 let python_highlight_all=1
 
 syntax on
-syntax enable
 
 " Enable filetype plugins
 filetype plugin indent on
@@ -151,11 +150,10 @@ set viewoptions=folds,cursor
 
 " Set appropriate session options
 set sessionoptions-=blank
-set sessionoptions-=options
 set sessionoptions-=curdir
-set sessionoptions-=tabpages
 set sessionoptions-=help
 set sessionoptions-=resize
+set sessionoptions-=winsize
 
 " Color column for 100 characters
 set colorcolumn=100
@@ -366,7 +364,6 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd Filetype java setl omnifunc=javacomplete#Complete
 autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
-autocmd BufNewFile,BufReadPost *.py setl foldmethod=expr
 
 autocmd FileType javascript :call tern#Enable()
 
@@ -375,8 +372,6 @@ autocmd FileType html setl shiftwidth=2 expandtab
 autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
 autocmd VimEnter * if !argc() | :call Autorun() | endif
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd BufWritePost,BufLeave,WinLeave,VimLeave ?* if MakeViewCheck() | mkview | endif
-autocmd VimEnter ?* if MakeViewCheck() | silent loadview | endif
 autocmd BufReadPost quickfix :call OpenQuickfix()
 
 " Cofee make
