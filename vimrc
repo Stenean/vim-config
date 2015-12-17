@@ -1,6 +1,4 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General {{{
 " Sets how many lines of history VIM has to remember
 set history=700
 set term=xterm-256color
@@ -89,10 +87,9 @@ let g:skipview_files = [
 \ ]
 
 let NERDTreeIgnore=['\.pyc$', '\~$']
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface {{{
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
@@ -157,10 +154,9 @@ set sessionoptions-=winsize
 
 " Color column for 100 characters
 set colorcolumn=100
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts {{{
 " Enable syntax highlighting
 syntax enable
 
@@ -185,10 +181,9 @@ set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo {{{
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
@@ -198,10 +193,9 @@ set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 set undodir=/$HOME/.vim/undo/
 set viewdir=/$HOME/.vim/view/
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related {{{
 " Use spaces instead of tabs
 set expandtab
 
@@ -220,18 +214,16 @@ set tw=99
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+" }}}
 
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
+" => Visual mode related {{{
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers {{{
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
@@ -288,10 +280,9 @@ autocmd BufReadPost *
    \ if line("'\"") > 0 && line("'\"") <= line("$") |
    \   exe "normal! g`\"" |
    \ endif
+" }}}
 
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
+" => Status line {{{
 " Always show the status line
 set laststatus=2
 
@@ -310,10 +301,9 @@ set laststatus=2
 " set statusline+=%c,     "cursor column
 " set statusline+=%l/%L   "cursor line/total lines
 " set statusline+=\ %P    "percent through file%{fugitive#statusline()}
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" }}}
+
+" => Editing mappings {{{
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
@@ -407,6 +397,14 @@ if 'VIRTUAL_ENV' in os.environ:
       execfile(activate_this, dict(__file__=activate_this))
 EOF
 
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
+
+" => Misc key mappings {{{
+
 noremap <F8> :call OpenTreeOrUndo()<CR>
 noremap <S-F8> :call CloseTreeOrUndo()<CR>
 noremap <F7> :TagbarToggle<CR>
@@ -429,10 +427,9 @@ nnoremap <space> za
 vnoremap <space> zf
 
 inoremap jk <esc>
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin settings {{{
 
 " Local settings
 if $LANGUAGE == 'pl_PL'
@@ -564,10 +561,9 @@ let tern_show_signature_in_pum = 1
 
 " texvim
 let g:vimtex_latexmk_options = "-pdf -e '$pdflatex=q/xelatex %O %S/' "
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => per directory session management
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => per directory session management {{{
 " Check whether the current working directory contains a ".vimsessions"
 " directory. It it does, we'll configure the vim-session plug-in to load
 " its sessions from the ".vimsessions" directory.
@@ -578,10 +574,9 @@ if isdirectory(s:local_session_directory)
   let g:session_directory = s:local_session_directory
 endif
 unlet s:local_session_directory
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vimgrep searching and cope displaying
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vimgrep searching and cope displaying {{{
 " When you press gv you vimgrep after the selected text
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
@@ -613,10 +608,9 @@ map <silent> <leader>l :call ToggleList(g:location_list_name, 'l')<CR>
 map <silent> <leader>c :call ToggleList(g:quickfix_list_name, 'c')<CR>
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Spell checking {{{
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
@@ -625,10 +619,9 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc {{{
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
@@ -651,10 +644,9 @@ inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions {{{
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
@@ -910,3 +902,4 @@ function! s:my_cr_function()
   " For no inserting <CR> key.
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
+" }}}
