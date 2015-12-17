@@ -321,7 +321,9 @@ if has("mac") || has("macunix")
   vmap <D-j> <C-j>
   vmap <D-k> <C-k>
 endif
+" }}}
 
+" => Autocommands {{{
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -348,6 +350,7 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python set switchbuf=useopen
 autocmd FileType python setlocal omnifunc=jedi#completions
 autocmd FileType python setlocal foldmethod=expr
+autocmd FileType python let b:did_ftplugin = 1
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd Filetype java setl omnifunc=javacomplete#Complete
@@ -431,7 +434,7 @@ inoremap jk <esc>
 
 " => Plugin settings {{{
 
-" Local settings
+" Locale settings {{{
 if $LANGUAGE == 'pl_PL'
     let g:location_list_name = 'Lista lokacji'
     let g:quickfix_list_name = 'Lista quickfix'
@@ -439,8 +442,9 @@ elseif $LANGUAGE == 'en_US'
     let g:location_list_name = 'Location List'
     let g:quickfix_list_name = 'Quickfix List'
 endif
+" }}}
 
-" Neocomplete
+" Neocomplete {{{
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
@@ -450,6 +454,8 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#enable_auto_close_preview = 1
 " Disable automatic completion
 let g:neocomplete#disable_auto_complete = 1
+" Disable autoselect
+let g:neocomplete#enable_auto_select = 0
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -467,14 +473,18 @@ if !exists('g:neocomplcache_omni_functions')
     let g:neocomplcache_omni_functions = {}
 endif
 let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+" }}}
 
-" Jedi disable completion
+" Jedi disable completion {{{
+let g:jedi#auto_initialization = 1
 let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
+let g:jedi#auto_vim_configuration = 1
 let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first=0
 let g:jedi#show_call_signatures = 2
+" }}}
 
-" Syntastic
+" Syntastic {{{
 let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
@@ -496,36 +506,45 @@ let g:syntastic_html_tidy_ignore_errors=[
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
 \]
+" }}}
 
-" Ultisnips
+" Ultisnips {{{
 let g:UltiSnipsExpandTrigger = "<S-Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<S-Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-C-Tab>"
+" }}}
 
-" Django-vim
+" Django-vim {{{
 let g:django_project_directory = expand('~/Projects/'. $USER . '/')
+" }}}
 
-" TaskList
+" TaskList {{{
 let g:tlTokenList = ['FIXME', 'TODO', '@todo', 'XXX']
+" }}}
 
-" GUndo
+" GUndo {{{
 let g:gundo_width = 30
 let g:gundo_preview_bottom = 1
+" }}}
 
-" Tagbar
+" Tagbar {{{
 let g:tagbar_autoshowtag = 2
 let g:tagbar_width = 30
+" }}}
 
-" CtrlP
+" CtrlP {{{
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:30'
+" }}}
 
-" Isort options
+" Isort options {{{
 let g:vim_isort_map = '<C-i>'
+" }}}
 
-" ??
+" ?? {{{
 let g:signify_vcs_list = [ 'git' ]
+" }}}
 
-" airline
+" airline {{{
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
@@ -542,25 +561,32 @@ let g:airline_exclude_preview = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+" }}}
 
-" vim-session settings
+" vim-session settings {{{
 let g:session_autoload = 'yes'
 let g:session_autosave = 'yes'
 let g:session_persist_font = 0
 let g:session_persist_colors = 0
+" }}}
 
-" vim-javascript
+" vim-javascript {{{
 let javascript_enable_domhtmlcss = 1
 let b:javascript_fold = 1
+" }}}
 
-" SimplyFold
+" SimplyFold {{{
 let g:SimpylFold_docstring_preview = 1
+" }}}
 
-" Tern for vim
+" Tern for vim {{{
 let tern_show_signature_in_pum = 1
+" }}}
 
-" texvim
+" texvim {{{
 let g:vimtex_latexmk_options = "-pdf -e '$pdflatex=q/xelatex %O %S/' "
+" }}}
+
 " }}}
 
 " => per directory session management {{{
