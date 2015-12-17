@@ -221,8 +221,6 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
-set completeopt+=longest
-
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
@@ -466,12 +464,12 @@ if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
 endif
 
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
 if !exists('g:neocomplcache_omni_functions')
     let g:neocomplcache_omni_functions = {}
 endif
 let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
-
-let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
 " Jedi disable completion
 let g:jedi#completions_enabled = 0
@@ -490,7 +488,7 @@ let g:syntastic_style_error_symbol = "S✗"
 let g:syntastic_warning_symbol = "⚠ "
 let g:syntastic_style_warning_symbol = "S⚠"
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_html_tidy_exec = 'tidy5'
 let g:syntastic_html_tidy_ignore_errors=[
@@ -898,6 +896,7 @@ func! SetPythonSettings()
     setl fileformat=unix
     setl expandtab
     setl autoindent
+    setl completeopt+=longest
 endfunc
 
 func! SetJSSEttings()
