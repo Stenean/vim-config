@@ -467,7 +467,7 @@ if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
 endif
 
-let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from.*import \|^\s*from \|^\s*import \)\w*'
 
 if !exists('g:neocomplcache_omni_functions')
     let g:neocomplcache_omni_functions = {}
@@ -478,9 +478,10 @@ let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
 " Jedi disable completion {{{
 let g:jedi#auto_initialization = 1
 let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 1
+let g:jedi#auto_vim_configuration = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#popup_select_first=0
+let g:jedi#smart_auto_mappings = 0
 let g:jedi#show_call_signatures = 2
 " }}}
 
