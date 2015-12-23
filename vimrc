@@ -445,7 +445,6 @@ if 'VIRTUAL_ENV' in os.environ:
   pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
   for activate_dir in [pyenv_base_dir, project_base_dir]:
     activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
-    print("trying %s" % activate_this)
     if os.path.exists(activate_this):
       with open(activate_this) as f:
         code = compile(f.read(), activate_this, 'exec')
