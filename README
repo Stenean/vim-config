@@ -25,6 +25,12 @@ system:
 pyenv:
     to shell init:
         export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+        export PYENV_VIRTUALENV_DISABLE_PROMPT=1
         export PATH="$HOME/.pyenv/bin:$PATH"
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenvwrapper -)"
+    remember to pyenv install <python version> and pyenv global <python version> for virtualenv
+    and virtualenvwrapper to work
+    for vim to properly set python interpreter env variable PYTHON_VERSION must be set to 3 to
+    force python 3 interpreter, python 2 is used otherwise (dynamically linked python lib in vim is
+    recommended)
