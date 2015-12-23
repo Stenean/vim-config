@@ -1,5 +1,6 @@
 " => General {{{
 " Sets how many lines of history VIM has to remember
+python3 print("lol")
 set history=700
 set term=xterm-256color
 
@@ -31,7 +32,6 @@ Bundle 'Shougo/vimproc.vim'
 Bundle 'bling/vim-airline'
 Bundle 'chrisbra/csv.vim'
 Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'cwood/vim-django'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'edsono/vim-matchit'
 Bundle 'ekalinin/Dockerfile.vim'
@@ -386,7 +386,15 @@ autocmd BufWinLeave * call clearmatches()
 autocmd BufReadPost fugitive://* set bufhidden=delete
 autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
 
-"python with virtualenv support
+" vimscript folding
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
+
+" => Python with virtualenv support {{{
+try
 py << EOF
 import os
 import sys
@@ -399,11 +407,26 @@ if 'VIRTUAL_ENV' in os.environ:
     if os.path.exists(activate_this):
       execfile(activate_this, dict(__file__=activate_this))
 EOF
-
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
+catch
+    echom "Failed to activate Python 2 virtualenv!"
+try
+py3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
+  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
+  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
+  for activate_dir in [pyenv_base_dir, project_base_dir]:
+    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
+    print("trying %s" % activate_this)
+    if os.path.exists(activate_this):
+      execfile(activate_this, dict(__file__=activate_this))
+EOF
+catch
+    echom "Failed to activate Python 3 virtualenv!"
+endtry
+endtry
 " }}}
 
 " => Misc key mappings {{{
