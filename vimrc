@@ -1,11 +1,18 @@
 " => General {{{
 " Sets how many lines of history VIM has to remember
-python3 print("lol")
 set history=700
 set term=xterm-256color
 
 set nocompatible
 filetype off
+
+if $PYTHON_VERSION
+    if $PYTHON_VERSION == 3
+        python3 import sys
+    else
+        python import sys
+    endif
+endif
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -428,9 +435,8 @@ if 'VIRTUAL_ENV' in os.environ:
       execfile(activate_this, dict(__file__=activate_this))
 EOF
 catch
-    echom "Failed to activate Python 2 virtualenv!"
-try
-py3 << EOF
+    try
+        py3 << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
@@ -441,11 +447,12 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
     print("trying %s" % activate_this)
     if os.path.exists(activate_this):
-      execfile(activate_this, dict(__file__=activate_this))
+      with open(activate_this) as f:
+        code = compile(f.read(), activate_this, 'exec')
+        exec(code, dict(__file__=activate_this))
 EOF
-catch
-    echom "Failed to activate Python 3 virtualenv!"
-endtry
+    catch
+    endtry
 endtry
 " }}}
 
