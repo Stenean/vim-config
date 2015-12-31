@@ -158,6 +158,7 @@ set sessionoptions-=curdir
 set sessionoptions-=help
 set sessionoptions-=resize
 set sessionoptions-=winsize
+set sessionoptions-=buffer
 
 " Color column for 100 characters
 set colorcolumn=100
