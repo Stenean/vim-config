@@ -59,11 +59,12 @@ Bundle 'mhinz/vim-signify'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'raimondi/delimitmate'
-Bundle 'rstacruz/sparkup'
 Bundle 'scrooloose/syntastic'
 Bundle 'SirVer/ultisnips'
 Bundle 'sjl/gundo.vim'
 Bundle 'tmhedberg/SimpylFold'
+
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 call vundle#end()
 
