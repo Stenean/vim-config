@@ -59,6 +59,7 @@ Bundle 'mhinz/vim-signify'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'raimondi/delimitmate'
+Bundle 'rstacruz/sparkup'
 Bundle 'scrooloose/syntastic'
 Bundle 'SirVer/ultisnips'
 Bundle 'sjl/gundo.vim'
@@ -637,6 +638,12 @@ let tern_show_signature_in_pum = 1
 let g:vimtex_latexmk_options = "-pdf -e '$pdflatex=q/xelatex %O %S/' "
 " }}}
 
+" delimitmate {{{
+" }}}
+let delimitMate_matchpairs = "(:),[:],{:},<:>"
+let delimitMate_nesting_quotes = ['"','`']
+let delimitMate_balance_matchpairs = 1
+
 " }}}
 
 " => per directory session management {{{
@@ -717,9 +724,6 @@ inoremap <expr><C-Space> neocomplete#start_manual_complete()
 imap <C-@> <C-Space>
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " }}}
 
 " => Helper functions {{{
