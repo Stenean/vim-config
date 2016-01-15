@@ -355,66 +355,89 @@ endif
 
 " => Autocommands {{{
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
-autocmd BufWrite *.html :call DeleteTrailingWS()
-autocmd BufWrite *.js :call DeleteTrailingWS()
+augroup whitespace
+    autocmd!
+    autocmd BufWrite *.py :call DeleteTrailingWS()
+    autocmd BufWrite *.coffee :call DeleteTrailingWS()
+    autocmd BufWrite *.html :call DeleteTrailingWS()
+    autocmd BufWrite *.js :call DeleteTrailingWS()
+augroup END
 
 " python file settings
-au BufNewFile,BufRead *.py :call SetPythonSettings()
+augroup py_settings
+    autocmd!
+    autocmd BufNewFile,BufRead *.py :call SetPythonSettings()
+augroup END
 
 " js file settings
-au BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
+augroup js_settings
+    autocmd!
+    autocmd BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
+augroup END
 
-autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+augroup enter_exit_settings
+    autocmd!
+    autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+    autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python set switchbuf=useopen
-autocmd FileType python setlocal omnifunc=jedi#completions
-autocmd FileType python setlocal foldmethod=expr
-autocmd FileType python let b:did_ftplugin = 1
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+    autocmd VimEnter * if !argc() | :call Autorun() | endif
+    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    autocmd BufReadPost quickfix :call OpenQuickfix()
+augroup END
 
-autocmd Filetype java setl omnifunc=javacomplete#Complete
-autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
+augroup filetype_settings
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setl switchbuf=useopen
+    autocmd FileType python setl omnifunc=jedi#completions
+    autocmd FileType python setl foldmethod=expr
+    autocmd FileType python let b:did_ftplugin = 1
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-autocmd FileType javascript :call tern#Enable()
+    autocmd Filetype java setl omnifunc=javacomplete#Complete
+    autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
 
-autocmd FileType html setl omnifunc=htmlcomplete#CompleteTags
-autocmd FileType html setl shiftwidth=2 expandtab
-autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
-autocmd VimEnter * if !argc() | :call Autorun() | endif
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd BufReadPost quickfix :call OpenQuickfix()
+    autocmd FileType javascript :call tern#Enable()
+
+    autocmd FileType html setl omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType html setl shiftwidth=2 expandtab
+    autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
+augroup END
 
 " Cofee make
-autocmd FileType coffee :call tern#Enable()
-autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
-autocmd BufWritePost *.coffee make!
-autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
-autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
+augroup coffee
+    autocmd!
+    autocmd FileType coffee :call tern#Enable()
+    autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
+    autocmd BufWritePost *.coffee make!
+    autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+    autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
+augroup END
 
 " Json fold
-autocmd BufNewFile,BufReadPost *.json setl foldmethod=syntax
+augroup json
+    autocmd!
+    autocmd BufNewFile,BufReadPost *.json setl foldmethod=syntax
+augroup END
 
 " For all file types highlight trailing whitespaces
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter ?* if MakeViewCheck() | match ExtraWhitespace /\s\+$/ | endif
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-autocmd BufWinLeave * call clearmatches()
+augroup mark_extra_whitespace
+    autocmd!
+    highlight ExtraWhitespace ctermbg=red guibg=red
+    match ExtraWhitespace /\s\+$/
+    autocmd BufWinEnter ?* if MakeViewCheck() | match ExtraWhitespace /\s\+$/ | endif
+    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+    autocmd BufWinLeave * call clearmatches()
+augroup END
 
 " fugitive options
-autocmd BufReadPost fugitive://* set bufhidden=delete
-autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
+augroup fugitive
+    autocmd!
+    autocmd BufReadPost fugitive://* set bufhidden=delete
+    autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
+augroup END
 
 " vimscript folding
 augroup filetype_vim
@@ -766,6 +789,12 @@ function! HasPaste()
     return ''
 endfunction
 
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
@@ -976,6 +1005,7 @@ func! SetJSSEttings()
     setl tabstop=2
     setl softtabstop=2
     setl shiftwidth=2
+    setl textwidth=139
 endfunc
 
 function! s:my_cr_function()
