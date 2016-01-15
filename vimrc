@@ -372,7 +372,7 @@ augroup END
 " js file settings
 augroup js_settings
     autocmd!
-    autocmd BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
+    autocmd BufNewFile *.js, *.html, *.css :call SetJSSettings()
 augroup END
 
 augroup enter_exit_settings
@@ -388,21 +388,22 @@ augroup END
 augroup filetype_settings
     autocmd!
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+
     autocmd FileType python setl switchbuf=useopen
     autocmd FileType python setl omnifunc=jedi#completions
     autocmd FileType python setl foldmethod=expr
     autocmd FileType python let b:did_ftplugin = 1
+
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
     autocmd Filetype java setl omnifunc=javacomplete#Complete
     autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
 
     autocmd FileType javascript :call tern#Enable()
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
-    autocmd FileType html setl omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType html setl shiftwidth=2 expandtab
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
     autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
 augroup END
 
@@ -663,16 +664,15 @@ let g:vimtex_latexmk_options = "-pdf -e '$pdflatex=q/xelatex %O %S/' "
 " }}}
 
 " delimitmate {{{
-" }}}
-let delimitMate_matchpairs = "(:),[:],{:},<:>"
 let delimitMate_nesting_quotes = ['"','`']
 let delimitMate_balance_matchpairs = 1
+" }}}
 
 " }}}
 
 " => per directory session management {{{
 " Check whether the current working directory contains a ".vimsessions"
-" directory. It it does, we'll configure the vim-session plug-in to load
+" directory. It it does, well configure the vim-session plug-in to load
 " its sessions from the ".vimsessions" directory.
 " From: https://github.com/xolox/vim-session/issues/49
 " let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
@@ -999,13 +999,17 @@ func! SetPythonSettings()
     setl expandtab
     setl autoindent
     setl completeopt+=longest
+    setl colorcolumn=100
 endfunc
 
-func! SetJSSEttings()
+func! SetJSSettings()
+    setl foldmethod=syntax
     setl tabstop=2
     setl softtabstop=2
     setl shiftwidth=2
     setl textwidth=139
+    setl expandtab
+    setl colorcolumn=140
 endfunc
 
 function! s:my_cr_function()
