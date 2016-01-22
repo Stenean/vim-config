@@ -1,8 +1,15 @@
 # User configuration
 
-export PATH="/home/kuba/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 export EDITOR='vim'
+
+if [ -x "$(command -v git)" && "diffconflicts" == "$(git config --global merge.tool)" ]; then
+    git config --global merge.tool diffconflicts
+    git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGED'
+    git config --global mergetool.diffconflicts.trustExitCode true
+    git config --global mergetool.diffconflicts.keepBackup false
+fi
 
 export PROJECT_HOME="$HOME/Projects"
 
