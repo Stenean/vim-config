@@ -4,7 +4,9 @@ export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bi
 # export MANPATH="/usr/local/man:$MANPATH"
 export EDITOR='vim'
 
-if [ -x "$(command -v git)" -a  "diffconflicts" == "$(git config --global merge.tool)" ]; then
+echo "checking"
+if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
+    echo "setting"
     git config --global merge.tool diffconflicts
     git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGED'
     git config --global mergetool.diffconflicts.trustExitCode true
