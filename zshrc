@@ -15,7 +15,7 @@ export PROJECT_HOME="$HOME/Projects"
 
 if [ ! -f ~/.zgen/zgen.zsh ]; then
   pushd ~
-  git clone git@github.com:tarjoilija/zgen.git .zgen
+  git clone https://github.com/tarjoilija/zgen.git .zgen
   popd
 fi
 source ~/.zgen/zgen.zsh
