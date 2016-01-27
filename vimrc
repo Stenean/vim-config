@@ -362,6 +362,8 @@ augroup whitespace
     autocmd BufWrite *.coffee :call DeleteTrailingWS()
     autocmd BufWrite *.html :call DeleteTrailingWS()
     autocmd BufWrite *.js :call DeleteTrailingWS()
+    autocmd BufWrite *.cpp :call DeleteTrailingWS()
+    autocmd BufWrite *.hpp :call DeleteTrailingWS()
 augroup END
 
 " python file settings
