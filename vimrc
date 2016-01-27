@@ -48,6 +48,7 @@ Bundle 'fisadev/vim-isort'
 Bundle 'honza/vim-snippets'
 Bundle 'hsanson/vim-android'
 Bundle 'hynek/vim-python-pep8-indent'
+Bundle 'justmao945/vim-clang'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'lervag/vimtex'
@@ -522,8 +523,10 @@ endif
 
 " Neocomplete {{{
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+" Ignore case
+let g:neocomplete#enable_ignore_case = 1
+" Enable fuzzy completion
+let g:neocomplete#enable_fuzzy_completion = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 " Auto close preview
@@ -544,11 +547,30 @@ if !exists('g:neocomplete#force_omni_input_patterns')
 endif
 
 let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from.*import \|^\s*from \|^\s*import \)\w*'
+let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 if !exists('g:neocomplcache_omni_functions')
     let g:neocomplcache_omni_functions = {}
 endif
 let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+
+if has('conceal')
+    set conceallevel=2 concealcursor=i
+endif
+" }}}
+
+
+" {{{
+" disable auto completion for vim-clang
+let g:clang_auto = 0
+" default 'longest' can not work with neocomplete
+let g:clang_c_completeopt = 'menuone'
+let g:clang_cpp_completeopt = 'menuone'
+let g:clang_debug = 5 
+let g:clang_exec = 'clang-3.5'
+let g:clang_c_options = '-std=gnu11'
+let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
 " }}}
 
 " Jedi disable completion {{{
@@ -740,12 +762,13 @@ map <leader>pp :setlocal paste!<cr>
 
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <expr><C-c>     neocomplete#start_manual_complete()
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 inoremap <expr><C-Space> neocomplete#start_manual_complete()
-imap <C-@> <C-Space>
+inoremap <expr><C-@> neocomplete#start_manual_complete()
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " }}}

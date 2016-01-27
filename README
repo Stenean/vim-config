@@ -20,7 +20,7 @@ tmux:
 
 system:
     sudo -H pip install httpie powerline-status
-    sudo apt-get install xombrero ncdu htop httperf
+    sudo apt-get install xombrero ncdu htop httperf clang-3.5
 
 pyenv:
     to shell init:
