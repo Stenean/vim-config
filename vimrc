@@ -605,6 +605,9 @@ let g:syntastic_html_tidy_ignore_errors=[
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
 \]
+let g:syntastic_cpp_compiler = 'clang-3.5'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_config_file = '.clang'
 " }}}
 
 " Ultisnips {{{
