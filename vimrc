@@ -158,10 +158,13 @@ set viewoptions=folds,cursor
 " Set appropriate session options
 set sessionoptions-=blank
 set sessionoptions-=curdir
+set sessionoptions-=sesdir
 set sessionoptions-=help
 set sessionoptions-=resize
 set sessionoptions-=winsize
 set sessionoptions-=buffer
+set sessionoptions-=options
+set sessionoptions-=globals
 
 " Color column for 100 characters
 set colorcolumn=100
