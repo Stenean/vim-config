@@ -1,5 +1,5 @@
 # User configuration
-
+export SHELL="/bin/zsh"
 export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 export EDITOR='vim'
