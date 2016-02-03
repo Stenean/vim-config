@@ -119,3 +119,6 @@ POWERLINE_BASH_SELECT=1
 . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+pyenv virtualenvwrapper
+eval $(thefuck --alias)
