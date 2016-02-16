@@ -507,6 +507,7 @@ noremap! <xF2> <C-Left>
 
 nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
+nnoremap GG G<CR>
 nnoremap G :call jedi#goto_definitions()<CR>
 
 nnoremap <space> za
