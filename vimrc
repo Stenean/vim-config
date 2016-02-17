@@ -700,6 +700,15 @@ let delimitMate_nesting_quotes = ['"','`']
 let delimitMate_balance_matchpairs = 1
 " }}}
 
+" {{{ vim-vebugger
+
+let g:vebugger_leader='<Leader>\'
+let g:vebugger_view_source_cmd='e'
+
+noremap <leader>\k :VBGkill<cr>
+
+" }}}
+
 " }}}
 
 " => per directory session management {{{
