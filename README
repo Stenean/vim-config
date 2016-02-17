@@ -34,7 +34,7 @@ pyenv:
     for vim to properly set python interpreter env variable PYTHON_VERSION must be set to 3 to
     force python 3 interpreter, python 2 is used otherwise (dynamically linked python lib in vim is
     recommended)
-    pip3 install mps-youtube
+    pip3 install mps-youtube (sudo apt-get install mpv)
 
 jedi-vim:
     in jedi-vim directory: git submodule update --init
