@@ -31,10 +31,6 @@ ZSH_THEME="agnoster"
 
 DEFAULT_USER="kuba"
 
-AUTOSUGGESTION_HIGHLIGHT_COLOR="fg=10"
-AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
-AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
-
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
@@ -54,6 +50,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/suprevisor
     zgen oh-my-zsh plugins/virtualenvwrapper
 
+    zgen load RobSis/zsh-completion-generator
     zgen load zsh-users/zsh-syntax-highlighting
 
     # autosuggestions should be loaded last
@@ -61,13 +58,7 @@ if ! zgen saved; then
     zgen save
 fi
 
-# zgen init
-zle-line-init() {
-    zle autosuggest-start
-}
-zle -N zle-line-init
-
-# source $ZSH/oh-my-zsh.sh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 function workon_cwd {
     # Check that this is a Git repo
