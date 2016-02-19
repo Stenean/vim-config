@@ -42,15 +42,26 @@ if ! zgen saved; then
 
     zgen oh-my-zsh
 
+    zgen load RobSis/zsh-completion-generator
+
     zgen oh-my-zsh plugins/git
     zgen oh-my-zsh plugins/command-not-found
     zgen oh-my-zsh plugins/docker
     zgen oh-my-zsh plugins/jsontools
     zgen oh-my-zsh plugins/python
-    zgen oh-my-zsh plugins/suprevisor
+    zgen oh-my-zsh plugins/supervisor
     zgen oh-my-zsh plugins/virtualenvwrapper
+    zgen oh-my-zsh plugins/bgnotify
+    zgen oh-my-zsh plugins/sudo
+    zgen oh-my-zsh plugins/tmux
+    zgen oh-my-zsh plugins/tmux-cssh
+    zgen oh-my-zsh plugins/compleat
+    zgen oh-my-zsh plugins/encode64
+    zgen oh-my-zsh plugins/httpie
+    zgen oh-my-zsh plugins/history
+    zgen oh-my-zsh plugins/pip
+    zgen oh-my-zsh plugins/urltools
 
-    zgen load RobSis/zsh-completion-generator
     zgen load zsh-users/zsh-syntax-highlighting
 
     # autosuggestions should be loaded last
