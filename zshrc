@@ -69,7 +69,7 @@ if ! zgen saved; then
     zgen save
 fi
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=0"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 function workon_cwd {
     # Check that this is a Git repo
