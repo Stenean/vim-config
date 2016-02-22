@@ -61,6 +61,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/history
     zgen oh-my-zsh plugins/pip
     zgen oh-my-zsh plugins/urltools
+    zgen oh-my-zsh plugins/aws
 
     zgen load zsh-users/zsh-syntax-highlighting
 
