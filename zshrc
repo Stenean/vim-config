@@ -62,8 +62,10 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/pip
     zgen oh-my-zsh plugins/urltools
     zgen oh-my-zsh plugins/aws
-    zgen oh-my-zsh plugins/calc
+    zgen oh-my-zsh plugins/colored-man-pages
+    zgen oh-my-zsh plugins/colorize
 
+    zgen load arzzen/calc.plugin.zsh
     zgen load zsh-users/zsh-syntax-highlighting
 
     # autosuggestions should be loaded last
