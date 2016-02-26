@@ -19,8 +19,15 @@ tmux:
     wa
 
 system:
+    sudo apt-add-repository ppa:pi-rho/dev
     sudo -H pip install httpie powerline-status thefuck
-    sudo apt-get install xombrero ncdu htop httperf clang-3.5
+    sudo apt-get install xombrero ncdu htop httperf clang-3.5 vim-gtk
+    http --download http://nongnu.org/ranger/ranger-stable.tar.gz && \
+        tar -xzfv ranger-stable.tar.gz && \
+        cd ranger-1.7.2 && \
+        sudo make install && \
+        cd ../ && \
+        sudo rm ranger-*
 
 pyenv:
     to shell init:
