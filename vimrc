@@ -2,6 +2,7 @@
 " Sets how many lines of history VIM has to remember
 set history=700
 set term=xterm-256color
+set enc=utf-8
 
 set nocompatible
 filetype off
