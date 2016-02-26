@@ -3,6 +3,7 @@
 set history=700
 set term=xterm-256color
 set enc=utf-8
+set t_ut=
 
 set nocompatible
 filetype off
