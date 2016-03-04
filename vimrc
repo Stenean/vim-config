@@ -525,7 +525,7 @@ inoremap jk <esc>
 if $LANGUAGE == 'pl_PL'
     let g:location_list_name = 'Lista lokacji'
     let g:quickfix_list_name = 'Lista quickfix'
-elseif $LANGUAGE == 'en_US'
+else
     let g:location_list_name = 'Location List'
     let g:quickfix_list_name = 'Quickfix List'
 endif
