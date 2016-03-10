@@ -38,6 +38,7 @@ Bundle 'Shougo/neoinclude.vim'
 Bundle 'Shougo/neco-syntax'
 Bundle 'Shougo/vimproc.vim'
 
+Bundle 'Chiel92/vim-autoformat'
 Bundle 'chrisbra/csv.vim'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'davidhalter/jedi-vim'
@@ -508,6 +509,8 @@ noremap <xF2> <C-Left>
 noremap! <xF1> <C-Right>
 noremap! <xF2> <C-Left>
 
+noremap <leader>a :Autoformat<CR>
+
 nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap GG G<CR>
@@ -708,6 +711,12 @@ let g:vebugger_leader='<Leader>\'
 let g:vebugger_view_source_cmd='e'
 
 noremap <leader>\k :VBGkill<cr>
+
+" }}}
+
+" {{{ vim-autoformat
+
+
 
 " }}}
 
