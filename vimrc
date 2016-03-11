@@ -41,6 +41,7 @@ Bundle 'Chiel92/vim-autoformat'
 Bundle 'chrisbra/csv.vim'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'davidhalter/jedi-vim'
+Bundle 'derekwyatt/vim-fswitch'
 Bundle 'edsono/vim-matchit'
 Bundle 'ekalinin/Dockerfile.vim'
 Bundle 'elzr/vim-json'
@@ -514,6 +515,8 @@ nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap GG G<CR>
 nnoremap G :call jedi#goto_definitions()<CR>
+
+nnoremap <leader>s :FSHere<CR>
 " }}}
 
 " => Plugin settings {{{
