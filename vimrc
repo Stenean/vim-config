@@ -2,7 +2,6 @@
 " Sets how many lines of history VIM has to remember
 set history=700
 set term=xterm-256color
-set enc=utf-8
 set t_ut=
 
 set nocompatible
@@ -170,9 +169,6 @@ set sessionoptions-=winsize
 set sessionoptions-=buffer
 set sessionoptions-=options
 set sessionoptions-=globals
-
-" Color column for 100 characters
-set colorcolumn=100
 " }}}
 
 " => Colors and Fonts {{{
@@ -228,7 +224,10 @@ set softtabstop=4
 
 " Linebreak on 500 characters
 set lbr
-set tw=99
+set tw=139
+
+" Color column for 100 characters
+set colorcolumn=140
 
 set ai "Auto indent
 set si "Smart indent
@@ -343,9 +342,6 @@ set laststatus=2
 " }}}
 
 " => Editing mappings {{{
-" Remap VIM 0 to first non-blank character
-map 0 ^
-
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
@@ -360,6 +356,11 @@ if has("mac") || has("macunix")
   vmap <D-j> <C-j>
   vmap <D-k> <C-k>
 endif
+
+nnoremap <space> za
+vnoremap <space> zf
+
+inoremap jk <esc>
 " }}}
 
 " => Autocommands {{{
@@ -399,7 +400,6 @@ augroup END
 augroup filetype_settings
     autocmd!
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-
 
     autocmd FileType python setl switchbuf=useopen
     autocmd FileType python setl omnifunc=jedi#completions
@@ -494,7 +494,6 @@ endtry
 " }}}
 
 " => Misc key mappings {{{
-
 noremap <F8> :call OpenTreeOrUndo()<CR>
 noremap <S-F8> :call CloseTreeOrUndo()<CR>
 noremap <F7> :TagbarToggle<CR>
@@ -515,11 +514,6 @@ nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap GG G<CR>
 nnoremap G :call jedi#goto_definitions()<CR>
-
-nnoremap <space> za
-vnoremap <space> zf
-
-inoremap jk <esc>
 " }}}
 
 " => Plugin settings {{{
