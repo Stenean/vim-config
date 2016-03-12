@@ -1,4 +1,5 @@
 # User configuration
+export TERM="xterm-256color"
 export SHELL="/bin/zsh"
 export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -119,6 +120,12 @@ export LANG=pl_PL.UTF-8
 alias ll="ls -la"
 alias clearpyc="find . -name '*.pyc' -delete"
 alias tmux="TERM='xterm-256color' tmux"
+
+(sleep 5 && \
+    xmodmap -e "keycode 166=Prior" && \
+    xmodmap -e "keycode 167=Next" && \
+    notify-send "Keys set" "PageUp and PageDown" \
+) &
 
 . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
 
