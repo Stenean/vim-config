@@ -121,11 +121,8 @@ alias ll="ls -la"
 alias clearpyc="find . -name '*.pyc' -delete"
 alias tmux="TERM='xterm-256color' tmux"
 
-(sleep 5 && \
-    xmodmap -e "keycode 166=Prior" && \
-    xmodmap -e "keycode 167=Next" && \
-    notify-send "Keys set" "PageUp and PageDown" \
-) &
+xmodmap -e "keycode 166=Prior"
+xmodmap -e "keycode 167=Next"
 
 . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
 
