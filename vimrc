@@ -64,6 +64,7 @@ Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'rdnetto/YCM-Generator'
 
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
