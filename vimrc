@@ -23,7 +23,6 @@ Bundle 'gmarik/Vundle.vim'
 
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
-Bundle 'xolox/vim-easytags'
 
 Bundle 'vim-scripts/TaskList.vim'
 Bundle 'vim-scripts/tComment'
@@ -33,16 +32,11 @@ Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'Shougo/context_filetype.vim'
-Bundle 'Shougo/neoinclude.vim'
-Bundle 'Shougo/neco-syntax'
 Bundle 'Shougo/vimproc.vim'
 
 Bundle 'Chiel92/vim-autoformat'
 Bundle 'chrisbra/csv.vim'
 Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'davidhalter/jedi-vim'
 Bundle 'derekwyatt/vim-fswitch'
 Bundle 'edsono/vim-matchit'
 Bundle 'ekalinin/Dockerfile.vim'
@@ -53,16 +47,13 @@ Bundle 'honza/vim-snippets'
 Bundle 'hsanson/vim-android'
 Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'idanarye/vim-vebugger'
-Bundle 'justmao945/vim-clang'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'lervag/vimtex'
 Bundle 'majutsushi/tagbar'
 Bundle 'MarcWeber/vim-addon-local-vimrc'
-Bundle 'marijnh/tern_for_vim'
 Bundle 'mbbill/undotree'
 Bundle 'mhinz/vim-signify'
-Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'raimondi/delimitmate'
 Bundle 'scrooloose/syntastic'
@@ -71,6 +62,8 @@ Bundle 'sjl/gundo.vim'
 Bundle 'tmhedberg/SimpylFold'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
+
+Bundle 'Valloric/YouCompleteMe'
 
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
@@ -406,7 +399,6 @@ augroup filetype_settings
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 
     autocmd FileType python setl switchbuf=useopen
-    autocmd FileType python setl omnifunc=jedi#completions
     autocmd FileType python setl foldmethod=expr
     autocmd FileType python let b:did_ftplugin = 1
 
@@ -517,7 +509,7 @@ noremap <leader>a :Autoformat<CR>
 nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
 nnoremap GG G<CR>
-nnoremap G :call jedi#goto_definitions()<CR>
+nnoremap G :YcmCompleter GoToDefinition<CR>
 
 nnoremap <leader>s :FSHere<CR>
 " }}}
