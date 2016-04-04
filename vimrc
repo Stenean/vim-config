@@ -720,7 +720,7 @@ noremap <leader>\k :VBGkill<cr>
 
 " }}}
 
-" {{{
+" {{{ ctags
 
 let &tags="./.tags,".&tags
 set cpoptions+=d
