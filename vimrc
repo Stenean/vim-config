@@ -735,6 +735,16 @@ autocmd BufEnter * let b:easytags_nohl = 1
 
 " }}}
 
+" {{{ YouCompleteMe
+
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_server_log_level = 'debug'
+
+" }}}
+
 " }}}
 
 " => per directory session management {{{
@@ -1084,5 +1094,22 @@ function! s:my_cr_function()
   " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
   return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
+function! KillYcmd()
+    let pid_pairs = {}
+    let existing_ycmds = split(system('ps xo ppid,pid,cmd | grep ycmd | grep -v grep'), '\n')
+    for pair in map(existing_ycmds, 'split(matchstr(v:val, "^\\s*\\d\\+\\s*\\d\\+"), "\\s\\+")')
+      let pid_pairs[str2nr(pair[1])] = str2nr(pair[0])
+    endfor
+    for [pid, parent] in items(pid_pairs)
+      let parent_cmd = split(system('ps axo pid,cmd | grep -v grep |  grep ' . parent), '\n')[0]
+      if parent_cmd !~ 'vim'
+        echom 'Killing ' . pid . ', becouse parent "' . parent_cmd . '" is not vim'
+        let l:kill_cmd = 'silent ! kill -9 ' . pid
+        echom l:kill_cmd
+        exec l:kill_cmd
+      endif
+    endfor
 endfunction
 " }}}
