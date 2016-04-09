@@ -16,12 +16,14 @@ if $PYTHON_VERSION
 endif
 
 set rtp+=~/.vim/bundle/Vundle.vim
+" {{{ Plugin definitions
 call vundle#begin()
 
 Bundle 'gmarik/Vundle.vim'
 
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-session'
+Bundle 'xolox/vim-easytags'
 
 Bundle 'vim-scripts/TaskList.vim'
 Bundle 'vim-scripts/tComment'
@@ -73,6 +75,7 @@ Bundle 'vim-airline/vim-airline-themes'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 call vundle#end()
+" }}}
 
 let python_highlight_all=1
 
@@ -717,6 +720,31 @@ noremap <leader>\k :VBGkill<cr>
 
 " }}}
 
+" {{{ ctags
+
+let &tags="./.tags,".&tags
+set cpoptions+=d
+
+let g:easytags_syntax_keyword = 'always'
+let g:easytags_async = 1
+let g:easytags_dynamic_files = 2
+let g:easytags_include_members = 1
+let g:easytags_resolve_links = 1
+let g:easytags_nohl = 1
+autocmd BufEnter * let b:easytags_nohl = 1
+
+" }}}
+
+" {{{ YouCompleteMe
+
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_server_log_level = 'debug'
+
+" }}}
+
 " }}}
 
 " => per directory session management {{{
@@ -1075,4 +1103,20 @@ func! GenerateTags()
 " find . -regextype posix-egrep -regex ".*/[Mm]akefile|.*/.*\.mak" -printf 'grep -o -E "[a-zA-Z0-9._/-]+(*\\.c|*\\.cc|*\\.cpp|*\\.cxx|*\\.h|*\\.hh|*\\.hpp|*\\.hxx)" %p | sed "s:^:%h/:g" | sort | uniq\n' | sh | ctags -f ~/.vim/tags -L -
 endfunc
 
+function! KillYcmd()
+    let pid_pairs = {}
+    let existing_ycmds = split(system('ps xo ppid,pid,cmd | grep ycmd | grep -v grep'), '\n')
+    for pair in map(existing_ycmds, 'split(matchstr(v:val, "^\\s*\\d\\+\\s*\\d\\+"), "\\s\\+")')
+      let pid_pairs[str2nr(pair[1])] = str2nr(pair[0])
+    endfor
+    for [pid, parent] in items(pid_pairs)
+      let parent_cmd = split(system('ps axo pid,cmd | grep -v grep |  grep ' . parent), '\n')[0]
+      if parent_cmd !~ 'vim'
+        echom 'Killing ' . pid . ', becouse parent "' . parent_cmd . '" is not vim'
+        let l:kill_cmd = 'silent ! kill -9 ' . pid
+        echom l:kill_cmd
+        exec l:kill_cmd
+      endif
+    endfor
+endfunction
 " }}}
