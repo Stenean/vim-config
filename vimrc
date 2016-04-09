@@ -1067,4 +1067,12 @@ function! s:my_cr_function()
   " For no inserting <CR> key.
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
+
+func! GenerateTags()
+    if argc() > 0
+        return 0
+    endif
+" find . -regextype posix-egrep -regex ".*/[Mm]akefile|.*/.*\.mak" -printf 'grep -o -E "[a-zA-Z0-9._/-]+(*\\.c|*\\.cc|*\\.cpp|*\\.cxx|*\\.h|*\\.hh|*\\.hpp|*\\.hxx)" %p | sed "s:^:%h/:g" | sort | uniq\n' | sh | ctags -f ~/.vim/tags -L -
+endfunc
+
 " }}}

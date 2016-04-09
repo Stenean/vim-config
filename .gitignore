@@ -6,3 +6,4 @@ view/*
 bundle/*
 sessions/*
 .netrwhist
+.tags
