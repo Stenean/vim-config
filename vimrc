@@ -735,6 +735,7 @@ let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
+let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
 
 " }}}
 
