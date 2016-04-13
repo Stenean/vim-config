@@ -442,11 +442,11 @@ fun! SaveUserMaps(mapmode,maplead,mapchx,suffix)
   let mapmode  = a:mapmode
   let dounmap  = 0
   let dobuffer = ""
-  while mapmode =~ '^[bu]'
-   if     mapmode =~ '^u'
+  while mapmode =~# '^[bu]'
+   if     mapmode =~# '^u'
     let dounmap = 1
     let mapmode = strpart(a:mapmode,1)
-   elseif mapmode =~ '^b'
+   elseif mapmode =~# '^b'
     let dobuffer = "<buffer> "
     let mapmode  = strpart(a:mapmode,1)
    endif
