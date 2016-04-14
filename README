@@ -30,26 +30,14 @@ system:
         cd ../ && \
         sudo rm ranger-*
 
-clang 3.7:
-    sudo cat << EOF > /etc/apt/sources.list.d/clang.list
-deb http://llvm.org/apt/jessie/ llvm-toolchain-jessie main
-deb-src http://llvm.org/apt/jessie/ llvm-toolchain-jessie main
-EOF
-    wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
-    sudo apt-get update
-    sudo apt-get install clang-3.7 clang-format-3.7 libclang1-3.7 libclang-3.7-dev
-    sudo ln -s /usr/bin/clang-3.5 /usr/bin/clang
-    sudo ln -s /usr/bin/clang-format-3.5 /usr/bin/clang-format
-
 YouCompleteMe:
-    install clang 3.7
-    sudo apt-get install build-essential cmake python-dev python3-dev
+    sudo apt-get install build-essential cmake python-dev python3-dev nodejs-legacy npm
+    sudo apt-get build-dep python2.7
     sudo npm install -g typescript
     cd ~/.vim/bundle/YouCompleteMe
     cd third_party/ycmd && git checkout 89f0c5b && cd ../../
-    EXTRA_CMAKE_ARGS="-DPYTHON_LIBRARY=/home/kuba/.pyenv/versions/2.7.8/lib/libpython2.7.a \
-        -DPYTHON_INCLUDE_DIR=/home/kuba/.pyenv/versions/2.7.8/include/python2.7" \
-        ./install.py --clang-completer --tern-completer
+    EXTRA_CMAKE_ARGS="-DPYTHON_LIBRARY=/home/kuba/.pyenv/versions/2.7.8/lib/python2.7/config/libpython2.7.a 
+        -DPYTHON_INCLUDE_DIR=/home/kuba/.pyenv/versions/2.7.8/include/python2.7" ./install.py --clang-completer --tern-completer
 
 pyenv:
     to shell init:
@@ -60,6 +48,8 @@ pyenv:
         eval "$(pyenv virtualenvwrapper -)"
     remember to pyenv install <python version> and pyenv global <python version> for virtualenv
     and virtualenvwrapper to work
+    for YouCompleteMe:
+        * env PYTHON_CONFIGURE_OPTS="--enable-shared --enable-static" pyenv install <version>
     for vim to properly set python interpreter env variable PYTHON_VERSION must be set to 3 to
     force python 3 interpreter, python 2 is used otherwise (dynamically linked python lib in vim is
     recommended)
