@@ -133,3 +133,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenvwrapper
+
+if [ -e "$HOME/.zshrc_local" ]; then
+    source ~/.zshrc_local
+fi
