@@ -529,7 +529,7 @@ endif
 " }}}
 
 " Neocomplete {{{
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = 0
 " Ignore case
 let g:neocomplete#enable_ignore_case = 1
 " Enable fuzzy completion
@@ -562,9 +562,9 @@ if !exists('g:neocomplcache_omni_functions')
 endif
 let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
 
-if has('conceal')
-    set conceallevel=2 concealcursor=i
-endif
+" if has('conceal')
+"     set conceallevel=2 concealcursor=i
+" endif
 " }}}
 
 " vim-clang {{{
@@ -733,6 +733,7 @@ autocmd BufEnter * let b:easytags_nohl = 1
 
 " {{{ YouCompleteMe
 
+let g:ycm_key_invoke_completion = '<C-C>'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
@@ -812,15 +813,9 @@ map <leader>q :e ~/buffer<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-inoremap <expr><C-c>     neocomplete#start_manual_complete()
-
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-inoremap <expr><C-Space> neocomplete#start_manual_complete()
-inoremap <expr><C-@> neocomplete#start_manual_complete()
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " }}}
