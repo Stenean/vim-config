@@ -670,6 +670,8 @@ endif
 " }}}
 
 " vim-session settings {{{
+
+let g:session_persist_globals = ['g:nerd_tree_open']
 let g:session_autoload = 'yes'
 let g:session_autosave = 'yes'
 let g:session_persist_font = 0
@@ -890,39 +892,33 @@ endfunction
 
 func! OpenNERDTree()
     exe "NERDTree"
-    exe "normal 35\<C-W>|"
-    try
-        exe "2wincmd w"
-    catch
-    endtry
+    exe "normal 30\<C-W>|"
+    call GoToMainWindow()
     let g:nerd_tree_open = 1
 endfunc
 
 func! OpenTreeOrUndo()
-    echom "Toggeling nerd tree or undo"
     if !exists('g:nerd_tree_open')
-        echom "Opening nerd tree"
         let g:nerd_tree_open = 1
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
         exe "normal 30\<C-W>|"
+        call GoToMainWindow()
     else
         if g:nerd_tree_open == 0
-            echom "Opening nerd tree"
             let g:nerd_tree_open = 1
             exe "UndotreeHide"
             exe "NERDTreeToggle"
             exe "normal 30\<C-W>|"
-            exe "2wincmd w"
+            call GoToMainWindow()
         else
-            echo "Opening undo tree"
             let g:nerd_tree_open = 0
             exe "NERDTreeClose"
             exe "UndotreeShow"
-            exe "1wincmd w"
+            exe "UndotreeFocus"
             exe "normal 30\<C-W>|"
-            exe "3wincmd w"
+            call GoToMainWindow()
         endif
     endif
 endfunc
@@ -948,21 +944,22 @@ function! GetBufferList()
   return buflist
 endfunction
 
+function! GoToMainWindow()
+" 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
+  for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
+    if str2nr(sizes[1]) > 45
+      exe sizes[0].'wincmd w'
+      return
+    endif
+  endfor
+endfunction
+
 function! ToggleList(bufname, pfx)
   let buflist = GetBufferList()
-  let winnr = winnr()
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
-      try
-        exe bufnum.'wincmd w'
-      catch
-        echom 'No open buffer with number '.bufnum
-      endtry
       exec(a:pfx.'close')
-      try
-        exe '2wincmd w'
-      catch
-      endtry
+      call GoToMainWindow()
       return
     endif
   endfor
@@ -971,18 +968,8 @@ function! ToggleList(bufname, pfx)
       echo "Location List is Empty."
       return
   endif
-  let winnr = winnr()
-  try
-    exe '2wincmd w'
-  catch
-  endtry
+  call GoToMainWindow()
   exec('botright '.a:pfx.'open')
-  if winnr() != winnr
-    try
-      exe '2wincmd w'
-    catch
-    endtry
-  endif
 endfunction
 
 function! MakeViewCheck()
@@ -1028,10 +1015,7 @@ function! OpenQuickfix()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
       if bufname =~ g:location_list_name && len(getloclist(0)) != 0
         exe 'lclose'
-        try
-          exe '2wincmd w'
-        catch
-        endtry
+        call GoToMainWindow()
         exe 'lopen'
       endif
       if bufname =~ g:quickfix_list_name
