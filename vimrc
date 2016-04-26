@@ -31,6 +31,7 @@ Bundle 'vim-scripts/The-NERD-tree'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-sensible'
 
 Bundle 'Shougo/vimproc.vim'
 
