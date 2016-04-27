@@ -743,6 +743,12 @@ let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
 
 " }}}
 
+" {{{ Solarized
+
+let g:solarized_visibility="low"    "default value is normal
+
+" }}}
+
 " }}}
 
 " => per directory session management {{{
