@@ -510,8 +510,7 @@ noremap <leader>a :Autoformat<CR>
 
 nnoremap <silent> <C-Right> :bnext<CR>
 nnoremap <silent> <C-Left> :bprev<CR>
-nnoremap GG G<CR>
-nnoremap G :YcmCompleter GoToDefinition<CR>
+nnoremap ] :YcmCompleter GoToDefinition<CR>
 
 nnoremap <leader>s :FSHere<CR>
 " }}}
