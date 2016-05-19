@@ -65,3 +65,8 @@ vim-vebugger:
 
     after line 209 in vim-vebugger/autoload/vebugger/std.vim (or where vebugger_view_source_cmd
     execution is done)
+
+voltron:
+    pip3 install voltron
+    need to install into gdb dist-packages directory or any other locatoin used by gdb python interpreter. Requires python3
+    gdbinit has all needed initialisation stuff inside, just link it.
