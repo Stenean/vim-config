@@ -70,3 +70,6 @@ voltron:
     pip3 install voltron
     need to install into gdb dist-packages directory or any other locatoin used by gdb python interpreter. Requires python3
     gdbinit has all needed initialisation stuff inside, just link it.
+
+peda:
+    git clone https://github.com/longld/peda
