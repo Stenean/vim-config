@@ -84,6 +84,7 @@ alias clearpyc="find . -name '*.pyc' -delete"
 alias tmux="TERM='xterm-256color' tmux"
 
 function ggdb {
+    cd $(pwd);
     WAIT_SECS=2;
     while 1; do
         GDB_PORT=$[${RANDOM} % 22000 + 10000]
@@ -92,7 +93,7 @@ function ggdb {
         fi;
     done;
     GDBSERV_OUT="./gdb.out.$GDB_PORT.txt";
-    gdbserver --once localhost:$GDB_PORT $1 1>$GDBSERV_OUT &
+    {gdbserver --once localhost:$GDB_PORT $1 1>$GDBSERV_OUT &};
     echo "[1] Waiting ${WAIT_SECS}s for gdb server start"; sleep $WAIT_SECS;
     gdb -ex "target remote localhost:$GDB_PORT" $1;
     rm $GDBSERV_OUT;
