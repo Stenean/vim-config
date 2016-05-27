@@ -63,6 +63,7 @@ import termios
 
 # Common attributes ------------------------------------------------------------
 
+
 class R():
 
     @staticmethod
@@ -174,14 +175,17 @@ which `{pid}` is expanded with the process identifier of the target program.""",
 
 # Common -----------------------------------------------------------------------
 
+
 def run(command):
     return gdb.execute(command, to_string=True)
+
 
 def ansi(string, style):
     if R.ansi:
         return '\x1b[{}m{}\x1b[0m'.format(style, string)
     else:
         return string
+
 
 def divider(label='', primary=False, active=True):
     width = Dashboard.term_width
@@ -212,16 +216,20 @@ def divider(label='', primary=False, active=True):
     else:
         return ansi(divider_fill_char * width, divider_fill_style)
 
+
 def check_gt_zero(x):
     return x > 0
 
+
 def check_ge_zero(x):
     return x >= 0
+
 
 def to_unsigned(value, size=8):
     # values from GDB can be used transparently but are not suitable for
     # being printed as unsigned integers, so a conversion is needed
     return int(value.cast(gdb.Value(0).type)) % (2 ** (size * 8))
+
 
 def to_string(value):
     # attempt to convert an inferior value to string; OK when (Python 3 ||
@@ -233,9 +241,11 @@ def to_string(value):
         value_string = unicode(value).encode('utf8')
     return value_string
 
+
 def format_address(address):
     pointer_size = gdb.parse_and_eval('$pc').type.sizeof
     return ('0x{{:0{}x}}').format(pointer_size * 2).format(address)
+
 
 def highlight(source, filename):
     if not R.ansi:
@@ -258,6 +268,7 @@ def highlight(source, filename):
     return highlighted, source.rstrip('\n')
 
 # Dashboard --------------------------------------------------------------------
+
 
 class Dashboard(gdb.Command):
     """Redisplay the dashboard."""
@@ -375,7 +386,7 @@ class Dashboard(gdb.Command):
         # parse Python inits, load modules then parse GDB inits
         Dashboard.parse_inits(True)
         # modules = Dashboard.get_modules()
-        modules = [Source, Assembly, Registers, StackMemory]
+        modules = [Source, Assembly, StackMemory]
         dashboard.load_modules(modules)
         Dashboard.parse_inits(False)
         # GDB overrides
@@ -476,6 +487,7 @@ class Dashboard(gdb.Command):
 
         def add_main_command(self, dashboard):
             module = self
+
             def invoke(self, arg, from_tty, info=self):
                 arg = Dashboard.parse_arg(arg)
                 if arg == '':
@@ -506,6 +518,7 @@ class Dashboard(gdb.Command):
             action = command['action']
             doc = command['doc']
             complete = command.get('complete')
+
             def invoke(self, arg, from_tty, info=self):
                 arg = Dashboard.parse_arg(arg)
                 if info.enabled:
@@ -679,6 +692,7 @@ or print (when the value is omitted) individual attributes."""
                 value = attr_type(attr_default)
                 setattr(self.obj, attr_name, value)
                 # create the command
+
                 def invoke(self, arg, from_tty, name=name, attr_name=attr_name,
                            attr_type=attr_type, attr_check=attr_check):
                     new_value = Dashboard.parse_arg(arg)
@@ -722,6 +736,7 @@ or print (when the value is omitted) individual attributes."""
         pass
 
 # Default modules --------------------------------------------------------------
+
 
 class Source(Dashboard.Module):
     """Show the program source code, if available."""
@@ -794,6 +809,7 @@ class Source(Dashboard.Module):
                 'check': check_ge_zero
             }
         }
+
 
 class Assembly(Dashboard.Module):
     """Show the disassembled code surrounding the program counter. The
@@ -916,6 +932,7 @@ instructions constituting the current statement are marked, if available."""
             }
         }
 
+
 class Stack(Dashboard.Module):
     """Show the current stack trace including the function name and the file
 location, if available. Optionally list the frame arguments and locals too."""
@@ -1031,6 +1048,7 @@ location, if available. Optionally list the frame arguments and locals too."""
             }
         }
 
+
 class History(Dashboard.Module):
     """List the last entries of the value history."""
 
@@ -1059,6 +1077,7 @@ class History(Dashboard.Module):
                 'check': check_gt_zero
             }
         }
+
 
 class Memory(Dashboard.Module):
     """Allow to inspect memory regions."""
@@ -1163,6 +1182,7 @@ class Memory(Dashboard.Module):
             }
         }
 
+
 class Registers(Dashboard.Module):
     """Show the CPU registers and their values."""
 
@@ -1222,6 +1242,7 @@ class Registers(Dashboard.Module):
             pass
         return str(value)
 
+
 class Threads(Dashboard.Module):
     """List the currently available threads."""
 
@@ -1249,6 +1270,7 @@ class Threads(Dashboard.Module):
         selected_thread.switch()
         selected_frame.select()
         return out
+
 
 class Expressions(Dashboard.Module):
     """Watch user expressions."""
@@ -1310,8 +1332,10 @@ class Expressions(Dashboard.Module):
         }
 
 
-class StackMemory(Dashboard.Module):
+class StackMemory(Registers):
     """Allow to inspect stack memory regions."""
+
+    MEM_RANGE = 16  # * sizeof(void *)
 
     @staticmethod
     def format_byte(byte):
@@ -1328,13 +1352,19 @@ class StackMemory(Dashboard.Module):
         value = gdb.parse_and_eval(expression)
         return to_unsigned(value)
 
+    @property
+    def width(self):
+        return int(Dashboard.term_width * 0.75)
+
     def __init__(self):
         try:
             self.row_length = int(gdb.parse_and_eval('sizeof(void *)'))
         except Exception:
             self.row_length = 16
-        self.length = self.row_length * 8
-        self.base_length = self.row_length * 8
+        print('Current row length is {}'.format(self.row_length))
+        self.length = self.row_length * self.MEM_RANGE
+        self.base_length = self.row_length * self.MEM_RANGE
+        self.table = {}
 
     def format_memory(self, start, memory):
         out = []
@@ -1352,28 +1382,82 @@ class StackMemory(Dashboard.Module):
         return out
 
     def label(self):
-        return 'Stack memory [%s]' % str(gdb.parse_and_eval('$sp'))
+        return 'Stack Memory [{}] and Registers'.format(gdb.parse_and_eval('$sp'))
 
     def lines(self, style_changed):
-        out = []
+        return self.add_box(self.stack(), self.registers())
+
+    def stack(self):
         inferior = gdb.selected_inferior()
         address = self.parse_as_address('(void *)$sp')
         bottom_address = self.parse_as_address('(void *)$bp')
-        if (bottom_address - address) < self.length:
+        if (bottom_address - address) < self.length and not (bottom_address - address) < 0:
             self.length = (bottom_address - address)
         else:
             self.length = self.base_length
+        print('Reading {} ({})'.format(self.length, self.base_length))
         try:
             memory = inferior.read_memory(address, self.length)
-            out.extend(self.format_memory(address, memory))
+            return self.format_memory(address, memory)
         except gdb.error:
             msg = 'Cannot access {} bytes starting at {}'
             msg = msg.format(length, format_address(address))
-            out.append(ansi(msg, R.style_error))
-        out.append(divider())
-        # drop last divider
-        if out:
-            del out[-1]
+            return ansi(msg, R.style_error)
+
+    def registers(self):
+        # fetch registers status
+        registers = []
+        for reg_info in run('info registers').strip().split('\n'):
+            # fetch register and update the table
+            name = reg_info.split(None, 1)[0]
+            value = gdb.parse_and_eval('${}'.format(name))
+            string_value = self.format_value(value)
+            changed = self.table and (self.table.get(name, '') != string_value)
+            self.table[name] = string_value
+            if 'flags' in name:
+                registers.insert(0, (name, string_value, changed))
+            else:
+                registers.append((name, string_value, changed))
+
+        # split registers in rows and columns, each column is composed of name,
+        # space, value and another trailing space which is skipped in the last
+        # column (hence term_width + 1)
+        max_name = max(len(name) for name, _, _ in registers)
+        max_value = max(len(value) for _, value, _ in registers)
+        max_width = max_name + max_value + 2
+        per_line = 1
+        # redistribute extra space among columns
+        width = Dashboard.term_width - self.width
+        extra = int((width + 1 -
+                     max_width * per_line) / per_line)
+        if per_line == 1:
+            # center when there is only one column
+            max_name += int(extra / 2)
+            max_value += int(extra / 2)
+        else:
+            max_value += extra
+        # format registers info
+        partial = []
+        for name, value, changed in registers:
+            styled_name = ansi(name.rjust(max_name), R.style_low)
+            value_style = R.style_selected_1 if changed else ''
+            styled_value = ansi(value.ljust(max_value), value_style)
+            partial.append(styled_name + ' ' + styled_value)
+        out = []
+        for i in range(0, len(partial), per_line):
+            out.append(' '.join(partial[i:i + per_line]).rstrip())
+        return out
+
+    def add_box(self, lines, registers):
+        items = max([len(lines), len(registers)])
+        out = []
+        for i in range(0, items):
+            line = lines[i] if len(lines) > i else ''
+            reg = registers[i] if len(registers) > i else ''
+            whitespace = (' ' * (self.width - len(line)))
+            divider = ansi('|', R.divider_fill_style_primary)
+            line = line[:self.width] + whitespace + divider + reg
+            out.append(line)
         return out
 
     def set_length(self, arg):
