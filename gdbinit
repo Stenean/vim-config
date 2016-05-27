@@ -60,6 +60,7 @@ import os
 import re
 import struct
 import termios
+import re
 
 # Common attributes ------------------------------------------------------------
 
@@ -1357,14 +1358,17 @@ class StackMemory(Registers):
         return int(Dashboard.term_width * 0.75)
 
     def __init__(self):
+        self.update_lengths()
+        self.table = {}
+        self.control_remove = re.compile(r'\x1b[^m]*m')
+
+    def update_lengths(self):
         try:
             self.row_length = int(gdb.parse_and_eval('sizeof(void *)'))
         except Exception:
-            self.row_length = 16
-        print('Current row length is {}'.format(self.row_length))
+            self.row_length = 8
         self.length = self.row_length * self.MEM_RANGE
         self.base_length = self.row_length * self.MEM_RANGE
-        self.table = {}
 
     def format_memory(self, start, memory):
         out = []
@@ -1385,6 +1389,7 @@ class StackMemory(Registers):
         return 'Stack Memory [{}] and Registers'.format(gdb.parse_and_eval('$sp'))
 
     def lines(self, style_changed):
+        self.update_lengths()
         return self.add_box(self.stack(), self.registers())
 
     def stack(self):
@@ -1395,7 +1400,6 @@ class StackMemory(Registers):
             self.length = (bottom_address - address)
         else:
             self.length = self.base_length
-        print('Reading {} ({})'.format(self.length, self.base_length))
         try:
             memory = inferior.read_memory(address, self.length)
             return self.format_memory(address, memory)
@@ -1414,6 +1418,8 @@ class StackMemory(Registers):
             string_value = self.format_value(value)
             changed = self.table and (self.table.get(name, '') != string_value)
             self.table[name] = string_value
+            if any(str(x) in name for x in range(10)):
+                continue
             if 'flags' in name:
                 registers.insert(0, (name, string_value, changed))
             else:
@@ -1454,7 +1460,7 @@ class StackMemory(Registers):
         for i in range(0, items):
             line = lines[i] if len(lines) > i else ''
             reg = registers[i] if len(registers) > i else ''
-            whitespace = (' ' * (self.width - len(line)))
+            whitespace = ' ' * (self.width - len(self.control_remove.sub('', line)))
             divider = ansi('|', R.divider_fill_style_primary)
             line = line[:self.width] + whitespace + divider + reg
             out.append(line)
