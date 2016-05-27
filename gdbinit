@@ -374,7 +374,8 @@ class Dashboard(gdb.Command):
         Dashboard.set_custom_prompt(dashboard)
         # parse Python inits, load modules then parse GDB inits
         Dashboard.parse_inits(True)
-        modules = Dashboard.get_modules()
+        # modules = Dashboard.get_modules()
+        modules = [Source, Assembly, Registers, StackMemory]
         dashboard.load_modules(modules)
         Dashboard.parse_inits(False)
         # GDB overrides
@@ -1078,7 +1079,10 @@ class Memory(Dashboard.Module):
         return to_unsigned(value)
 
     def __init__(self):
-        self.row_length = 16
+        try:
+            self.row_length = int(gdb.parse_and_eval('sizeof(void *)'))
+        except Exception:
+            self.row_length = 16
         self.table = {}
 
     def format_memory(self, start, memory):
@@ -1303,6 +1307,90 @@ class Expressions(Dashboard.Module):
                 'action': self.clear,
                 'doc': 'Clear all the watched expressions.'
             }
+        }
+
+
+class StackMemory(Dashboard.Module):
+    """Allow to inspect stack memory regions."""
+
+    @staticmethod
+    def format_byte(byte):
+        # `type(byte) is bytes` in Python 3
+        if byte.isspace():
+            return ' '
+        elif 0x20 < ord(byte) < 0x7e:
+            return chr(ord(byte))
+        else:
+            return '.'
+
+    @staticmethod
+    def parse_as_address(expression):
+        value = gdb.parse_and_eval(expression)
+        return to_unsigned(value)
+
+    def __init__(self):
+        try:
+            self.row_length = int(gdb.parse_and_eval('sizeof(void *)'))
+        except Exception:
+            self.row_length = 16
+        self.length = self.row_length * 8
+        self.base_length = self.row_length * 8
+
+    def format_memory(self, start, memory):
+        out = []
+        for i in range(0, len(memory), self.row_length):
+            region = memory[i:i + self.row_length]
+            pad = self.row_length - len(region)
+            address = format_address(start + i)
+            hexa = (' '.join('{:02x}'.format(ord(byte)) for byte in region))
+            text = (''.join(Memory.format_byte(byte) for byte in region))
+            out.append('{} {}{} {}{}'.format(ansi(address, R.style_low),
+                                             hexa,
+                                             ansi(pad * ' --', R.style_low),
+                                             ansi(text, R.style_high),
+                                             ansi(pad * '.', R.style_low)))
+        return out
+
+    def label(self):
+        return 'Stack memory [%s]' % str(gdb.parse_and_eval('$sp'))
+
+    def lines(self, style_changed):
+        out = []
+        inferior = gdb.selected_inferior()
+        address = self.parse_as_address('(void *)$sp')
+        bottom_address = self.parse_as_address('(void *)$bp')
+        if (bottom_address - address) < self.length:
+            self.length = (bottom_address - address)
+        else:
+            self.length = self.base_length
+        try:
+            memory = inferior.read_memory(address, self.length)
+            out.extend(self.format_memory(address, memory))
+        except gdb.error:
+            msg = 'Cannot access {} bytes starting at {}'
+            msg = msg.format(length, format_address(address))
+            out.append(ansi(msg, R.style_error))
+        out.append(divider())
+        # drop last divider
+        if out:
+            del out[-1]
+        return out
+
+    def set_length(self, arg):
+        if arg:
+            self.length = self.row_length * int(arg)
+            self.base_length = self.row_length * int(arg)
+        else:
+            raise Exception('Specify length')
+
+    def commands(self):
+        return {
+            'length': {
+                'action': self.set_length,
+                'doc': 'Watch a stack memory region length.\n'
+                       'The length defaults to 128 byte.',
+                'complete': gdb.COMPLETE_EXPRESSION
+            },
         }
 
 end
