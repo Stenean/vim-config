@@ -386,9 +386,12 @@ class Dashboard(gdb.Command):
         Dashboard.set_custom_prompt(dashboard)
         # parse Python inits, load modules then parse GDB inits
         Dashboard.parse_inits(True)
-        # modules = Dashboard.get_modules()
-        modules = [Source, Assembly, StackMemory]
+        modules = Dashboard.get_modules()
+        # modules = [Source, Assembly, StackMemory]
         dashboard.load_modules(modules)
+        for module in dashboard.modules:
+            if module.instance.__class__ not in [Source, Assembly, StackMemory]:
+                module.enabled = False
         Dashboard.parse_inits(False)
         # GDB overrides
         run('set pagination off')
@@ -1337,6 +1340,7 @@ class StackMemory(Registers):
     """Allow to inspect stack memory regions."""
 
     MEM_RANGE = 16  # * sizeof(void *)
+    MAX_STRING = 128
 
     @staticmethod
     def format_byte(byte):
@@ -1352,6 +1356,10 @@ class StackMemory(Registers):
     def parse_as_address(expression):
         value = gdb.parse_and_eval(expression)
         return to_unsigned(value)
+
+    @property
+    def byte_order(self):
+        return 'little' if 'little' in gdb.execute('show endian', to_string=True) else 'big'
 
     @property
     def width(self):
@@ -1370,6 +1378,50 @@ class StackMemory(Registers):
         self.length = self.row_length * self.MEM_RANGE
         self.base_length = self.row_length * self.MEM_RANGE
 
+    def dereference(self, pointer):
+        """
+        Recursively dereference a pointer for display
+        """
+        # fmt = ('<' if self.byte_order == 'little' else '>'
+        #        ) + {2: 'H', 4: 'L', 8: 'Q'}[self.row_length]
+
+        addr = pointer
+        chain = []
+
+        # recursively dereference
+        while True:
+            try:
+                # mem = gdb.selected_inferior().read_memory(addr, self.row_length)
+                mem = gdb.execute('x/a {}'.format(addr), to_string=True)
+                # log.debug("read mem: {}".format(mem))
+                # (ptr,) = struct.unpack(fmt, mem)
+                prev_addr, mem = (mem.split(':')[0], ' '.join(mem.split(':')[1:]))
+                if prev_addr != addr:
+                    chain.append(('string', addr))
+                    break
+                if len(mem.strip()) - 2 != self.row_length * 2:
+                    chain.append(('string', mem.strip()))
+                    break
+                ptr = mem.strip()
+                chain.append(('pointer', addr))
+                addr = ptr
+            except gdb.MemoryError:
+                break
+
+        print(chain)
+        # get some info for the last pointer
+        # first try to resolve a symbol context for the address
+        if len(chain):
+            p, addr = chain[-1]
+            try:
+                output = gdb.execute('info symbol {}'.format(addr), to_string=True)
+            except gdb.error:
+                output = 'No symbol matches'
+            if 'No symbol matches' not in output:
+                chain.append(('symbol', output.strip()))
+
+        return chain
+
     def format_memory(self, start, memory):
         out = []
         for i in range(0, len(memory), self.row_length):
@@ -1378,11 +1430,15 @@ class StackMemory(Registers):
             address = format_address(start + i)
             hexa = (' '.join('{:02x}'.format(ord(byte)) for byte in region))
             text = (''.join(Memory.format_byte(byte) for byte in region))
-            out.append('{} {}{} {}{}'.format(ansi(address, R.style_low),
-                                             hexa,
-                                             ansi(pad * ' --', R.style_low),
-                                             ansi(text, R.style_high),
-                                             ansi(pad * '.', R.style_low)))
+            refs = ' => '.join(x[1] for x in self.dereference(address))
+            if refs:
+                refs = ' => ' + refs
+            out.append('{} {}{} {}{} {}'.format(ansi(address, R.style_low),
+                                                hexa,
+                                                ansi(pad * ' --', R.style_low),
+                                                ansi(text, R.style_high),
+                                                ansi(pad * '.', R.style_low),
+                                                refs))
         return out
 
     def label(self):
@@ -1394,19 +1450,21 @@ class StackMemory(Registers):
 
     def stack(self):
         inferior = gdb.selected_inferior()
-        address = self.parse_as_address('(void *)$sp')
-        bottom_address = self.parse_as_address('(void *)$bp')
-        if (bottom_address - address) < self.length and not (bottom_address - address) < 0:
-            self.length = (bottom_address - address)
+        address = self.parse_as_address('$sp')
+        start = gdb.parse_and_eval('(unsigned int)$sp')
+        end = gdb.parse_and_eval('(unsigned int)$bp')
+        if (end - start) < self.length and not (end - start) < 0:
+            self.length = (end - start)
         else:
             self.length = self.base_length
         try:
             memory = inferior.read_memory(address, self.length)
             return self.format_memory(address, memory)
-        except gdb.error:
+        except gdb.error as e:
+            print('{}: {}'.format(e, e.with_traceback()))
             msg = 'Cannot access {} bytes starting at {}'
-            msg = msg.format(length, format_address(address))
-            return ansi(msg, R.style_error)
+            msg = msg.format(self.length, format_address(address))
+            return [ansi(msg, R.style_error)]
 
     def registers(self):
         # fetch registers status
