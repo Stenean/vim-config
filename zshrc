@@ -1,3 +1,4 @@
+# vim: set fdm=marker
 # User configuration
 export TERM="xterm-256color"
 export SHELL="/bin/zsh"
@@ -6,10 +7,12 @@ export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bi
 export EDITOR='vim'
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
+# Git config {{{
     git config --global merge.tool diffconflicts
     git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGED'
     git config --global mergetool.diffconflicts.trustExitCode true
     git config --global mergetool.diffconflicts.keepBackup false
+# }}}
 fi
 
 export PROJECT_HOME="$HOME/Projects"
@@ -39,6 +42,7 @@ DEFAULT_USER="kuba"
 # plugins=(git, command-not-found, docker, jsontools, python, suprevisor, virtualenvwrapper)
 
 if ! zgen saved; then
+# Zgen config {{{
     echo "Creating a zgen save"
 
     zgen oh-my-zsh
@@ -72,6 +76,7 @@ if ! zgen saved; then
     # autosuggestions should be loaded last
     zgen load tarruda/zsh-autosuggestions
     zgen save
+# }}}
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
@@ -79,11 +84,56 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 # You may need to manually set your language environment
 export LANG=pl_PL.UTF-8
 
+# Aliases {{{
+
 alias ll="ls -la"
 alias clearpyc="find . -name '*.pyc' -delete"
 alias tmux="TERM='xterm-256color' tmux"
 
+# }}}
+
+xmodmap -e "keycode 166=Prior"
+xmodmap -e "keycode 167=Next"
+
+# Python and pyenv setup {{{
+
+. /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+pyenv virtualenvwrapper
+
+# }}}
+
+## Functions {{{
+
+function gdb_window {
+# {{{
+    if [ -n "$(env | grep 'TMUX=')" ]; then
+        tmux splitw -p 25
+        tmux selectp -t :.0
+        tmux splitw -h -p 75
+        tmux selectp -t :.0
+        tmux splitw -p 88
+        tmux splitw -p 73
+        tmux selectp -t :.3
+        tmux splitw -p 30
+        tmux send-keys -t :.0 C-z 'voltron view b' Enter
+        tmux send-keys -t :.1 C-z 'voltron view bt' Enter
+        tmux send-keys -t :.2 C-z 'voltron view r -i' Enter
+        tmux send-keys -t :.3 C-z 'voltron view s' Enter
+        tmux send-keys -t :.5 C-z 'voltron view d' Enter
+        tmux send-keys -t :.4 C-z "cd \"$(pwd)\"; gdb $*" Enter
+    fi
+}
+# }}}
+
 function ggdb {
+# {{{
     cd $(pwd);
     WAIT_SECS=2;
     while 1; do
@@ -98,19 +148,9 @@ function ggdb {
     gdb -ex "target remote localhost:$GDB_PORT" $1;
     rm $GDBSERV_OUT;
 }
+# }}}
 
-xmodmap -e "keycode 166=Prior"
-xmodmap -e "keycode 167=Next"
-
-. /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
-
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-pyenv virtualenvwrapper
+# }}}
 
 if [ -e "$HOME/.zshrc_local" ]; then
     source ~/.zshrc_local
