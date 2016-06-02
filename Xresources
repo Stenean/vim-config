@@ -77,3 +77,6 @@
 *color15:               S_base3
 
 xscreensaver.newLoginCommand: echo "Nope"
+
+xterm*font: fixed
+xterm*boldFont: fixed
