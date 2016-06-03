@@ -591,7 +591,7 @@ let g:jedi#show_call_signatures = 2
 let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
-let g:syntastic_auto_loc_list = 3
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_error_symbol = "✗ "
