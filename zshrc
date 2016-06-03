@@ -122,7 +122,7 @@ function gdb_window {
         tmux splitw -p 73
         tmux selectp -t :.3
         tmux splitw -p 30
-        tmux send-keys -t :.0 C-z 'voltron view b' Enter
+        # tmux send-keys -t :.0 C-z 'voltron view b' Enter
         tmux send-keys -t :.1 C-z 'voltron view bt' Enter
         tmux send-keys -t :.2 C-z 'voltron view r -i' Enter
         tmux send-keys -t :.3 C-z 'voltron view s' Enter
