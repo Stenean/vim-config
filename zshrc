@@ -127,7 +127,7 @@ function gdb_window {
         tmux send-keys -t :.2 C-z 'voltron view r -i' Enter
         tmux send-keys -t :.3 C-z 'voltron view s' Enter
         tmux send-keys -t :.5 C-z 'voltron view d' Enter
-        tmux send-keys -t :.4 C-z "cd \"$(pwd)\"; gdb $*" Enter
+        tmux send-keys -t :.4 C-z "cd \"$(pwd)\"; $*" Enter
     fi
 }
 # }}}
