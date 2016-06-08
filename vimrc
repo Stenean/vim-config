@@ -498,18 +498,20 @@ noremap <F7> :TagbarToggle<CR>
 noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
 
-set <xF1>=[1;5C
-set <xF2>=[1;5D
+set <xF1>=[1;3C
+set <xF2>=[1;3D
+" set <xF1>=[1;5C
+" set <xF2>=[1;5D
 
-noremap <xF1> <C-Right>
-noremap <xF2> <C-Left>
-noremap! <xF1> <C-Right>
-noremap! <xF2> <C-Left>
+noremap <xF1> <A-Right>
+noremap <xF2> <A-Left>
+noremap! <xF1> <A-Right>
+noremap! <xF2> <A-Left>
 
 noremap <leader>a :Autoformat<CR>
 
-nnoremap <silent> <C-Right> :bnext<CR>
-nnoremap <silent> <C-Left> :bprev<CR>
+nnoremap <silent> <A-Right> :bnext<CR>
+nnoremap <silent> <A-Left> :bprev<CR>
 nnoremap ] :YcmCompleter GoToDefinition<CR>
 
 nnoremap <leader>s :FSHere<CR>
