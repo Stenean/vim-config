@@ -498,8 +498,8 @@ noremap <F7> :TagbarToggle<CR>
 noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
 
-set <xF1>=[1;5C
-set <xF2>=[1;5D
+set <xF1>=[1;5C
+set <xF2>=[1;5D
 
 noremap <xF1> <C-Right>
 noremap <xF2> <C-Left>
