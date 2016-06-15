@@ -70,7 +70,6 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/aws
     zgen oh-my-zsh plugins/colored-man-pages
     zgen oh-my-zsh plugins/colorize
-    zgen oh-my-zsh plugins/vi-mode
     zgen oh-my-zsh plugins/cp
     zgen oh-my-zsh plugins/catimg
     zgen oh-my-zsh plugins/nmap
