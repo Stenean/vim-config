@@ -4,6 +4,7 @@ export TERM="xterm-256color"
 export SHELL="/bin/zsh"
 export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
+
 export EDITOR='vim'
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
@@ -69,6 +70,10 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/aws
     zgen oh-my-zsh plugins/colored-man-pages
     zgen oh-my-zsh plugins/colorize
+    zgen oh-my-zsh plugins/vi-mode
+    zgen oh-my-zsh plugins/cp
+    zgen oh-my-zsh plugins/catimg
+    zgen oh-my-zsh plugins/nmap
 
     zgen load arzzen/calc.plugin.zsh
     zgen load zsh-users/zsh-syntax-highlighting
@@ -151,6 +156,8 @@ function ggdb {
 # }}}
 
 # }}}
+
+alias sudo='sudo '
 
 if [ -e "$HOME/.zshrc_local" ]; then
     source ~/.zshrc_local
