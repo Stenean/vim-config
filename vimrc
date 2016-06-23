@@ -84,6 +84,8 @@ set number
 " Set to auto read when a file is changed from the outside
 set autoread
 
+set nowrap
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = "\\"
@@ -93,6 +95,7 @@ let g:mapleader = "\\"
 nmap <leader>w :w!<cr>
 
 " Yanks to global system clipboard
+set clipboard^=unnamed
 set clipboard^=unnamedplus
 
 let g:skipview_files = [
@@ -388,6 +391,7 @@ augroup END
 
 augroup enter_exit_settings
     autocmd!
+    autocmd BufEnter * :syntax sync fromstart
     autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
     autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
