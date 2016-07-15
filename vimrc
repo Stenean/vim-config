@@ -390,6 +390,11 @@ augroup js_settings
     autocmd BufNewFile *.js, *.html, *.css :call SetJSSettings()
 augroup END
 
+augroup java_settings
+    autocmd!
+    autocmd FileType java setlocal omnifunc=javacomplete#Complete
+augroup END
+
 augroup enter_exit_settings
     autocmd!
     autocmd BufEnter * :syntax sync fromstart
@@ -502,6 +507,12 @@ noremap <S-F8> :call CloseTreeOrUndo()<CR>
 noremap <F7> :TagbarToggle<CR>
 noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
+
+nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
 
 set <xF1>=[1;3C
 set <xF2>=[1;3D
