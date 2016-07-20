@@ -398,6 +398,7 @@ augroup END
 augroup android_settings
     autocmd!
     autocmd BufWrite build.gradle call gradle#sync()
+"    autocmd BufNewFile,BufRead,BufEnter *.java let g:JavaComplete_SourcesPath=$SRCPATH
 augroup END
 
 augroup enter_exit_settings
