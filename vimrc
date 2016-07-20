@@ -395,6 +395,11 @@ augroup java_settings
     autocmd FileType java setlocal omnifunc=javacomplete#Complete
 augroup END
 
+augroup android_settings
+    autocmd!
+    autocmd BufWrite build.gradle call gradle#sync()
+augroup END
+
 augroup enter_exit_settings
     autocmd!
     autocmd BufEnter * :syntax sync fromstart
