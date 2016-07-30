@@ -395,6 +395,14 @@ augroup java_settings
     autocmd FileType java setlocal omnifunc=javacomplete#Complete
 augroup END
 
+augroup android_settings
+    autocmd!
+    autocmd FileType java call airline#parts#define_function('vim-gradle-status', 'gradle#statusLine')
+    autocmd FileType java let g:airline_section_x= airline#section#create_right(['tagbar', 'filetype', 'vim-gradle-status'])
+    autocmd BufWrite build.gradle call gradle#sync()
+"    autocmd BufNewFile,BufRead,BufEnter *.java let g:JavaComplete_SourcesPath=$SRCPATH
+augroup END
+
 augroup enter_exit_settings
     autocmd!
     autocmd BufEnter * :syntax sync fromstart
