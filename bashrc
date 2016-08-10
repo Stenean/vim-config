@@ -116,15 +116,11 @@ fi
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
 
-(sleep 5 && \
-    xmodmap -e "keycode 166=Prior" && \
-    xmodmap -e "keycode 167=Next" && \
-    notify-send "Keys set" "PageUp and PageDown" \
-) &
+xmodmap -e "keycode 166=Prior"
+xmodmap -e "keycode 167=Next"
 
 . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenvwrapper
-eval $(thefuck --alias)
