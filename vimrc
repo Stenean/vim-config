@@ -195,6 +195,8 @@ endif
 
 " Set utf8 as standard encoding and en_US as the standard
 " language
+let $LANG='en'
+set langmenu=en
 set encoding=utf8
 
 " Use Unix as the standard file type
