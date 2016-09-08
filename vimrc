@@ -124,11 +124,11 @@ if 'VIRTUAL_ENV' in os.environ:
     if os.path.exists(activate_this):
       execfile(activate_this, dict(__file__=activate_this))
 
-for path in reversed(vim.eval('python_sys').split(":")):
-    path = path.strip()
-    if path == "" or path in sys.path:
-        continue
-    sys.path.insert(0, path)
+# for path in reversed(vim.eval('python_sys').split(":")):
+#     path = path.strip()
+#     if path == "" or path in sys.path:
+#         continue
+#     sys.path.insert(0, path)
 #
 # for path in sys.path[:]:
 #     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
@@ -155,11 +155,11 @@ if 'VIRTUAL_ENV' in os.environ:
         code = compile(f.read(), activate_this, 'exec')
         exec(code, dict(__file__=activate_this))
 
-for path in reversed(vim.eval('python3_sys').split(":")):
-    path = path.strip()
-    if path == "" or path in sys.path:
-        continue
-    sys.path.insert(0, path)
+# for path in reversed(vim.eval('python3_sys').split(":")):
+#     path = path.strip()
+#     if path == "" or path in sys.path:
+#         continue
+#     sys.path.insert(0, path)
 
 # for path in sys.path[:]:
 #     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
