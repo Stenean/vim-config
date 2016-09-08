@@ -20,7 +20,6 @@ if has('python')
 elseif has('python3')
     let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
 endif
-echom g:ycm_server_python_interpreter
 
 set rtp+=~/.vim/bundle/Vundle.vim
 " {{{ Plugin definitions
