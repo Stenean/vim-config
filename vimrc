@@ -15,6 +15,13 @@ if $PYTHON_VERSION
     endif
 endif
 
+if has('python')
+    let g:ycm_server_python_interpreter = system('python -c "import sys; sys.stdout.write(sys.executable)"')
+elseif has('python3')
+    let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
+endif
+echom g:ycm_server_python_interpreter
+
 set rtp+=~/.vim/bundle/Vundle.vim
 " {{{ Plugin definitions
 call vundle#begin()
@@ -137,7 +144,7 @@ EOF
 catch
   echom "Failed to load python virtualenv"
   try
-    let python3_sys=system('python -c "import sys; print(\":\".join(sys.path))"')
+    let python3_sys=system('python3 -c "import sys; print(\":\".join(sys.path))"')
     py3 << EOF
 import os
 import sys
