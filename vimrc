@@ -129,10 +129,10 @@ for path in reversed(vim.eval('python_sys').split(":")):
     if path == "" or path in sys.path:
         continue
     sys.path.insert(0, path)
-
-for path in sys.path[:]:
-    if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
-        sys.path.remove(path)
+#
+# for path in sys.path[:]:
+#     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
+#         sys.path.remove(path)
 EOF
 catch
   echom "Failed to load python virtualenv"
@@ -161,9 +161,9 @@ for path in reversed(vim.eval('python3_sys').split(":")):
         continue
     sys.path.insert(0, path)
 
-for path in sys.path[:]:
-    if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
-        sys.path.remove(path)
+# for path in sys.path[:]:
+#     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
+#         sys.path.remove(path)
 EOF
   catch
     echom "Failed to load python3 virtualenv"
