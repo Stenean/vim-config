@@ -113,9 +113,17 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 " }}}
 
 " => Python with virtualenv support {{{
-try
-  let python_sys=system('python -c "import sys; print \":\".join(sys.path)"')
-py << EOF
+
+if has('python')
+    let python_cmd='python'
+else
+    let python_cmd='python3'
+endif
+" let python_str=python_cmd.' -c "import sys; sys.stdout.write(\":\".join(sys.path)")'
+" let python_sys=system(python_str)
+
+let python_eof=python_cmd.' << EOF'
+exec python_eof
 import os
 import sys
 import vim
@@ -128,7 +136,11 @@ if 'VIRTUAL_ENV' in os.environ:
   for activate_dir in [pyenv_base_dir, project_base_dir]:
     activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
     if os.path.exists(activate_this):
-      execfile(activate_this, dict(__file__=activate_this))
+      if sys.version_info.major == 2:
+        execfile(activate_this, dict(__file__=activate_this))
+      else:
+        code = compile(f.read(), activate_this, 'exec')
+        exec(code, dict(__file__=activate_this))
 
 # for path in reversed(vim.eval('python_sys').split(":")):
 #     path = path.strip()
@@ -140,41 +152,6 @@ if 'VIRTUAL_ENV' in os.environ:
 #     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
 #         sys.path.remove(path)
 EOF
-catch
-  echom "Failed to load python virtualenv"
-  try
-    let python3_sys=system('python3 -c "import sys; print(\":\".join(sys.path))"')
-    py3 << EOF
-import os
-import sys
-import vim
-
-
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
-  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
-  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
-  for activate_dir in [pyenv_base_dir, project_base_dir]:
-    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
-    if os.path.exists(activate_this):
-      with open(activate_this) as f:
-        code = compile(f.read(), activate_this, 'exec')
-        exec(code, dict(__file__=activate_this))
-
-# for path in reversed(vim.eval('python3_sys').split(":")):
-#     path = path.strip()
-#     if path == "" or path in sys.path:
-#         continue
-#     sys.path.insert(0, path)
-
-# for path in sys.path[:]:
-#     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
-#         sys.path.remove(path)
-EOF
-  catch
-    echom "Failed to load python3 virtualenv"
-  endtry
-endtry
 " }}}
 
 " => VIM user interface {{{
