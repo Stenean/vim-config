@@ -1,3 +1,6 @@
+:call tern#Enable()
+setlocal omnifunc=javascriptcomplete#CompleteJS
+
 setl foldmethod=syntax
 setl tabstop=2
 setl softtabstop=2

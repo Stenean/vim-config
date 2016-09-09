@@ -437,18 +437,11 @@ augroup END
 " js file settings
 augroup js_settings
     autocmd!
-    autocmd BufNewFile *.js, *.html, *.css :call SetJSSettings()
-augroup END
-
-augroup java_settings
-    autocmd!
-    autocmd FileType java setlocal omnifunc=javacomplete#Complete
+    autocmd BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
 augroup END
 
 augroup android_settings
     autocmd!
-    autocmd FileType java call airline#parts#define_function('vim-gradle-status', 'gradle#statusLine')
-    autocmd FileType java let g:airline_section_x= airline#section#create_right(['tagbar', 'filetype', 'vim-gradle-status'])
     autocmd BufWrite build.gradle call gradle#sync()
 "    autocmd BufNewFile,BufRead,BufEnter *.java let g:JavaComplete_SourcesPath=$SRCPATH
 augroup END
@@ -464,30 +457,9 @@ augroup enter_exit_settings
     autocmd BufReadPost quickfix :call OpenQuickfix()
 augroup END
 
-augroup filetype_settings
-    autocmd!
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-
-    autocmd FileType python setl switchbuf=useopen
-    autocmd FileType python setl foldmethod=expr
-    autocmd FileType python let b:did_ftplugin = 1
-
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-    autocmd Filetype java setl omnifunc=javacomplete#Complete
-    autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
-
-    autocmd FileType javascript :call tern#Enable()
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
-augroup END
-
 " Cofee make
 augroup coffee
     autocmd!
-    autocmd FileType coffee :call tern#Enable()
     autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
     autocmd BufWritePost *.coffee make!
     autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
@@ -515,12 +487,6 @@ augroup fugitive
     autocmd!
     autocmd BufReadPost fugitive://* set bufhidden=delete
     autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
-augroup END
-
-" vimscript folding
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
 augroup END
 " }}}
 
@@ -1088,18 +1054,6 @@ function! MKSessionDir()
   endif
   let g:session_directory = b:sessiondir
 endfunction
-
-func! SetPythonSettings()
-    setl tabstop=4
-    setl softtabstop=4
-    setl shiftwidth=4
-    setl textwidth=99
-    setl fileformat=unix
-    setl expandtab
-    setl autoindent
-    setl completeopt+=longest
-    setl colorcolumn=100
-endfunc
 
 func! SetJSSettings()
     setl foldmethod=syntax
