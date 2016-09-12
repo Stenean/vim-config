@@ -428,18 +428,6 @@ augroup whitespace
     autocmd BufWrite *.hpp :call DeleteTrailingWS()
 augroup END
 
-" python file settings
-augroup py_settings
-    autocmd!
-    autocmd BufNewFile,BufRead *.py :call SetPythonSettings()
-augroup END
-
-" js file settings
-augroup js_settings
-    autocmd!
-    autocmd BufNewFile,BufRead *.js, *.html, *.css :call SetJSSettings()
-augroup END
-
 augroup android_settings
     autocmd!
     autocmd BufWrite build.gradle call gradle#sync()
@@ -1054,6 +1042,18 @@ function! MKSessionDir()
   endif
   let g:session_directory = b:sessiondir
 endfunction
+
+func! SetPythonSettings()
+    setl tabstop=4
+    setl softtabstop=4
+    setl shiftwidth=4
+    setl textwidth=99
+    setl fileformat=unix
+    setl expandtab
+    setl autoindent
+    setl completeopt+=longest
+    setl colorcolumn=100
+endfunc
 
 func! SetJSSettings()
     setl foldmethod=syntax
