@@ -1,6 +1,6 @@
-# vim: set fdm=marker
+# vim: set fdm=marker:
 # User configuration
-export TERM="xterm-256color"
+# export TERM="xterm-256color"
 export SHELL="/bin/zsh"
 export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"

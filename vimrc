@@ -15,6 +15,12 @@ if $PYTHON_VERSION
     endif
 endif
 
+if has('python')
+    let g:ycm_server_python_interpreter = system('python -c "import sys; sys.stdout.write(sys.executable)"')
+elseif has('python3')
+    let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
+endif
+
 set rtp+=~/.vim/bundle/Vundle.vim
 " {{{ Plugin definitions
 call vundle#begin()
@@ -104,6 +110,48 @@ let g:skipview_files = [
 \ ]
 
 let NERDTreeIgnore=['\.pyc$', '\~$']
+" }}}
+
+" => Python with virtualenv support {{{
+
+if has('python')
+    let python_cmd='python'
+else
+    let python_cmd='python3'
+endif
+" let python_str=python_cmd.' -c "import sys; sys.stdout.write(\":\".join(sys.path)")'
+" let python_sys=system(python_str)
+
+let python_eof=python_cmd.' << EOF'
+exec python_eof
+import os
+import sys
+import vim
+
+
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
+  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
+  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
+  for activate_dir in [pyenv_base_dir, project_base_dir]:
+    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
+    if os.path.exists(activate_this):
+      if sys.version_info.major == 2:
+        execfile(activate_this, dict(__file__=activate_this))
+      else:
+        code = compile(f.read(), activate_this, 'exec')
+        exec(code, dict(__file__=activate_this))
+
+# for path in reversed(vim.eval('python_sys').split(":")):
+#     path = path.strip()
+#     if path == "" or path in sys.path:
+#         continue
+#     sys.path.insert(0, path)
+#
+# for path in sys.path[:]:
+#     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
+#         sys.path.remove(path)
+EOF
 " }}}
 
 " => VIM user interface {{{
@@ -380,27 +428,8 @@ augroup whitespace
     autocmd BufWrite *.hpp :call DeleteTrailingWS()
 augroup END
 
-" python file settings
-augroup py_settings
-    autocmd!
-    autocmd BufNewFile,BufRead *.py :call SetPythonSettings()
-augroup END
-
-" js file settings
-augroup js_settings
-    autocmd!
-    autocmd BufNewFile *.js, *.html, *.css :call SetJSSettings()
-augroup END
-
-augroup java_settings
-    autocmd!
-    autocmd FileType java setlocal omnifunc=javacomplete#Complete
-augroup END
-
 augroup android_settings
     autocmd!
-    autocmd FileType java call airline#parts#define_function('vim-gradle-status', 'gradle#statusLine')
-    autocmd FileType java let g:airline_section_x= airline#section#create_right(['tagbar', 'filetype', 'vim-gradle-status'])
     autocmd BufWrite build.gradle call gradle#sync()
 "    autocmd BufNewFile,BufRead,BufEnter *.java let g:JavaComplete_SourcesPath=$SRCPATH
 augroup END
@@ -416,30 +445,9 @@ augroup enter_exit_settings
     autocmd BufReadPost quickfix :call OpenQuickfix()
 augroup END
 
-augroup filetype_settings
-    autocmd!
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-
-    autocmd FileType python setl switchbuf=useopen
-    autocmd FileType python setl foldmethod=expr
-    autocmd FileType python let b:did_ftplugin = 1
-
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-    autocmd Filetype java setl omnifunc=javacomplete#Complete
-    autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
-
-    autocmd FileType javascript :call tern#Enable()
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
-augroup END
-
 " Cofee make
 augroup coffee
     autocmd!
-    autocmd FileType coffee :call tern#Enable()
     autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
     autocmd BufWritePost *.coffee make!
     autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
@@ -468,47 +476,6 @@ augroup fugitive
     autocmd BufReadPost fugitive://* set bufhidden=delete
     autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
 augroup END
-
-" vimscript folding
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
-" }}}
-
-" => Python with virtualenv support {{{
-try
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
-  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
-  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
-  for activate_dir in [pyenv_base_dir, project_base_dir]:
-    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
-    if os.path.exists(activate_this):
-      execfile(activate_this, dict(__file__=activate_this))
-EOF
-catch
-    try
-        py3 << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
-  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
-  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
-  for activate_dir in [pyenv_base_dir, project_base_dir]:
-    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
-    if os.path.exists(activate_this):
-      with open(activate_this) as f:
-        code = compile(f.read(), activate_this, 'exec')
-        exec(code, dict(__file__=activate_this))
-EOF
-    catch
-    endtry
-endtry
 " }}}
 
 " => Misc key mappings {{{
