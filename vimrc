@@ -25,56 +25,56 @@ set rtp+=~/.vim/bundle/Vundle.vim
 " {{{ Plugin definitions
 call vundle#begin()
 
-Bundle 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
 
-Bundle 'vim-scripts/TaskList.vim'
-Bundle 'vim-scripts/tComment'
-Bundle 'vim-scripts/The-NERD-tree'
+Plugin 'vim-scripts/TaskList.vim'
+Plugin 'vim-scripts/tComment'
+Plugin 'vim-scripts/The-NERD-tree'
 
-Bundle 'tpope/vim-dispatch'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-sensible'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-sensible'
 
-Bundle 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimproc.vim'
 
-Bundle 'Chiel92/vim-autoformat'
-Bundle 'MarcWeber/vim-addon-local-vimrc'
-Bundle 'SirVer/ultisnips'
-Bundle 'artur-shaik/vim-javacomplete2'
-Bundle 'chrisbra/csv.vim'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'derekwyatt/vim-fswitch'
-Bundle 'edsono/vim-matchit'
-Bundle 'ekalinin/Dockerfile.vim'
-Bundle 'elzr/vim-json'
-Bundle 'fidian/hexmode'
-Bundle 'fisadev/vim-isort'
-Bundle 'honza/vim-snippets'
-Bundle 'hsanson/vim-android'
-Bundle 'hynek/vim-python-pep8-indent'
-Bundle 'idanarye/vim-vebugger'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'kien/ctrlp.vim'
-Bundle 'lervag/vimtex'
-Bundle 'majutsushi/tagbar'
-Bundle 'mbbill/undotree'
-Bundle 'mhinz/vim-signify'
-Bundle 'pangloss/vim-javascript'
-Bundle 'raimondi/delimitmate'
-Bundle 'scrooloose/syntastic'
-Bundle 'sjl/gundo.vim'
-Bundle 'tmhedberg/SimpylFold'
-Bundle 'vim-airline/vim-airline'
-Bundle 'vim-airline/vim-airline-themes'
-
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'rdnetto/YCM-Generator'
-
+Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'chrisbra/csv.vim'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'derekwyatt/vim-fswitch'
+Plugin 'edsono/vim-matchit'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'elzr/vim-json'
+Plugin 'fidian/hexmode'
+Plugin 'fisadev/vim-isort'
+Plugin 'honza/vim-snippets'
+Plugin 'hsanson/vim-android'
+Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'idanarye/vim-vebugger'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'kien/ctrlp.vim'
+Plugin 'lervag/vimtex'
+Plugin 'majutsushi/tagbar'
+Plugin 'MarcWeber/vim-addon-local-vimrc'
+Plugin 'mbbill/undotree'
+Plugin 'mhinz/vim-signify'
+Plugin 'pangloss/vim-javascript'
+Plugin 'raimondi/delimitmate'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'rust-lang/rust.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'SirVer/ultisnips'
+Plugin 'sjl/gundo.vim'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 
 call vundle#end()
 " }}}
@@ -139,8 +139,9 @@ if 'VIRTUAL_ENV' in os.environ:
       if sys.version_info.major == 2:
         execfile(activate_this, dict(__file__=activate_this))
       else:
-        code = compile(f.read(), activate_this, 'exec')
-        exec(code, dict(__file__=activate_this))
+        with open(activate_this) as f:
+          code = compile(f.read(), activate_this, 'exec')
+          exec(code, dict(__file__=activate_this))
 
 # for path in reversed(vim.eval('python_sys').split(":")):
 #     path = path.strip()
@@ -735,12 +736,21 @@ let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
 let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
+let g:ycm_server_python_interpreter = 'python'
+let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
 
 " }}}
 
 " {{{ Solarized
 
 let g:solarized_visibility="low"    "default value is normal
+
+" }}}
+
+" {{{ rust
+
+let g:rust_fold = 1
+let g:ftplugin_rust_source_path = '/opt/rust/rustc-1.12.0/src'
 
 " }}}
 
