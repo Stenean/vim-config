@@ -33,7 +33,6 @@ Plugin 'xolox/vim-session'
 Plugin 'vim-scripts/TaskList.vim'
 Plugin 'vim-scripts/tComment'
 Plugin 'vim-scripts/The-NERD-tree'
-Plugin 'vim-scripts/phpfolding.vim'
 
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-fugitive'
