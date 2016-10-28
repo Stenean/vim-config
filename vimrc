@@ -584,7 +584,7 @@ let g:jedi#show_call_signatures = 2
 " }}}
 
 " Syntastic {{{
-let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
+let g:syntastic_python_checkers = ['flake8', 'pylint', 'py3kwarn']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
 let g:syntastic_auto_loc_list = 0
@@ -751,6 +751,10 @@ let g:solarized_visibility="low"    "default value is normal
 
 let g:rust_fold = 1
 let g:ftplugin_rust_source_path = '/opt/rust/rustc-1.12.0/src'
+let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
+let g:syntastic_rust_rustc_args = '-Zno-trans'
+let g:syntastic_rust_rustc_exe = 'cargo rustc'
+let g:syntastic_rust_rustc_fname = ''
 
 " }}}
 

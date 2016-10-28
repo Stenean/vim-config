@@ -11,7 +11,8 @@ let current_compiler = "django"
 let s:cpo_save = &cpo
 set cpo-=C
 
-setlocal makeprg=$DJANGO_DIR/start.py\ test\ -v\ 0\ $*
+" setlocal makeprg=$DJANGO_DIR/start.py\ test\ -v\ 0\ $*
+setlocal makeprg=$DJANGO_DIR/manage.py\ test\ -v\ 0\ $*
 
 "the last line: \%-G%.%# is meant to suppress some
 "late error messages that I found could occur e.g.
