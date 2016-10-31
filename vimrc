@@ -63,6 +63,7 @@ Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'mbbill/undotree'
 Plugin 'mhinz/vim-signify'
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 Plugin 'raimondi/delimitmate'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'rust-lang/rust.vim'

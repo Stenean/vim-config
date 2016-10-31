@@ -14,6 +14,7 @@ make:
 
 tern_for_vim:
     run 'npm install' in bundle/tern_for_vim directory
+    npm install -g jshint jsxhint
 
 tmux:
     wa
