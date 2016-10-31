@@ -1,4 +1,4 @@
-:call tern#Enable()
+":call tern#Enable()
 setlocal omnifunc=javascriptcomplete#CompleteJS
 
 setl foldmethod=syntax
