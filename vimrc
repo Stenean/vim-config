@@ -614,6 +614,10 @@ let g:syntastic_html_tidy_ignore_errors=[
 let g:syntastic_cpp_compiler = 'clang-3.5'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 let g:syntastic_cpp_config_file = '.clang'
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_rust_rustc_args = '-Zno-trans'
+let g:syntastic_rust_rustc_exe = 'cargo rustc'
+let g:syntastic_rust_rustc_fname = ''
 " }}}
 
 " Ultisnips {{{
@@ -757,9 +761,6 @@ let g:solarized_visibility="low"    "default value is normal
 let g:rust_fold = 1
 let g:ftplugin_rust_source_path = '/opt/rust/rustc-1.12.0/src'
 let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
-let g:syntastic_rust_rustc_args = '-Zno-trans'
-let g:syntastic_rust_rustc_exe = 'cargo rustc'
-let g:syntastic_rust_rustc_fname = ''
 
 " }}}
 

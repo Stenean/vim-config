@@ -14,7 +14,8 @@ make:
 
 tern_for_vim:
     run 'npm install' in bundle/tern_for_vim directory
-    npm install -g jshint jsxhint
+    old -> npm install -g jshint jsxhint let react-tools
+    npm install -g eslint babel-eslint eslint-plugin-react
 
 tmux:
     wa
