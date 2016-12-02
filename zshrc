@@ -100,12 +100,19 @@ alias irssi="TERM=screen-256color irssi"
 
 # }}}
 
-xmodmap -e "keycode 166=Prior"
-xmodmap -e "keycode 167=Next"
+if [ -e "$(where xmodmap)" ]; then
+    xmodmap -e "keycode 166=Prior"
+    xmodmap -e "keycode 167=Next"
+fi
 
 # Python and pyenv setup {{{
-
-. /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    echo "Sourcing from site-packages"
+    . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+else if [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    echo "Sourcing from dist-packages"
+    . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+fi
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
