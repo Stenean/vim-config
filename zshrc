@@ -58,6 +58,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/docker
     zgen oh-my-zsh plugins/jsontools
     zgen oh-my-zsh plugins/python
+    zgen oh-my-zsh plugins/golang
     zgen oh-my-zsh plugins/supervisor
     zgen oh-my-zsh plugins/virtualenvwrapper
     zgen oh-my-zsh plugins/bgnotify
@@ -107,11 +108,11 @@ fi
 
 # Python and pyenv setup {{{
 if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    echo "Sourcing from site-packages"
     . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
-else if [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    echo "Sourcing from dist-packages"
+    powerline-daemon -q
+elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
     . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+    powerline-daemon -q
 fi
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"

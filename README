@@ -18,6 +18,7 @@ tern_for_vim:
     npm install -g eslint babel-eslint eslint-plugin-react
 
 tmux:
+    Create ~/.tmux-os.conf with os-specific settings, like path to powerline init scripts
     wa
 
 system:
