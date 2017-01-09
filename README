@@ -14,16 +14,17 @@ make:
 
 tern_for_vim:
     run 'npm install' in bundle/tern_for_vim directory
+    old -> npm install -g jshint jsxhint let react-tools
+    npm install -g eslint babel-eslint eslint-plugin-react
 
 tmux:
+    Create ~/.tmux-os.conf with os-specific settings, like path to powerline init scripts
     wa
 
 system:
     sudo apt-add-repository ppa:pi-rho/dev
     sudo -H pip install httpie powerline-status thefuck
     sudo apt-get install xombrero ncdu htop httperf clang-3.5 clang-format-3.5 vim-gtk astyle
-    sudo ln -s /usr/bin/clang-3.5 /usr/bin/clang
-    sudo ln -s /usr/bin/clang-format-3.5 /usr/bin/clang-format
     pip install autopep8
     http --download http://nongnu.org/ranger/ranger-stable.tar.gz && \
         tar -xzvf ranger-stable.tar.gz && \
@@ -31,6 +32,15 @@ system:
         sudo make install && \
         cd ../ && \
         sudo rm ranger-*
+
+YouCompleteMe:
+    sudo apt-get install build-essential cmake python-dev python3-dev nodejs-legacy npm
+    sudo apt-get build-dep python2.7
+    sudo npm install -g typescript
+    cd ~/.vim/bundle/YouCompleteMe
+    cd third_party/ycmd && git checkout 89f0c5b && cd ../../
+    EXTRA_CMAKE_ARGS="-DPYTHON_LIBRARY=/home/kuba/.pyenv/versions/2.7.8/lib/python2.7/config/libpython2.7.a 
+        -DPYTHON_INCLUDE_DIR=/home/kuba/.pyenv/versions/2.7.8/include/python2.7" ./install.py --clang-completer --tern-completer
 
 pyenv:
     to shell init:
@@ -41,6 +51,8 @@ pyenv:
         eval "$(pyenv virtualenvwrapper -)"
     remember to pyenv install <python version> and pyenv global <python version> for virtualenv
     and virtualenvwrapper to work
+    for YouCompleteMe:
+        * env PYTHON_CONFIGURE_OPTS="--enable-shared --enable-static" pyenv install <version>
     for vim to properly set python interpreter env variable PYTHON_VERSION must be set to 3 to
     force python 3 interpreter, python 2 is used otherwise (dynamically linked python lib in vim is
     recommended)
@@ -56,3 +68,11 @@ vim-vebugger:
 
     after line 209 in vim-vebugger/autoload/vebugger/std.vim (or where vebugger_view_source_cmd
     execution is done)
+
+voltron:
+    pip3 install voltron
+    need to install into gdb dist-packages directory or any other locatoin used by gdb python interpreter. Requires python3
+    gdbinit has all needed initialisation stuff inside, just link it.
+
+peda:
+    git clone https://github.com/longld/peda

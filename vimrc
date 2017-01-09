@@ -15,64 +15,67 @@ if $PYTHON_VERSION
     endif
 endif
 
+if has('python')
+    let g:ycm_server_python_interpreter = system('python -c "import sys; sys.stdout.write(sys.executable)"')
+elseif has('python3')
+    let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
+endif
+
 set rtp+=~/.vim/bundle/Vundle.vim
 " {{{ Plugin definitions
 call vundle#begin()
 
-Bundle 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
-Bundle 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
 
-Bundle 'vim-scripts/TaskList.vim'
-Bundle 'vim-scripts/tComment'
-Bundle 'vim-scripts/The-NERD-tree'
+Plugin 'vim-scripts/TaskList.vim'
+Plugin 'vim-scripts/tComment'
+Plugin 'vim-scripts/The-NERD-tree'
 
-Bundle 'tpope/vim-dispatch'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-sensible'
 
-Bundle 'Shougo/neocomplete.vim'
-Bundle 'Shougo/context_filetype.vim'
-Bundle 'Shougo/neoinclude.vim'
-Bundle 'Shougo/neco-syntax'
-Bundle 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimproc.vim'
 
-Bundle 'Chiel92/vim-autoformat'
-Bundle 'chrisbra/csv.vim'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'davidhalter/jedi-vim'
-Bundle 'derekwyatt/vim-fswitch'
-Bundle 'edsono/vim-matchit'
-Bundle 'ekalinin/Dockerfile.vim'
-Bundle 'elzr/vim-json'
-Bundle 'fidian/hexmode'
-Bundle 'fisadev/vim-isort'
-Bundle 'honza/vim-snippets'
-Bundle 'hsanson/vim-android'
-Bundle 'hynek/vim-python-pep8-indent'
-Bundle 'idanarye/vim-vebugger'
-Bundle 'justmao945/vim-clang'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'kien/ctrlp.vim'
-Bundle 'lervag/vimtex'
-Bundle 'majutsushi/tagbar'
-Bundle 'MarcWeber/vim-addon-local-vimrc'
-Bundle 'marijnh/tern_for_vim'
-Bundle 'mbbill/undotree'
-Bundle 'mhinz/vim-signify'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'pangloss/vim-javascript'
-Bundle 'raimondi/delimitmate'
-Bundle 'scrooloose/syntastic'
-Bundle 'SirVer/ultisnips'
-Bundle 'sjl/gundo.vim'
-Bundle 'tmhedberg/SimpylFold'
-Bundle 'vim-airline/vim-airline'
-Bundle 'vim-airline/vim-airline-themes'
-
+Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'chrisbra/csv.vim'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'derekwyatt/vim-fswitch'
+Plugin 'edsono/vim-matchit'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'elzr/vim-json'
+Plugin 'fidian/hexmode'
+Plugin 'fisadev/vim-isort'
+Plugin 'honza/vim-snippets'
+Plugin 'hsanson/vim-android'
+Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'idanarye/vim-vebugger'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'kien/ctrlp.vim'
+Plugin 'lervag/vimtex'
+Plugin 'majutsushi/tagbar'
+Plugin 'MarcWeber/vim-addon-local-vimrc'
+Plugin 'mbbill/undotree'
+Plugin 'mhinz/vim-signify'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+Plugin 'raimondi/delimitmate'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'rust-lang/rust.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'SirVer/ultisnips'
+Plugin 'sjl/gundo.vim'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 
 call vundle#end()
 " }}}
@@ -89,6 +92,12 @@ set number
 " Set to auto read when a file is changed from the outside
 set autoread
 
+set nowrap
+
+" More natural split opening
+set splitbelow
+set splitright
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = "\\"
@@ -98,6 +107,7 @@ let g:mapleader = "\\"
 nmap <leader>w :w!<cr>
 
 " Yanks to global system clipboard
+set clipboard^=unnamed
 set clipboard^=unnamedplus
 
 let g:skipview_files = [
@@ -105,6 +115,49 @@ let g:skipview_files = [
 \ ]
 
 let NERDTreeIgnore=['\.pyc$', '\~$']
+" }}}
+
+" => Python with virtualenv support {{{
+
+if has('python')
+    let python_cmd='python'
+else
+    let python_cmd='python3'
+endif
+" let python_str=python_cmd.' -c "import sys; sys.stdout.write(\":\".join(sys.path)")'
+" let python_sys=system(python_str)
+
+let python_eof=python_cmd.' << EOF'
+exec python_eof
+import os
+import sys
+import vim
+
+
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
+  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
+  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
+  for activate_dir in [pyenv_base_dir, project_base_dir]:
+    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
+    if os.path.exists(activate_this):
+      if sys.version_info.major == 2:
+        execfile(activate_this, dict(__file__=activate_this))
+      else:
+        with open(activate_this) as f:
+          code = compile(f.read(), activate_this, 'exec')
+          exec(code, dict(__file__=activate_this))
+
+# for path in reversed(vim.eval('python_sys').split(":")):
+#     path = path.strip()
+#     if path == "" or path in sys.path:
+#         continue
+#     sys.path.insert(0, path)
+#
+# for path in sys.path[:]:
+#     if '/usr/lib/python' in path or '/usr/local/lib/python' in path:
+#         sys.path.remove(path)
+EOF
 " }}}
 
 " => VIM user interface {{{
@@ -196,6 +249,8 @@ endif
 
 " Set utf8 as standard encoding and en_US as the standard
 " language
+let $LANG='en'
+set langmenu=en
 set encoding=utf8
 
 " Use Unix as the standard file type
@@ -326,7 +381,9 @@ autocmd BufReadPost *
 
 " => Status line {{{
 " Always show the status line
-set laststatus=2
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=2 " Always display the tabline, even if there is only one tab
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 " Format the status line
 "set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
@@ -379,20 +436,15 @@ augroup whitespace
     autocmd BufWrite *.hpp :call DeleteTrailingWS()
 augroup END
 
-" python file settings
-augroup py_settings
+augroup android_settings
     autocmd!
-    autocmd BufNewFile,BufRead *.py :call SetPythonSettings()
-augroup END
-
-" js file settings
-augroup js_settings
-    autocmd!
-    autocmd BufNewFile *.js, *.html, *.css :call SetJSSettings()
+    autocmd BufWrite build.gradle call gradle#sync()
+"    autocmd BufNewFile,BufRead,BufEnter *.java let g:JavaComplete_SourcesPath=$SRCPATH
 augroup END
 
 augroup enter_exit_settings
     autocmd!
+    autocmd BufEnter * :syntax sync fromstart
     autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
     autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
@@ -401,31 +453,9 @@ augroup enter_exit_settings
     autocmd BufReadPost quickfix :call OpenQuickfix()
 augroup END
 
-augroup filetype_settings
-    autocmd!
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-
-    autocmd FileType python setl switchbuf=useopen
-    autocmd FileType python setl omnifunc=jedi#completions
-    autocmd FileType python setl foldmethod=expr
-    autocmd FileType python let b:did_ftplugin = 1
-
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-    autocmd Filetype java setl omnifunc=javacomplete#Complete
-    autocmd Filetype java setl completefunc=javacomplete#CompleteParamsInfo
-
-    autocmd FileType javascript :call tern#Enable()
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
-augroup END
-
 " Cofee make
 augroup coffee
     autocmd!
-    autocmd FileType coffee :call tern#Enable()
     autocmd QuickFixCmdPost * nested :call OpenQuickfix() | redraw!
     autocmd BufWritePost *.coffee make!
     autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent
@@ -454,47 +484,6 @@ augroup fugitive
     autocmd BufReadPost fugitive://* set bufhidden=delete
     autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
 augroup END
-
-" vimscript folding
-augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
-" }}}
-
-" => Python with virtualenv support {{{
-try
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
-  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
-  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
-  for activate_dir in [pyenv_base_dir, project_base_dir]:
-    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
-    if os.path.exists(activate_this):
-      execfile(activate_this, dict(__file__=activate_this))
-EOF
-catch
-    try
-        py3 << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir, venv_name = os.path.split(os.environ['VIRTUAL_ENV'])
-  pyenv_base_dir = os.environ.get('PYENV_ROOT', '')
-  pyenv_base_dir = os.path.join(pyenv_base_dir, 'versions') if pyenv_base_dir else ''
-  for activate_dir in [pyenv_base_dir, project_base_dir]:
-    activate_this = os.path.join(os.path.join(activate_dir, venv_name), 'bin/activate_this.py')
-    if os.path.exists(activate_this):
-      with open(activate_this) as f:
-        code = compile(f.read(), activate_this, 'exec')
-        exec(code, dict(__file__=activate_this))
-EOF
-    catch
-    endtry
-endtry
 " }}}
 
 " => Misc key mappings {{{
@@ -504,20 +493,27 @@ noremap <F7> :TagbarToggle<CR>
 noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
 
-set <xF1>=[1;5C
-set <xF2>=[1;5D
+nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 
-noremap <xF1> <C-Right>
-noremap <xF2> <C-Left>
-noremap! <xF1> <C-Right>
-noremap! <xF2> <C-Left>
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
+
+set <xF1>=[1;3C
+set <xF2>=[1;3D
+" set <xF1>=[1;5C
+" set <xF2>=[1;5D
+
+noremap <xF1> <A-Right>
+noremap <xF2> <A-Left>
+noremap! <xF1> <A-Right>
+noremap! <xF2> <A-Left>
 
 noremap <leader>a :Autoformat<CR>
 
-nnoremap <silent> <C-Right> :bnext<CR>
-nnoremap <silent> <C-Left> :bprev<CR>
-nnoremap GG G<CR>
-nnoremap G :call jedi#goto_definitions()<CR>
+nnoremap <silent> <A-Right> :bnext<CR>
+nnoremap <silent> <A-Left> :bprev<CR>
+nnoremap ] :YcmCompleter GoToDefinition<CR>
 
 nnoremap <leader>s :FSHere<CR>
 " }}}
@@ -535,7 +531,7 @@ endif
 " }}}
 
 " Neocomplete {{{
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = 0
 " Ignore case
 let g:neocomplete#enable_ignore_case = 1
 " Enable fuzzy completion
@@ -568,9 +564,9 @@ if !exists('g:neocomplcache_omni_functions')
 endif
 let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
 
-if has('conceal')
-    set conceallevel=2 concealcursor=i
-endif
+" if has('conceal')
+"     set conceallevel=2 concealcursor=i
+" endif
 " }}}
 
 " vim-clang {{{
@@ -595,9 +591,10 @@ let g:jedi#show_call_signatures = 2
 " }}}
 
 " Syntastic {{{
-let g:syntastic_python_checkers = ['flake8', 'py3kwarn']
+let g:syntastic_python_checkers = ['flake8', 'pylint', 'py3kwarn']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_error_symbol = "✗ "
@@ -619,6 +616,10 @@ let g:syntastic_html_tidy_ignore_errors=[
 let g:syntastic_cpp_compiler = 'clang-3.5'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 let g:syntastic_cpp_config_file = '.clang'
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_rust_rustc_args = '-Zno-trans'
+let g:syntastic_rust_rustc_exe = 'cargo rustc'
+let g:syntastic_rust_rustc_fname = ''
 " }}}
 
 " Ultisnips {{{
@@ -677,6 +678,8 @@ endif
 " }}}
 
 " vim-session settings {{{
+
+let g:session_persist_globals = ['g:nerd_tree_open']
 let g:session_autoload = 'yes'
 let g:session_autosave = 'yes'
 let g:session_persist_font = 0
@@ -737,11 +740,29 @@ autocmd BufEnter * let b:easytags_nohl = 1
 
 " {{{ YouCompleteMe
 
+let g:ycm_key_invoke_completion = '<C-C>'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
+let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
+let g:ycm_server_python_interpreter = 'python'
+let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
+
+" }}}
+
+" {{{ Solarized
+
+let g:solarized_visibility="low"    "default value is normal
+
+" }}}
+
+" {{{ rust
+
+let g:rust_fold = 1
+let g:ftplugin_rust_source_path = '/opt/rust/rustc-1.12.0/src'
+let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
 
 " }}}
 
@@ -815,15 +836,9 @@ map <leader>q :e ~/buffer<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-inoremap <expr><C-c>     neocomplete#start_manual_complete()
-
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-inoremap <expr><C-Space> neocomplete#start_manual_complete()
-inoremap <expr><C-@> neocomplete#start_manual_complete()
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " }}}
@@ -896,39 +911,33 @@ endfunction
 
 func! OpenNERDTree()
     exe "NERDTree"
-    exe "normal 35\<C-W>|"
-    try
-        exe "2wincmd w"
-    catch
-    endtry
+    exe "normal 30\<C-W>|"
+    call GoToMainWindow()
     let g:nerd_tree_open = 1
 endfunc
 
 func! OpenTreeOrUndo()
-    echom "Toggeling nerd tree or undo"
     if !exists('g:nerd_tree_open')
-        echom "Opening nerd tree"
         let g:nerd_tree_open = 1
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
         exe "normal 30\<C-W>|"
+        call GoToMainWindow()
     else
         if g:nerd_tree_open == 0
-            echom "Opening nerd tree"
             let g:nerd_tree_open = 1
             exe "UndotreeHide"
             exe "NERDTreeToggle"
             exe "normal 30\<C-W>|"
-            exe "2wincmd w"
+            call GoToMainWindow()
         else
-            echo "Opening undo tree"
             let g:nerd_tree_open = 0
             exe "NERDTreeClose"
             exe "UndotreeShow"
-            exe "1wincmd w"
+            exe "UndotreeFocus"
             exe "normal 30\<C-W>|"
-            exe "3wincmd w"
+            call GoToMainWindow()
         endif
     endif
 endfunc
@@ -954,21 +963,22 @@ function! GetBufferList()
   return buflist
 endfunction
 
+function! GoToMainWindow()
+" 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
+  for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
+    if str2nr(sizes[1]) > 45
+      exe sizes[0].'wincmd w'
+      return
+    endif
+  endfor
+endfunction
+
 function! ToggleList(bufname, pfx)
   let buflist = GetBufferList()
-  let winnr = winnr()
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
-      try
-        exe bufnum.'wincmd w'
-      catch
-        echom 'No open buffer with number '.bufnum
-      endtry
       exec(a:pfx.'close')
-      try
-        exe '2wincmd w'
-      catch
-      endtry
+      call GoToMainWindow()
       return
     endif
   endfor
@@ -977,18 +987,8 @@ function! ToggleList(bufname, pfx)
       echo "Location List is Empty."
       return
   endif
-  let winnr = winnr()
-  try
-    exe '2wincmd w'
-  catch
-  endtry
+  call GoToMainWindow()
   exec('botright '.a:pfx.'open')
-  if winnr() != winnr
-    try
-      exe '2wincmd w'
-    catch
-    endtry
-  endif
 endfunction
 
 function! MakeViewCheck()
@@ -1034,10 +1034,7 @@ function! OpenQuickfix()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
       if bufname =~ g:location_list_name && len(getloclist(0)) != 0
         exe 'lclose'
-        try
-          exe '2wincmd w'
-        catch
-        endtry
+        call GoToMainWindow()
         exe 'lopen'
       endif
       if bufname =~ g:quickfix_list_name

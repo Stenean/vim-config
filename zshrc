@@ -1,15 +1,22 @@
+# vim: set fdm=marker:
 # User configuration
-export TERM="xterm-256color"
+# export TERM="xterm-256color"
 export SHELL="/bin/zsh"
-export PATH="/home/$USER/.vim/bin/:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+export PATH="/home/$USER/.vim/bin:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
+if [ -d "/usr/lib/jvm/java-8-oracle" ]; then
+    export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+fi
+
 export EDITOR='vim'
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
+# Git config {{{
     git config --global merge.tool diffconflicts
     git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGED'
     git config --global mergetool.diffconflicts.trustExitCode true
     git config --global mergetool.diffconflicts.keepBackup false
+# }}}
 fi
 
 export PROJECT_HOME="$HOME/Projects"
@@ -39,6 +46,7 @@ DEFAULT_USER="kuba"
 # plugins=(git, command-not-found, docker, jsontools, python, suprevisor, virtualenvwrapper)
 
 if ! zgen saved; then
+# Zgen config {{{
     echo "Creating a zgen save"
 
     zgen oh-my-zsh
@@ -50,6 +58,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/docker
     zgen oh-my-zsh plugins/jsontools
     zgen oh-my-zsh plugins/python
+    zgen oh-my-zsh plugins/golang
     zgen oh-my-zsh plugins/supervisor
     zgen oh-my-zsh plugins/virtualenvwrapper
     zgen oh-my-zsh plugins/bgnotify
@@ -65,6 +74,9 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/aws
     zgen oh-my-zsh plugins/colored-man-pages
     zgen oh-my-zsh plugins/colorize
+    zgen oh-my-zsh plugins/cp
+    zgen oh-my-zsh plugins/catimg
+    zgen oh-my-zsh plugins/nmap
 
     zgen load arzzen/calc.plugin.zsh
     zgen load zsh-users/zsh-syntax-highlighting
@@ -72,66 +84,33 @@ if ! zgen saved; then
     # autosuggestions should be loaded last
     zgen load tarruda/zsh-autosuggestions
     zgen save
+# }}}
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
-function workon_cwd {
-    # Check that this is a Git repo
-    GIT_DIR=`git rev-parse --git-dir 2> /dev/null`
-    if [ $? = 0 ]; then
-        # Find the repo root and check for virtualenv name override
-        PROJECT_ROOT=`dirname "$GIT_DIR"`
-        if [ "$PROJECT_ROOT" = "." ]; then
-            PROJECT_ROOT=`pwd`
-        fi
-
-        ENV_NAME=`basename "$PROJECT_ROOT"`
-        if [ -f "$PROJECT_ROOT/.venv" ]; then
-            ENV_NAME=`cat "$PROJECT_ROOT/.venv"`
-        fi
-
-        if [ "$CD_VIRTUAL_ENV" != "$ENV_NAME" -a "$CD_VIRTUAL_ENV" != "" ]; then
-            deactivate && unset CD_VIRTUAL_ENV
-        fi
-
-        # Activate the environment only if it is not already active
-        if [ "$VIRTUAL_ENV" != "$WORKON_HOME/$ENV_NAME" -a "$VIRTUAL_ENV" != "$PROJECT_HOME/$ENV_NAME" ]; then
-            if [ -e "$WORKON_HOME/$ENV_NAME/bin/activate" ]; then
-                workon "$ENV_NAME" && export CD_VIRTUAL_ENV="$ENV_NAME"
-            fi
-        fi
-    elif [ $CD_VIRTUAL_ENV ]; then
-        # We've just left the repo, deactivate the environment
-        # Note: this only happens if the virtualenv was activated automatically
-        deactivate && unset CD_VIRTUAL_ENV
-    fi
-}
-
-# New cd function that does the virtualenv magic
-# cd() {
-#     builtin cd "$@"
-#     workon_cwd
-# }
-
 # You may need to manually set your language environment
 export LANG=pl_PL.UTF-8
 
+# Aliases {{{
+
 alias ll="ls -la"
 alias clearpyc="find . -name '*.pyc' -delete"
-alias tmux="TERM='xterm-256color' tmux"
+alias tmux="TERM='xterm-256color' tmux -u"
+alias irssi="TERM=screen-256color irssi"
 
 if [ -e "$(where xmodmap)" ]; then
     xmodmap -e "keycode 166=Prior"
     xmodmap -e "keycode 167=Next"
 fi
 
+# Python and pyenv setup {{{
 if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    echo "Sourcing from site-packages"
     . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
-else if [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    echo "Sourcing from dist-packages"
+    powerline-daemon -q
+elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
     . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+    powerline-daemon -q
 fi
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
@@ -141,3 +120,54 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenvwrapper
+
+# }}}
+
+## Functions {{{
+
+function gdb_window {
+# {{{
+    if [ -n "$(env | grep 'TMUX=')" ]; then
+        tmux splitw -p 25
+        tmux selectp -t :.0
+        tmux splitw -h -p 75
+        tmux selectp -t :.0
+        tmux splitw -p 88
+        tmux splitw -p 73
+        tmux selectp -t :.3
+        tmux splitw -p 30
+        # tmux send-keys -t :.0 C-z 'voltron view b' Enter
+        tmux send-keys -t :.1 C-z 'voltron view bt' Enter
+        tmux send-keys -t :.2 C-z 'voltron view r -i' Enter
+        tmux send-keys -t :.3 C-z 'voltron view s' Enter
+        tmux send-keys -t :.5 C-z 'voltron view d' Enter
+        tmux send-keys -t :.4 C-z "cd \"$(pwd)\"; $*" Enter
+    fi
+}
+# }}}
+
+function ggdb {
+# {{{
+    cd $(pwd);
+    WAIT_SECS=2;
+    while 1; do
+        GDB_PORT=$[${RANDOM} % 22000 + 10000]
+        if [ -z "$(netstat -a | grep $GDB_PORT)" ]; then
+            break;
+        fi;
+    done;
+    GDBSERV_OUT="./gdb.out.$GDB_PORT.txt";
+    {gdbserver --once localhost:$GDB_PORT $1 1>$GDBSERV_OUT &};
+    echo "[1] Waiting ${WAIT_SECS}s for gdb server start"; sleep $WAIT_SECS;
+    gdb -ex "target remote localhost:$GDB_PORT" $1;
+    rm $GDBSERV_OUT;
+}
+# }}}
+
+# }}}
+
+alias sudo='sudo '
+
+if [ -e "$HOME/.zshrc_local" ]; then
+    source ~/.zshrc_local
+fi

@@ -1,3 +1,5 @@
+setl omnifunc=csscomplete#CompleteCSS
+
 setl foldmethod=syntax
 setl tabstop=2
 setl softtabstop=2

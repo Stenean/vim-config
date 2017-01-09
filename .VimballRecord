@@ -1,0 +1,3 @@
+DrawIt.vba: call delete('/home/kuba/.vim/plugin/DrawItPlugin.vim')|call delete('/home/kuba/.vim/plugin/cecutil.vim')|call delete('/home/kuba/.vim/autoload/DrawIt.vim')|call delete('/home/kuba/.vim/doc/DrawIt.txt')
+Align.vba: call delete('/home/kuba/.vim/plugin/AlignPlugin.vim')|call delete('/home/kuba/.vim/plugin/AlignMapsPlugin.vim')|call delete('/home/kuba/.vim/plugin/cecutil.vim')|call delete('/home/kuba/.vim/doc/Align.txt')|call delete('/home/kuba/.vim/autoload/Align.vim')|call delete('/home/kuba/.vim/autoload/AlignMaps.vim')
+libview.vba: call delete('/home/kuba/.vim/plugin/libviewPlugin.vim')|call delete('/home/kuba/.vim/doc/libview.txt')|call delete('/home/kuba/.vim/autoload/libview.vim')|call delete('/home/kuba/.vim/syntax/libview.vim')
