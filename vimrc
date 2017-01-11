@@ -243,6 +243,8 @@ colorscheme solarized
 
 " Set extra options when running in GUI mode
 if has("gui_running")
+    let $PATH = '/Users/'.$USER.'/.pyenv/shims:'.$PATH
+    :exec 'python import os; os.environ["PATH"] = "' . $PATH . '"'
     set guioptions-=T
     set guioptions+=e
     set guitablabel=%M\ %t
