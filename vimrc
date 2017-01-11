@@ -246,6 +246,7 @@ if has("gui_running")
     set guioptions-=T
     set guioptions+=e
     set guitablabel=%M\ %t
+    set guifont=Menlo\ Regular\ for\ Powerline:h12
 endif
 
 " Set utf8 as standard encoding and en_US as the standard
