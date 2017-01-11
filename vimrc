@@ -621,6 +621,9 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_rust_rustc_args = '-Zno-trans'
 let g:syntastic_rust_rustc_exe = 'cargo rustc'
 let g:syntastic_rust_rustc_fname = ''
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck', 'go']
+" let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+
 " }}}
 
 " Ultisnips {{{
@@ -675,6 +678,10 @@ let g:airline_exclude_preview = 1
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
+endif
+
+if &columns > 150
+  let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__# %{airline#util#wrap(go#statusline#Show(),0)}'
 endif
 " }}}
 
@@ -764,6 +771,18 @@ let g:solarized_visibility="low"    "default value is normal
 let g:rust_fold = 1
 let g:ftplugin_rust_source_path = '/opt/rust/rustc-1.12.0/src'
 let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
+
+" }}}
+
+" {{{ vim-go
+
+let g:go_list_type = "quickfix"
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 
 " }}}
 
