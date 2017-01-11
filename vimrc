@@ -493,6 +493,7 @@ noremap <S-F8> :call CloseTreeOrUndo()<CR>
 noremap <F7> :TagbarToggle<CR>
 noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
+cnoreabbrev h <C-r>=(&columns >= 150 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
 
 nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
