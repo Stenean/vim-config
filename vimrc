@@ -49,6 +49,7 @@ Plugin 'derekwyatt/vim-fswitch'
 Plugin 'edsono/vim-matchit'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'elzr/vim-json'
+Plugin 'fatih/vim-go'
 Plugin 'fidian/hexmode'
 Plugin 'fisadev/vim-isort'
 Plugin 'honza/vim-snippets'
@@ -62,8 +63,8 @@ Plugin 'majutsushi/tagbar'
 Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'mbbill/undotree'
 Plugin 'mhinz/vim-signify'
-Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'pangloss/vim-javascript'
 Plugin 'raimondi/delimitmate'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'rust-lang/rust.vim'
@@ -667,7 +668,7 @@ let g:airline#extensions#virtualenv#enabled = 0
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#branch#displayed_head_limit = 8
+let g:airline#extensions#branch#displayed_head_limit = 10
 let g:airline#extensions#branch#format = 1
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline_exclude_preview = 1
