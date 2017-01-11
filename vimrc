@@ -485,6 +485,13 @@ augroup fugitive
     autocmd BufReadPost fugitive://* set bufhidden=delete
     autocmd User fugitive if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif
 augroup END
+
+" on resize
+augroup onresize
+    autocmd!
+    autocmd VimResized * :call OnResize()
+augroup END
+
 " }}}
 
 " => Misc key mappings {{{
@@ -493,7 +500,7 @@ noremap <S-F8> :call CloseTreeOrUndo()<CR>
 noremap <F7> :TagbarToggle<CR>
 noremap <F6> <Plug>TaskList
 cmap w!! w !sudo tee % >/dev/null
-cnoreabbrev h <C-r>=(&columns >= 150 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
+cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
 
 nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
@@ -681,7 +688,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 
-if &columns > 150
+if &columns > 180
   let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__# %{airline#util#wrap(go#statusline#Show(),0)}'
 endif
 " }}}
@@ -1130,4 +1137,15 @@ function! KillYcmd()
       endif
     endfor
 endfunction
+
+function! OnResize()
+  if &columns > 180
+    let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__# %{airline#util#wrap(go#statusline#Show(),0)}'
+  else
+    let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__#'
+  endif
+  exec 'AirlineRefresh'
+  cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
+endfunction
+
 " }}}
