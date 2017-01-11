@@ -751,10 +751,10 @@ autocmd BufEnter * let b:easytags_nohl = 1
 
 let g:ycm_key_invoke_completion = '<C-C>'
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_select_completion = ['<Down>', '<Tab>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
-let g:ycm_server_log_level = 'debug'
+" let g:ycm_server_log_level = 'debug'
 let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
 let g:ycm_server_python_interpreter = 'python'
 let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
