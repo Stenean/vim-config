@@ -63,6 +63,7 @@ Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'mbbill/undotree'
 Plugin 'mhinz/vim-signify'
 Plugin 'mxw/vim-jsx'
+Plugin 'kopischke/vim-fetch'
 Plugin 'pangloss/vim-javascript'
 Plugin 'python-rope/ropevim'
 Plugin 'raimondi/delimitmate'
@@ -98,6 +99,11 @@ set nowrap
 " More natural split opening
 set splitbelow
 set splitright
+
+" Fold optimisations
+syntax sync minlines=256
+set synmaxcol=300
+set re=1
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -215,7 +221,7 @@ set tm=500
 
 set switchbuf=useopen
 
-set viewoptions=folds,cursor
+set viewoptions=cursor,folds,slash,unix
 
 " Set appropriate session options
 set sessionoptions-=blank
@@ -764,9 +770,10 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion = ['<Down>', '<Tab>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_use_ultisnips_completer = 1
-" let g:ycm_server_log_level = 'debug'
+let g:ycm_server_log_level = 'debug'
 let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
 let g:ycm_server_python_interpreter = 'python'
+let g:ycm_python_binary_path = 'python'
 let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
 
 " }}}

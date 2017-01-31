@@ -2,7 +2,7 @@
 # User configuration
 # export TERM="xterm-256color"
 export SHELL="/bin/zsh"
-export PATH="/home/$USER/.vim/bin:/home/$USER/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+export PATH="$HOME/.vim/bin:$HOME/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 if [ -d "/usr/lib/jvm/java-8-oracle" ]; then
     export JAVA_HOME=/usr/lib/jvm/java-8-oracle
@@ -80,6 +80,7 @@ if ! zgen saved; then
 
     zgen load arzzen/calc.plugin.zsh
     zgen load zsh-users/zsh-syntax-highlighting
+    zgen load dgnest/zsh-gvm-plugin
 
     # autosuggestions should be loaded last
     zgen load tarruda/zsh-autosuggestions
