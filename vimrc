@@ -1,7 +1,8 @@
 " => General {{{
 " Sets how many lines of history VIM has to remember
 set history=700
-set term=xterm-256color
+" set term=xterm-256color
+set term=screen-256color
 set t_ut=
 
 set nocompatible
@@ -63,7 +64,6 @@ Plugin 'MarcWeber/vim-addon-local-vimrc'
 Plugin 'mbbill/undotree'
 Plugin 'mhinz/vim-signify'
 Plugin 'mxw/vim-jsx'
-Plugin 'kopischke/vim-fetch'
 Plugin 'pangloss/vim-javascript'
 Plugin 'python-rope/ropevim'
 Plugin 'raimondi/delimitmate'
@@ -72,6 +72,7 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'SirVer/ultisnips'
 Plugin 'sjl/gundo.vim'
+Plugin 'StanAngeloff/php.vim'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -517,10 +518,15 @@ imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
 
-set <xF1>=[1;3C
-set <xF2>=[1;3D
-" set <xF1>=[1;5C
-" set <xF2>=[1;5D
+if has("mac")
+  set <xF1>=\e[b
+  set <xF2>=\e[f
+else
+  set <xF1>=[1;3C
+  set <xF2>=[1;3D
+  " set <xF1>=[1;5C
+  " set <xF2>=[1;5D
+endif
 
 noremap <xF1> <A-Right>
 noremap <xF2> <A-Left>

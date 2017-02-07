@@ -99,6 +99,9 @@ alias ll="ls -la"
 alias clearpyc="find . -name '*.pyc' -delete"
 alias tmux="TERM='xterm-256color' tmux -u"
 alias irssi="TERM=screen-256color irssi"
+alias sudo='sudo '
+
+# }}}
 
 if [ -e "$(where xmodmap)" ]; then
     xmodmap -e "keycode 166=Prior"
@@ -165,9 +168,17 @@ function ggdb {
 }
 # }}}
 
+function tmux-session {
+# {{{
+    if (( $# == 0)); then
+        tmux new-session -t default || tmux new-session -s default
+    else
+        tmux $@
+    fi
+}
 # }}}
 
-alias sudo='sudo '
+# }}}
 
 if [ -e "$HOME/.zshrc_local" ]; then
     source ~/.zshrc_local
