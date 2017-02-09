@@ -3,6 +3,7 @@ undo/*
 view/*
 *.swp
 *.tmp
+!bundle/Vundle.vim
 bundle/*
 sessions/*
 .netrwhist
