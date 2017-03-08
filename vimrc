@@ -518,26 +518,26 @@ imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
 
-if has("mac")
-  set <xF1>=\e[b
-  set <xF2>=\e[f
-else
-  set <xF1>=[1;3C
-  set <xF2>=[1;3D
-  " set <xF1>=[1;5C
-  " set <xF2>=[1;5D
-endif
-
 noremap <xF1> <A-Right>
 noremap <xF2> <A-Left>
 noremap! <xF1> <A-Right>
 noremap! <xF2> <A-Left>
 
-noremap <leader>a :Autoformat<CR>
+if has("mac")
+  set <xF1>=f
+  set <xF2>=b
+  nnoremap <silent> <xF1> :bnext<CR>
+  nnoremap <silent> <xF2> :bprev<CR>
+else
+  set <xF1>=[1;3C
+  set <xF2>=[1;3D
+  nnoremap <silent> <A-Right> :bnext<CR>
+  nnoremap <silent> <A-Left> :bprev<CR>
+endif
 
-nnoremap <silent> <A-Right> :bnext<CR>
-nnoremap <silent> <A-Left> :bprev<CR>
 nnoremap ] :YcmCompleter GoToDefinition<CR>
+
+noremap <leader>a :Autoformat<CR>
 
 nnoremap <leader>s :FSHere<CR>
 " }}}
