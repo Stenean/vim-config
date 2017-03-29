@@ -1,0 +1,22 @@
+{
+	"segments": {
+		"right": [
+			{
+				"function": "powerline.segments.shell.last_pipe_status",
+				"priority": 10
+			},
+			{
+				"function": "powerline.segments.common.vcs.stash",
+				"priority": 50
+			},
+                        {
+                                "function": "powerline.segments.common.env.environment",
+                                "priority": 20
+                        },
+			{
+				"function": "powerline.segments.common.vcs.branch",
+				"priority": 40
+			}
+		]
+	}
+}
