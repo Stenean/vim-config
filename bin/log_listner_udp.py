@@ -3,15 +3,15 @@ from __future__ import print_function
 
 # from multiprocessing import dummy as multithreading
 import multiprocessing as multithreading
+import os
 import Queue
+import ScrolledText
 import select
 import socket
+import sys
 import ttk
 
 import Tkinter
-import ScrolledText
-import os
-import sys
 
 
 class MainGui(Tkinter.Tk):

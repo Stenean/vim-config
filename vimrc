@@ -56,6 +56,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'hsanson/vim-android'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'idanarye/vim-vebugger'
+Plugin 'jeroenbourgois/vim-actionscript'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'kien/ctrlp.vim'
 Plugin 'lervag/vimtex'
@@ -524,10 +525,14 @@ noremap! <xF1> <A-Right>
 noremap! <xF2> <A-Left>
 
 if has("mac")
-  set <xF1>=f
-  set <xF2>=b
+  set <xF1>=[1;3C
+  set <xF2>=[1;3D
+  set <xF3>=[1;5C
+  set <xF4>=[1;5D
   nnoremap <silent> <xF1> :bnext<CR>
   nnoremap <silent> <xF2> :bprev<CR>
+  nnoremap <silent> <xF3> :normal! W<CR>
+  nnoremap <silent> <xF4> :normal! B<CR>
 else
   set <xF1>=[1;3C
   set <xF2>=[1;3D

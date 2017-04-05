@@ -1,0 +1,29 @@
+--recurse=yes
+--tag-relative=yes
+--exclude=.git
+
+--langdef=Clojure
+--langmap=Clojure:.clj
+--regex-clojure=/\([ \t]*create-ns[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/n,namespace/
+--regex-clojure=/\([ \t]*def[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/d,definition/
+--regex-clojure=/\([ \t]*defn-?[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/f,function/
+--regex-clojure=/\([ \t]*defmacro[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/m,macro/
+--regex-clojure=/\([ \t]*definline[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/i,inline/
+--regex-clojure=/\([ \t]*defmulti[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/a,multimethod definition/
+--regex-clojure=/\([ \t]*defmethod[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/b,multimethod instance/
+--regex-clojure=/\([ \t]*defonce[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/c,definition (once)/
+--regex-clojure=/\([ \t]*defstruct[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/s,struct/
+--regex-clojure=/\([ \t]*intern[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/v,intern/
+--regex-clojure=/\([ \t]*ns[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/n,namespace/
+
+--langdef=actionscript
+--langmap=actionscript:.as.mxml
+--extra=+fq
+--regex-actionscript=/^[ \t]*package[ \t]+([A-Za-z0-9_.]+)[ \t]*/\1/a,package,packages/
+--regex-actionscript=/^[ \t]*[(private|public|protected|static)( \t)]+function[ \t]+([A-Za-z0-9_]+)[ \t]*\(/\1/f, function, functions/
+--regex-actionscript=/^[ \t]*[(public|static|internal|final|override)( \t)]*function[ \t]+(set|get)[ \t]+([A-Za-z0-9_]+)[ \t]*\(/\2/p,property, properties/
+--regex-actionscript=/^[ \t]*[(private|public|protected)( \t)(static)]+const[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/t,constant,constants/
+--regex-actionscript=/^[ \t]*public[ \t]+class[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/c,class, classes/
+--regex-actionscript=/^[ \t]*public[ \t]+interface[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/i,interface, interfaces/
+--regex-actionscript=/[ \t]id=['"]([A-Za-z0-9_]+)['"]/\1/v, variable,variables/
+--regex-actionscript=/^[ \t]*[(public|static|internal|final|override)( \t)]*var[ \t]+([A-Za-z0-9_]+)[: \t]*/\1 \2/v,variable,variables/
