@@ -463,7 +463,8 @@ augroup enter_exit_settings
     autocmd BufEnter * :syntax sync fromstart
 
     autocmd VimEnter * if !argc() | :call Autorun() | endif
-    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | else | call SyncTree()  | endif
+
     autocmd BufReadPost quickfix :call OpenQuickfix()
 augroup END
 
@@ -1000,24 +1001,20 @@ func! OpenTreeOrUndo()
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
-        exe "normal 30\<C-W>|"
-        call GoToMainWindow()
     else
         if g:nerd_tree_open == 0
             let g:nerd_tree_open = 1
             exe "UndotreeHide"
             exe "NERDTreeToggle"
-            exe "normal 30\<C-W>|"
-            call GoToMainWindow()
         else
             let g:nerd_tree_open = 0
             exe "NERDTreeClose"
             exe "UndotreeShow"
             exe "UndotreeFocus"
-            exe "normal 30\<C-W>|"
-            call GoToMainWindow()
         endif
     endif
+    exe "normal 30\<C-W>|"
+    call GoToMainWindow()
 endfunc
 
 func! CloseTreeOrUndo()
@@ -1196,6 +1193,19 @@ function! OnResize()
   endif
   exec 'AirlineRefresh'
   cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
+endfunction
+
+" returns true iff is NERDTree open/active
+function! IsNTOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr()
+    exe 'NERDTreeFind'
+    call GoToMainWindow()
+  endif
 endfunction
 
 " }}}
