@@ -224,18 +224,17 @@ set tm=500
 
 set switchbuf=useopen
 
-set viewoptions=cursor,folds,slash,unix
+set viewoptions=cursor,slash,unix
 
 " Set appropriate session options
 set sessionoptions-=blank
-set sessionoptions-=curdir
-set sessionoptions-=sesdir
-set sessionoptions-=help
-set sessionoptions-=resize
-set sessionoptions-=winsize
-set sessionoptions-=buffer
-set sessionoptions-=options
+set sessionoptions-=buffers
+set sessionoptions-=folds
 set sessionoptions-=globals
+set sessionoptions-=options
+set sessionoptions-=resize
+set sessionoptions-=sesdir
+set sessionoptions-=winsize
 " }}}
 
 " => Colors and Fonts {{{
@@ -384,12 +383,6 @@ try
   set stal=2
 catch
 endtry
-
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-   \ if line("'\"") > 0 && line("'\"") <= line("$") |
-   \   exe "normal! g`\"" |
-   \ endif
 " }}}
 
 " => Status line {{{
@@ -438,6 +431,16 @@ inoremap jk <esc>
 " }}}
 
 " => Autocommands {{{
+" Return to last edit position when opening files (You want this!)
+augroup resCur
+    autocmd!
+    if has("folding")
+        autocmd BufWinEnter * if ResCur() | call UnfoldCur() | endif
+    else
+        autocmd BufWinEnter * call ResCur()
+    endif
+augroup END
+
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 augroup whitespace
     autocmd!
@@ -458,8 +461,6 @@ augroup END
 augroup enter_exit_settings
     autocmd!
     autocmd BufEnter * :syntax sync fromstart
-    autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-    autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
     autocmd VimEnter * if !argc() | :call Autorun() | endif
     autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -894,6 +895,33 @@ inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " }}}
 
 " => Helper functions {{{
+
+function! ResCur()
+    if line("'\"") <= line("$")
+        normal! g`"
+        return 1
+    endif
+endfunction
+
+if has("folding")
+    function! UnfoldCur()
+        if !&foldenable
+            return
+        endif
+        let cl = line(".")
+        if cl <= 1
+            return
+        endif
+        let cf  = foldlevel(cl)
+        let uf  = foldlevel(cl - 1)
+        let min = (cf > uf ? uf : cf)
+        if min
+            execute "normal!" min . "zo"
+            return 1
+        endif
+    endfunction
+endif
+
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
