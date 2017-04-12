@@ -8,7 +8,9 @@ if [ -d "/usr/lib/jvm/java-8-oracle" ]; then
     export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 fi
 
-export EDITOR='vim'
+export BROWSER=/usr/bin/chromium
+export EDITOR=/usr/bin/vim
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
 # Git config {{{
@@ -114,6 +116,9 @@ if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline
     powerline-daemon -q
 elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
     . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+    powerline-daemon -q
+elif [ -f "/usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    . /usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
     powerline-daemon -q
 fi
 

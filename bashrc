@@ -112,6 +112,10 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+# >>> BEGIN ADDED BY CNCHI INSTALLER
+BROWSER=/usr/bin/chromium
+EDITOR=/usr/bin/vim
+# <<< END ADDED BY CNCHI INSTALLER
 
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
@@ -119,8 +123,24 @@ POWERLINE_BASH_SELECT=1
 xmodmap -e "keycode 166=Prior"
 xmodmap -e "keycode 167=Next"
 
-. /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
+# Python and pyenv setup {{{
+if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
+    . /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+    powerline-daemon -q
+elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" ]; then
+    . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
+    powerline-daemon -q
+elif [ -f "/usr/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
+    . /usr/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+    powerline-daemon -q
+fi
 
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenvwrapper
+
+# }}}
