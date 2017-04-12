@@ -227,7 +227,7 @@ set viewoptions=cursor,slash,unix
 
 " Set appropriate session options
 set sessionoptions-=blank
-set sessionoptions-=buffers
+" set sessionoptions-=buffers
 set sessionoptions-=folds
 set sessionoptions-=globals
 set sessionoptions-=options
@@ -1099,6 +1099,7 @@ endfunction
 function! Autorun()
     " :call ClearJediCache()
     " :call OpenNERDTree()
+    :call SyncTree()
 endfunction
 
 command! -nargs=0 BCopen call OpenQuickfix()
@@ -1202,6 +1203,8 @@ endfunction
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
   if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr()
+    exe 'NERDTreeCWD'
+    call GoToMainWindow()
     exe 'NERDTreeFind'
     call GoToMainWindow()
   endif
