@@ -73,6 +73,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'SirVer/ultisnips'
 Plugin 'sjl/gundo.vim'
 Plugin 'StanAngeloff/php.vim'
+Plugin 'Konfekt/FastFold'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -222,18 +223,17 @@ set tm=500
 
 set switchbuf=useopen
 
-set viewoptions=cursor,folds,slash,unix
+set viewoptions=cursor,slash,unix
 
 " Set appropriate session options
 set sessionoptions-=blank
-set sessionoptions-=curdir
-set sessionoptions-=sesdir
-set sessionoptions-=help
-set sessionoptions-=resize
-set sessionoptions-=winsize
-set sessionoptions-=buffer
-set sessionoptions-=options
+" set sessionoptions-=buffers
+set sessionoptions-=folds
 set sessionoptions-=globals
+set sessionoptions-=options
+set sessionoptions-=resize
+set sessionoptions-=sesdir
+set sessionoptions-=winsize
 " }}}
 
 " => Colors and Fonts {{{
@@ -382,12 +382,6 @@ try
   set stal=2
 catch
 endtry
-
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-   \ if line("'\"") > 0 && line("'\"") <= line("$") |
-   \   exe "normal! g`\"" |
-   \ endif
 " }}}
 
 " => Status line {{{
@@ -436,6 +430,16 @@ inoremap jk <esc>
 " }}}
 
 " => Autocommands {{{
+" Return to last edit position when opening files (You want this!)
+augroup resCur
+    autocmd!
+    if has("folding")
+        autocmd BufWinEnter * if ResCur() | call UnfoldCur() | endif
+    else
+        autocmd BufWinEnter * call ResCur()
+    endif
+augroup END
+
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 augroup whitespace
     autocmd!
@@ -456,11 +460,10 @@ augroup END
 augroup enter_exit_settings
     autocmd!
     autocmd BufEnter * :syntax sync fromstart
-    autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
-    autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
 
     autocmd VimEnter * if !argc() | :call Autorun() | endif
-    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | else | call SyncTree()  | endif
+
     autocmd BufReadPost quickfix :call OpenQuickfix()
 augroup END
 
@@ -524,10 +527,14 @@ noremap! <xF1> <A-Right>
 noremap! <xF2> <A-Left>
 
 if has("mac")
-  set <xF1>=f
-  set <xF2>=b
+  set <xF1>=[1;3C
+  set <xF2>=[1;3D
+  set <xF3>=[1;5C
+  set <xF4>=[1;5D
   nnoremap <silent> <xF1> :bnext<CR>
   nnoremap <silent> <xF2> :bprev<CR>
+  nnoremap <silent> <xF3> :normal! W<CR>
+  nnoremap <silent> <xF4> :normal! B<CR>
 else
   set <xF1>=[1;3C
   set <xF2>=[1;3D
@@ -888,6 +895,33 @@ inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " }}}
 
 " => Helper functions {{{
+
+function! ResCur()
+    if line("'\"") <= line("$")
+        normal! g`"
+        return 1
+    endif
+endfunction
+
+if has("folding")
+    function! UnfoldCur()
+        if !&foldenable
+            return
+        endif
+        let cl = line(".")
+        if cl <= 1
+            return
+        endif
+        let cf  = foldlevel(cl)
+        let uf  = foldlevel(cl - 1)
+        let min = (cf > uf ? uf : cf)
+        if min
+            execute "normal!" min . "zo"
+            return 1
+        endif
+    endfunction
+endif
+
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
@@ -966,24 +1000,20 @@ func! OpenTreeOrUndo()
         exe "UndotreeHide"
         exe "NERDTreeClose"
         exe "NERDTreeToggle"
-        exe "normal 30\<C-W>|"
-        call GoToMainWindow()
     else
         if g:nerd_tree_open == 0
             let g:nerd_tree_open = 1
             exe "UndotreeHide"
             exe "NERDTreeToggle"
-            exe "normal 30\<C-W>|"
-            call GoToMainWindow()
         else
             let g:nerd_tree_open = 0
             exe "NERDTreeClose"
             exe "UndotreeShow"
             exe "UndotreeFocus"
-            exe "normal 30\<C-W>|"
-            call GoToMainWindow()
         endif
     endif
+    exe "normal 30\<C-W>|"
+    call GoToMainWindow()
 endfunc
 
 func! CloseTreeOrUndo()
@@ -1069,6 +1099,7 @@ endfunction
 function! Autorun()
     " :call ClearJediCache()
     " :call OpenNERDTree()
+    :call SyncTree()
 endfunction
 
 command! -nargs=0 BCopen call OpenQuickfix()
@@ -1162,6 +1193,21 @@ function! OnResize()
   endif
   exec 'AirlineRefresh'
   cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
+endfunction
+
+" returns true iff is NERDTree open/active
+function! IsNTOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr()
+    exe 'NERDTreeCWD'
+    call GoToMainWindow()
+    exe 'NERDTreeFind'
+    call GoToMainWindow()
+  endif
 endfunction
 
 " }}}
