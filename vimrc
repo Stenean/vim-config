@@ -276,6 +276,15 @@ set noswapfile
 set undofile "so is persistent undo ...
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+
+let s:vim_path = $HOME . '/.vim/'
+if strlen(finddir('undo', s:vim_path)) == 0
+    mkdir('undo', s:vim_path)
+endif
+if strlen(finddir('view', s:vim_path)) == 0
+    mkdir('view', s:vim_path)
+endif
+
 set undodir=/$HOME/.vim/undo/
 set viewdir=/$HOME/.vim/view/
 " }}}
@@ -1202,10 +1211,11 @@ endfunction
 
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
-  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr()
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr() && &ft != 'gitcommit'
     exe 'NERDTreeCWD'
     call GoToMainWindow()
     exe 'NERDTreeFind'
+    normal R
     call GoToMainWindow()
   endif
 endfunction
