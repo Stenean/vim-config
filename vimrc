@@ -1,3 +1,4 @@
+" vim: set ts=2 sw=2 sts=2 et:
 " => General {{{
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -1048,12 +1049,16 @@ endfunction
 
 function! GoToMainWindow()
 " 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
-  for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
-    if str2nr(sizes[1]) > 45
-      exe sizes[0].'wincmd w'
-      return
-    endif
-  endfor
+  if version >= 800
+    exe win_id2win(1000).'wincmd w'
+  else
+    for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
+      if str2nr(sizes[1]) > 45
+        exe sizes[0].'wincmd w'
+        return
+      endif
+    endfor
+  endif
 endfunction
 
 function! ToggleList(bufname, pfx)
