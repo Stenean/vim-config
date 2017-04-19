@@ -847,13 +847,15 @@ unlet s:local_session_directory
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-noremap <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
+noremap <leader>g :NoAutoVimGrep //j ./**/*.*<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
-map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :NoAutoVimGrep //j ./**/*.py<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
-map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+map <leader>ga :NoAutoVimGrep //j ./**/*.as<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 " Vimgreps in the current file
-map <leader><space> :NoAutoVimGrep // <C-R>%OH<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+map <leader><space> :NoAutoVimGrep // <C-R>%<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
