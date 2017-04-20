@@ -3,7 +3,8 @@ if exists("current_compiler")
 endif
 let current_compiler = "as3"
 
-setlocal makeprg=flix_dev/bin/build.py\ --dev\ --all\ %
+" setlocal makeprg=flix_dev/bin/build.py\ --dev\ --all
+let &l:makeprg=getcwd() . "/flix_dev/bin/build.py --dev --all"
 
 setlocal errorformat =
     \%E%f(%l):\ col:\ %c\ Error:\ %m,

@@ -1029,17 +1029,18 @@ func! OpenTreeOrUndo()
 endfunc
 
 func! CloseTreeOrUndo()
-    if !exists('g:nerd_tree_open')
-        exe "UndotreeHide"
-        exe "NERDTreeClose"
+  if !exists('g:nerd_tree_open')
+    exe "UndotreeHide"
+    exe "NERDTreeClose"
+  else
+    if g:nerd_tree_open == 0
+      exe "UndotreeHide"
     else
-        if g:nerd_tree_open == 0
-            exe "UndotreeHide"
-        else
-            let g:nerd_tree_open = 0
-            exe "NERDTreeClose"
-        endif
+      let g:nerd_tree_open = 0
+      exe "NERDTreeClose"
     endif
+  endif
+  call GoToMainWindow()
 endfunc
 
 function! GetBufferList()
