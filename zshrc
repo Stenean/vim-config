@@ -24,9 +24,11 @@ fi
 export PROJECT_HOME="$HOME/Projects"
 
 if [ ! -f ~/.zgen/zgen.zsh ]; then
+# zgen config {{{
   pushd ~
   git clone https://github.com/tarjoilija/zgen.git .zgen
   popd
+# }}}
 fi
 source ~/.zgen/zgen.zsh
 
@@ -126,6 +128,13 @@ export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+
+if [ -d "$PYENV_ROOT/plugins" -a ! -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper" ]; then
+    pushd ~
+    git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $PYENV_ROOT/plugins/pyenv-virtualenvwrapper
+    popd
+fi
+
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenvwrapper
