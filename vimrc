@@ -1,3 +1,4 @@
+" vim: set ts=2 sw=2 sts=2 et:
 " => General {{{
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -276,6 +277,15 @@ set noswapfile
 set undofile "so is persistent undo ...
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+
+let s:vim_path = $HOME . '/.vim/'
+if strlen(finddir('undo', s:vim_path)) == 0
+    mkdir('undo', s:vim_path)
+endif
+if strlen(finddir('view', s:vim_path)) == 0
+    mkdir('view', s:vim_path)
+endif
+
 set undodir=/$HOME/.vim/undo/
 set viewdir=/$HOME/.vim/view/
 " }}}
@@ -837,13 +847,15 @@ unlet s:local_session_directory
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
 " Open vimgrep and put the cursor in the right position
-noremap <leader>g :NoAutoVimGrep //j ./**/*.*<left><left><left><left><left><left><left><left><left><left><left>
+noremap <leader>g :NoAutoVimGrep //j ./**/*.*<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
-map <leader>gp :NoAutoVimGrep //j ./**/*.py<left><left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gp :NoAutoVimGrep //j ./**/*.py<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
-map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>
+map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+map <leader>ga :NoAutoVimGrep //j ./**/*.as<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 " Vimgreps in the current file
-map <leader><space> :NoAutoVimGrep // <C-R>%OH<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+map <leader><space> :NoAutoVimGrep // <C-R>%<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
@@ -1017,17 +1029,18 @@ func! OpenTreeOrUndo()
 endfunc
 
 func! CloseTreeOrUndo()
-    if !exists('g:nerd_tree_open')
-        exe "UndotreeHide"
-        exe "NERDTreeClose"
+  if !exists('g:nerd_tree_open')
+    exe "UndotreeHide"
+    exe "NERDTreeClose"
+  else
+    if g:nerd_tree_open == 0
+      exe "UndotreeHide"
     else
-        if g:nerd_tree_open == 0
-            exe "UndotreeHide"
-        else
-            let g:nerd_tree_open = 0
-            exe "NERDTreeClose"
-        endif
+      let g:nerd_tree_open = 0
+      exe "NERDTreeClose"
     endif
+  endif
+  call GoToMainWindow()
 endfunc
 
 function! GetBufferList()
@@ -1039,12 +1052,16 @@ endfunction
 
 function! GoToMainWindow()
 " 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
-  for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
-    if str2nr(sizes[1]) > 45
-      exe sizes[0].'wincmd w'
-      return
-    endif
-  endfor
+  if version >= 800
+    exe win_id2win(1000).'wincmd w'
+  else
+    for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
+      if str2nr(sizes[1]) > 45
+        exe sizes[0].'wincmd w'
+        return
+      endif
+    endfor
+  endif
 endfunction
 
 function! ToggleList(bufname, pfx)
@@ -1202,10 +1219,11 @@ endfunction
 
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
-  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr()
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr() && &ft != 'gitcommit'
     exe 'NERDTreeCWD'
     call GoToMainWindow()
     exe 'NERDTreeFind'
+    normal R
     call GoToMainWindow()
   endif
 endfunction
