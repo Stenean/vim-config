@@ -280,10 +280,10 @@ set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
 let s:vim_path = $HOME . '/.vim/'
 if strlen(finddir('undo', s:vim_path)) == 0
-    mkdir('undo', s:vim_path)
+  system('mkdir -p ' . s:vim_path . 'undo')
 endif
 if strlen(finddir('view', s:vim_path)) == 0
-    mkdir('view', s:vim_path)
+  system('mkdir -p ' . s:vim_path . 'view')
 endif
 
 set undodir=/$HOME/.vim/undo/
