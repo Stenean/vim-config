@@ -515,6 +515,11 @@ augroup onresize
     autocmd VimResized * :call OnResize()
 augroup END
 
+augroup filetypedetect
+  " Mail
+  autocmd BufRead,BufNewFile *mutt-* setfiletype mail
+augroup END
+
 " }}}
 
 " => Misc key mappings {{{
