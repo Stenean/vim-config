@@ -1053,7 +1053,18 @@ endfunction
 function! GoToMainWindow()
 " 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
   if version >= 800
-    exe win_id2win(1000).'wincmd w'
+    if !exists('g:window_id')
+      let g:window_id = 1000
+    endif
+    let s:curr_pos = win_id2win(g:window_id)
+    if s:curr_pos == 0
+      for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
+        if str2nr(sizes[1]) > 45
+          let g:window_id = win_getid(sizes[0])
+        endif
+      endfor
+    endif
+    exe win_id2win(g:window_id).'wincmd w'
   else
     for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
       if str2nr(sizes[1]) > 45
@@ -1220,11 +1231,20 @@ endfunction
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
   if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr() && &ft != 'gitcommit'
-    exe 'NERDTreeCWD'
-    call GoToMainWindow()
-    exe 'NERDTreeFind'
-    normal R
-    call GoToMainWindow()
+    let s:last_win = win_getid()
+    if !win_id2win(s:last_win)
+      exe 'NERDTreeCWD'
+      call GoToMainWindow()
+      exe 'NERDTreeFind'
+      normal R
+      call GoToMainWindow()
+    else
+      exe 'NERDTreeCWD'
+      exe win_id2win(s:last_win) . "wincmd w"
+      exe 'NERDTreeFind'
+      normal R
+      exe win_id2win(s:last_win) . "wincmd w"
+    endif
   endif
 endfunction
 
