@@ -17,7 +17,6 @@ setlocal errorformat =
     \%W%f:\ Warning:\ %m,
     \%+C%.%#,
     \%-G%.%#,
-    \%\e
 " .as(65): col: 40 Error:
 " .as(65): Error:
 " .as: Error:
