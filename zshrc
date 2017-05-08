@@ -10,7 +10,9 @@ fi
 
 export BROWSER=/usr/bin/chromium
 export EDITOR=/usr/bin/vim
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+if [ "$(uname -s)" != "Darwin" ]; then
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+fi
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
 # Git config {{{

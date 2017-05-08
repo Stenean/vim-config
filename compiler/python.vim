@@ -11,7 +11,22 @@ let current_compiler = "python"
 let s:cpo_save = &cpo
 set cpo-=C
 
-setlocal makeprg=python\ %
+python << EOF
+import vim
+import os
+
+if 'DJANGO_DIR' in os.environ:
+    cmd = "$DJANGO_DIR/manage.py test -v 0 $*"
+else:
+    cmd = "python -m unittest -v $*"
+
+vim.command("let &l:makeprg='%s'" % cmd)
+
+EOF
+"
+" setlocal makeprg=python\ %
+
+let &l:shellpipe = "2>&1| tee "
 
 "the last line: \%-G%.%# is meant to suppress some
 "late error messages that I found could occur e.g.
