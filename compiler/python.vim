@@ -26,6 +26,8 @@ EOF
 "
 " setlocal makeprg=python\ %
 
+let &l:shellpipe = "2>&1| tee "
+
 "the last line: \%-G%.%# is meant to suppress some
 "late error messages that I found could occur e.g.
 "with wxPython and that prevent one from using :clast
