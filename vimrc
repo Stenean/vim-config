@@ -550,6 +550,11 @@ if has("mac")
   nnoremap <silent> <xF2> :bprev<CR>
   nnoremap <silent> <xF3> :normal! W<CR>
   nnoremap <silent> <xF4> :normal! B<CR>
+elseif system("grep -i 'windows' /proc/sys/kernel/osrelease") != ''
+  set <xF1>=[1;2C
+  set <xF2>=[1;2D
+  nnoremap <silent> <A-Right> :bnext<CR>
+  nnoremap <silent> <A-Left> :bprev<CR>
 else
   set <xF1>=[1;3C
   set <xF2>=[1;3D
