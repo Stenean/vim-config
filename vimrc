@@ -459,6 +459,8 @@ augroup whitespace
     autocmd BufWrite *.js :call DeleteTrailingWS()
     autocmd BufWrite *.cpp :call DeleteTrailingWS()
     autocmd BufWrite *.hpp :call DeleteTrailingWS()
+    autocmd BufWrite *.as :call DeleteTrailingWS()
+    autocmd BufWrite *.mxml :call DeleteTrailingWS()
 augroup END
 
 augroup android_settings
