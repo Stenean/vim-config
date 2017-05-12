@@ -440,15 +440,6 @@ inoremap jk <esc>
 " }}}
 
 " => Autocommands {{{
-" Return to last edit position when opening files (You want this!)
-augroup resCur
-    autocmd!
-    if has("folding")
-        autocmd BufWinEnter * if ResCur() | call UnfoldCur() | endif
-    else
-        autocmd BufWinEnter * call ResCur()
-    endif
-augroup END
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 augroup whitespace
@@ -478,7 +469,7 @@ augroup enter_exit_settings
 
     autocmd BufReadPost quickfix :call OpenQuickfix()
     autocmd BufWinEnter * :call JumpToMainAfterQuickfix()
-    autocmd WinEnter * :call JumpToMainAfterQuickfix()
+    autocmd BufEnter * :call JumpToMainAfterQuickfix()
     autocmd WinLeave * if &buftype == 'quickfix' | let g:last_quickfix = 1 | endif
 augroup END
 
@@ -523,6 +514,17 @@ augroup END
 augroup filetypedetect
   " Mail
   autocmd BufRead,BufNewFile *mutt-* setfiletype mail
+augroup END
+
+" Return to last edit position when opening files (You want this!)
+augroup resCur
+    autocmd!
+    autocmd BufLeave * exe "normal! m\""
+    if has("folding")
+        autocmd BufWinEnter * if ResCur() | call UnfoldCur() | endif
+    else
+        autocmd BufWinEnter * call ResCur()
+    endif
 augroup END
 
 " }}}
@@ -924,10 +926,8 @@ inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " => Helper functions {{{
 
 function! ResCur()
-  if !exists("'\"")
-    return 1
-  endif
-  if line("'\"") <= line("$")
+  echom '[+] cur pos ' . line("'\"") . ' max line ' . line("$")
+  if line("'\"") > 1 && line("'\"") <= line("$")
     normal! g`"
     return 1
   endif
@@ -999,6 +999,7 @@ endfunc
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
+  echom '[+] BufcloseCloseIt'
    let l:currentBufNum = bufnr("%")
    let l:alternateBufNum = bufnr("#")
 
@@ -1018,6 +1019,7 @@ function! <SID>BufcloseCloseIt()
 endfunction
 
 func! OpenNERDTree()
+  echom '[+] OpenNERDTree'
     exe "NERDTree"
     exe "normal 30\<C-W>|"
     call GoToMainWindow()
@@ -1025,6 +1027,7 @@ func! OpenNERDTree()
 endfunc
 
 func! OpenTreeOrUndo()
+  echom '[+] OpenTreeOrUndo'
     if !exists('g:nerd_tree_open')
         let g:nerd_tree_open = 1
         exe "UndotreeHide"
@@ -1047,6 +1050,7 @@ func! OpenTreeOrUndo()
 endfunc
 
 func! CloseTreeOrUndo()
+  echom '[+] CloseTreeOrUndo'
   if !exists('g:nerd_tree_open')
     exe "UndotreeHide"
     exe "NERDTreeClose"
@@ -1070,6 +1074,7 @@ endfunction
 
 function! GoToMainWindow()
 " 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
+  echom '[+] GoToMainWindow'
   if version >= 800
     if !exists('g:window_id')
       let g:window_id = 1000
@@ -1094,6 +1099,7 @@ function! GoToMainWindow()
 endfunction
 
 function! ToggleList(bufname, pfx)
+  echom '[+] ToggleList ' . a:bufname . ', ' . a:pfx
   let buflist = GetBufferList()
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
@@ -1153,6 +1159,7 @@ endfunction
 
 command! -nargs=0 BCopen call OpenQuickfix()
 function! OpenQuickfix()
+  echom '[+] Opening window'
   let buflist = GetBufferList()
   for bufname in [g:location_list_name, g:quickfix_list_name]
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
@@ -1160,10 +1167,12 @@ function! OpenQuickfix()
         exe 'lclose'
         call GoToMainWindow()
         exe 'lopen'
+        echom '[+]   locallist'
       endif
       if bufname =~ g:quickfix_list_name
         exe 'cclose'
         exe 'botright cwindow'
+        echom '[+]   quickfix'
       endif
     endfor
   endfor
@@ -1274,7 +1283,9 @@ function! JumpToMainAfterQuickfix()
   if !exists('g:last_quickfix')
     let g:last_quickfix = 0
   endif
+  echom '[+] Last quickfix ' . g:last_quickfix . ', current bufname ' . bufname('%') . ', alt bufname ' . bufname('#') . ' curr winid ' . win_getid() . ' cur winnr ' . winnr() . ' buftype ' . &buftype
   if g:last_quickfix == 1 && bufname('%') != ''
+    echom '[+]   Resseting g:last_quickfix - in ' . bufname('%')
     let g:last_quickfix = 0
     if &buftype == 'nofile'
       call GoToMainWindow()
