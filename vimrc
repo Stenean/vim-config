@@ -477,6 +477,9 @@ augroup enter_exit_settings
     autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | else | call SyncTree()  | endif
 
     autocmd BufReadPost quickfix :call OpenQuickfix()
+    autocmd BufWinEnter * :call JumpToMainAfterQuickfix()
+    autocmd WinEnter * :call JumpToMainAfterQuickfix()
+    autocmd WinLeave * if &buftype == 'quickfix' | let g:last_quickfix = 1 | endif
 augroup END
 
 " Cofee make
@@ -921,10 +924,13 @@ inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " => Helper functions {{{
 
 function! ResCur()
-    if line("'\"") <= line("$")
-        normal! g`"
-        return 1
-    endif
+  if !exists("'\"")
+    return 1
+  endif
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
 endfunction
 
 if has("folding")
@@ -1101,6 +1107,9 @@ function! ToggleList(bufname, pfx)
       echo "Location List is Empty."
       return
   endif
+  if a:pfx == 'c'
+    let g:last_quickfix = 1
+  endif
   call GoToMainWindow()
   exec('botright '.a:pfx.'open')
 endfunction
@@ -1256,6 +1265,19 @@ function! SyncTree()
       exe 'NERDTreeFind'
       normal R
       exe win_id2win(s:last_win) . "wincmd w"
+    endif
+  endif
+endfunction
+
+" automatically jump to main window if quickfix exit causes move to nerdtree - only trigger on BufEnter
+function! JumpToMainAfterQuickfix()
+  if !exists('g:last_quickfix')
+    let g:last_quickfix = 0
+  endif
+  if g:last_quickfix == 1 && bufname('%') != ''
+    let g:last_quickfix = 0
+    if &buftype == 'nofile'
+      call GoToMainWindow()
     endif
   endif
 endfunction
