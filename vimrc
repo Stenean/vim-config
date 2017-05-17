@@ -790,8 +790,7 @@ noremap <leader>\k :VBGkill<cr>
 
 " {{{ ctags
 
-let &tags="./.tags,".&tags
-set cpoptions+=d
+let &tags="./.tags,.tags,~/.tags,".&tags
 
 let g:easytags_syntax_keyword = 'always'
 let g:easytags_async = 1
