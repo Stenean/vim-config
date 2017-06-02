@@ -117,6 +117,12 @@ BROWSER=/usr/bin/chromium
 EDITOR=/usr/bin/vim
 # <<< END ADDED BY CNCHI INSTALLER
 
+if [ -s "$HOME/.gvm/scripts/gvm" ]; then
+    source "$HOME/.gvm/scripts/gvm"
+fi
+
+export PROJECT_HOME="$HOME/Projects"
+
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
 

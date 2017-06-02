@@ -1,0 +1,9 @@
+#!/bin/zsh
+# This hook is sourced before every virtualenv is deactivated.
+
+if [ -n "$OLD_GO_VERSION" ]; then
+    if command -v gvm >/dev/null 2>&1; then
+        gvm use $OLD_GO_VERSION
+    fi
+    unset OLD_GO_VERSION
+fi

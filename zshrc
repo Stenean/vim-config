@@ -23,8 +23,6 @@ if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global mer
 # }}}
 fi
 
-export PROJECT_HOME="$HOME/Projects"
-
 if [ ! -f ~/.zgen/zgen.zsh ]; then
 # zgen config {{{
   pushd ~
@@ -33,6 +31,12 @@ if [ ! -f ~/.zgen/zgen.zsh ]; then
 # }}}
 fi
 source ~/.zgen/zgen.zsh
+
+if [ -s "$HOME/.gvm/scripts/gvm" ]; then
+    source "$HOME/.gvm/scripts/gvm"
+fi
+
+export PROJECT_HOME="$HOME/Projects"
 
 # Path to your oh-my-zsh installation.
 # export ZSH=$HOME/.oh-my-zsh
