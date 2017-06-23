@@ -213,6 +213,55 @@ function precmd() {
 }
 # }}}
 
+set -a dev_env_directories
+function devEnv() {
+    if [ $#dev_env_directories -eq 0 ]; then
+        >&2 echo "[!] dev_env_directories not set!"
+        return
+    fi
+    if [ -z "$(env | grep 'TMUX=')" ]; then
+        >&2 echo "Tmux not running!"
+        return
+    fi
+    last=$(tmux list-windows | cut -d: -f1 | tail -n1)
+    active=$(tmux list-windows | grep active | cut -d: -f1 | tail -n1)
+    delta=$(echo "$last - $active" | bc)
+
+    # echo "Last win num: $last, active window: $active, delta: $delta, num of commands: $#directories"
+    for i in $(seq $#dev_env_directories); do
+        # echo "Processing dir $i"
+        new_index=$(echo "$active + $i - 1" | bc)
+        if [ $i -gt 1 ]; then
+            # echo "Creating new window"
+            tmux new-window
+            if [ $delta -gt 0 ]; then
+                # move all the windows to the left to make room for new ones
+                # echo "Moving to $new_index"
+                tmux swap-window -t $new_index
+            fi
+        fi
+        local -a data
+        row="${dev_env_directories[$i]}"
+        data=("${(@s/|/)row}")
+        # echo "Data to process: $data, from $row"
+        cmd="cd ${data[1]}"
+        name="${data[1]}"
+        if [ -n "${data[3]}" ]; then
+            cmd="$cmd && workon ${data[3]}"
+        fi
+        if [ -n "${data[2]}" ]; then
+            cmd="$cmd && ${data[2]}"
+            name="${data[2]}"
+        fi
+        # tmux send-keys C-z "$cmd" Enter
+        tmux send-keys "$cmd" C-m
+        tmux rename-window "$name"
+        # tmux send-keys -t :.4 C-z "cd \"$(pwd)\"; $*" Enter
+    done
+
+    tmux select-window -t:$active
+}
+
 # }}}
 
 if [ -e "$HOME/.zshrc_local" ]; then
