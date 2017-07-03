@@ -12,6 +12,8 @@ export BROWSER=/usr/bin/chromium
 export EDITOR=/usr/bin/vim
 if [ "$(uname -s)" != "Darwin" ]; then
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+    export BROWSER=/usr/local/bin/chromium
+    export EDITOR=/usr/local/bin/vim
 fi
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
@@ -62,6 +64,7 @@ if ! zgen saved; then
     zgen oh-my-zsh
 
     zgen load RobSis/zsh-completion-generator
+    zgen load bobthecow/git-flow-completion
 
     zgen oh-my-zsh plugins/git
     zgen oh-my-zsh plugins/command-not-found
