@@ -64,7 +64,7 @@ if ! zgen saved; then
     zgen oh-my-zsh
 
     zgen load RobSis/zsh-completion-generator
-    zgen load bobthecow/git-flow-completion
+    zgen load petervanderdoes/git-flow-completion
 
     zgen oh-my-zsh plugins/git
     zgen oh-my-zsh plugins/command-not-found
