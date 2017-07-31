@@ -218,6 +218,7 @@ function precmd() {
 
 set -a dev_env_directories
 function devEnv() {
+# {{{
     if [ $#dev_env_directories -eq 0 ]; then
         >&2 echo "[!] dev_env_directories not set!"
         return
@@ -264,6 +265,7 @@ function devEnv() {
 
     tmux select-window -t:$active
 }
+# }}}
 
 # }}}
 
