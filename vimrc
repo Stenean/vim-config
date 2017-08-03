@@ -550,12 +550,8 @@ noremap! <xF2> <A-Left>
 if has("mac")
   set <xF1>=[1;3C
   set <xF2>=[1;3D
-  set <xF3>=[1;5C
-  set <xF4>=[1;5D
   nnoremap <silent> <xF1> :bnext<CR>
   nnoremap <silent> <xF2> :bprev<CR>
-  nnoremap <silent> <xF3> :normal! W<CR>
-  nnoremap <silent> <xF4> :normal! B<CR>
 elseif system("grep -i 'windows' /proc/sys/kernel/osrelease") != ''
   set <xF1>=[1;2C
   set <xF2>=[1;2D
@@ -1169,8 +1165,7 @@ endfunction
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
 function! <SID>MyVimGrep(...)
     exe 'noautocmd vimgrep '. join(a:000)
-    exe 'cwindow'
-    exe 'BCopen'
+    exe 'botright cwindow'
 endfunction
 
 command! -nargs=0 CreateSessionDir call MKSessionDir()
