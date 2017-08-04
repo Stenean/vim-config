@@ -8,12 +8,12 @@ if [ -d "/usr/lib/jvm/java-8-oracle" ]; then
     export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 fi
 
-export BROWSER=/usr/bin/chromium
-export EDITOR=/usr/bin/vim
+export BROWSER=/usr/local/bin/chromium
+export EDITOR=/usr/local/bin/vim
 if [ "$(uname -s)" != "Darwin" ]; then
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
-    export BROWSER=/usr/local/bin/chromium
-    export EDITOR=/usr/local/bin/vim
+    export BROWSER=/usr/bin/chromium
+    export EDITOR=/usr/bin/vim
 fi
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
