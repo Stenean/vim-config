@@ -56,6 +56,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'hsanson/vim-android'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'idanarye/vim-vebugger'
+Plugin 'junegunn/rainbow_parentheses.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Konfekt/FastFold'
@@ -470,6 +471,12 @@ augroup enter_exit_settings
     autocmd BufWinEnter * :call JumpToMainAfterQuickfix()
     autocmd BufEnter * :call JumpToMainAfterQuickfix()
     autocmd WinLeave * if &buftype == 'quickfix' | let g:last_quickfix = 1 | endif
+augroup END
+
+" Rainbow Parentheses
+augroup rainbow
+  autocmd!
+  autocmd FileType * RainbowParentheses
 augroup END
 
 " Cofee make
