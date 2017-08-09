@@ -803,6 +803,7 @@ let g:ycm_key_invoke_completion = '<C-C>'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion = ['<Down>', '<Tab>']
 let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_key_list_stop_completion = ['<CR>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
 let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
@@ -912,7 +913,7 @@ map <leader>pp :setlocal paste!<cr>
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 " }}}
@@ -1206,6 +1207,7 @@ endfunc
 function! s:my_cr_function()
   " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
+  echom '[+] Pumvisible ' . pumvisible()
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
