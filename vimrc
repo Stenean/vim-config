@@ -846,6 +846,10 @@ let g:go_highlight_build_constraints = 1
 
 " }}}
 
+" {{{ rainbow parentheses
+let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+" }}}
+
 " }}}
 
 " => per directory session management {{{
