@@ -34,6 +34,12 @@ if [ ! -f ~/.zgen/zgen.zsh ]; then
 fi
 source ~/.zgen/zgen.zsh
 
+TPM_PATH=~/.tmux/plugins/tpm
+if [ ! -d $TPM_PATH ]; then
+    mkdir -p $TPM_PATH
+    git clone https://github.com/tmux-plugins/tpm $TPM_PATH
+fi
+
 if [ -s "$HOME/.gvm/scripts/gvm" ]; then
     source "$HOME/.gvm/scripts/gvm"
 fi
