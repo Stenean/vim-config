@@ -76,6 +76,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'SirVer/ultisnips'
 Plugin 'sjl/gundo.vim'
 Plugin 'tmhedberg/SimpylFold'
+Plugin 'tmux-plugins/vim-tmux'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -848,6 +850,13 @@ let g:go_highlight_build_constraints = 1
 
 " {{{ rainbow parentheses
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+" }}}
+
+" {{{ php.vim
+let php_parent_error_open=1
+let php_htmlInStrings=1
+let php_folding=1
+let php_noShortTags=1
 " }}}
 
 " }}}
