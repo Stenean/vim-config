@@ -278,3 +278,5 @@ function devEnv() {
 if [ -e "$HOME/.zshrc_local" ]; then
     source ~/.zshrc_local
 fi
+
+unsetopt allexport
