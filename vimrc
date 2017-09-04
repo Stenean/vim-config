@@ -129,6 +129,9 @@ let g:skipview_files = [
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
 let g:last_nerdtree = 0
+let g:last_quickfix = 0
+let g:last_buf_file = ''
+let g:first_refresh = 0
 " }}}
 
 " => Python with virtualenv support {{{
@@ -474,9 +477,9 @@ augroup enter_exit_settings
     autocmd QuickFixCmdPost * nested :call OpenQuickfix()
     autocmd BufWinEnter * :call JumpToMainAfterQuickfix()
     autocmd BufEnter * :call JumpToMainAfterQuickfix()
-    autocmd BufRead * :call SyncTree()
     autocmd WinLeave * if &buftype == 'quickfix' | let g:last_quickfix = 1 | endif
     autocmd BufEnter * if &ft == 'nerdtree' | let g:last_nerdtree = 1 | endif
+    autocmd BufLeave * :call SaveBufFileName()
 augroup END
 
 " Rainbow Parentheses
@@ -1262,17 +1265,25 @@ function! OnResize()
   cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
 endfunction
 
-" returns true iff is NERDTree open/active
+" returns true if is NERDTree open/active
 function! IsNTOpen()
   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
 
+" returns true if current buffer is visible in current window
+function! InNT()
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+endfunction
+
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
-  if !exists('g:last_nerdtree')
-    let g:last_nerdtree = 0
+  if IsNTOpen() && g:first_refresh
+    let l:same_buff = SameBuffer()
+  else
+    let l:same_buff = 0
   endif
-  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr() && &ft != 'gitcommit' && g:last_nerdtree
+
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && !InNT() && &ft != 'gitcommit' && !l:same_buff
     let s:last_win = win_getid()
     if !win_id2win(s:last_win)
       exe 'NERDTreeCWD'
@@ -1287,7 +1298,8 @@ function! SyncTree()
       normal R
       exe win_id2win(s:last_win) . "wincmd w"
     endif
-    let g:last_nerdtree = 0
+    :call SaveBufFileName()
+    let g:first_refresh = 1
   endif
 endfunction
 
@@ -1296,11 +1308,28 @@ function! JumpToMainAfterQuickfix()
   if !exists('g:last_quickfix')
     let g:last_quickfix = 0
   endif
+
   if g:last_quickfix == 1 && bufname('%') != ''
     let g:last_quickfix = 0
     if &buftype == 'nofile'
       call GoToMainWindow()
     endif
+  endif
+endfunction
+
+" remember buffer filename on enter
+function! SaveBufFileName()
+  if &modifiable && strlen(expand('%:p')) > 0
+    let g:last_buf_file = resolve(expand('%:p'))
+  endif
+endfunction
+
+" check if we switched editable buffers
+function! SameBuffer()
+  if g:last_buf_file == resolve(expand('%:p')) && g:last_buf_file != ""
+    return 1
+  else
+    return 0
   endif
 endfunction
 
