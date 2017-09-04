@@ -127,6 +127,8 @@ let g:skipview_files = [
 \ ]
 
 let NERDTreeIgnore=['\.pyc$', '\~$']
+
+let g:last_nerdtree = 0
 " }}}
 
 " => Python with virtualenv support {{{
@@ -469,10 +471,12 @@ augroup enter_exit_settings
     autocmd VimEnter * if !argc() | :call Autorun() | endif
     autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | else | call SyncTree()  | endif
 
-    autocmd BufReadPost quickfix :call OpenQuickfix()
+    autocmd QuickFixCmdPost * nested :call OpenQuickfix()
     autocmd BufWinEnter * :call JumpToMainAfterQuickfix()
     autocmd BufEnter * :call JumpToMainAfterQuickfix()
+    autocmd BufRead * :call SyncTree()
     autocmd WinLeave * if &buftype == 'quickfix' | let g:last_quickfix = 1 | endif
+    autocmd BufEnter * if &ft == 'nerdtree' | let g:last_nerdtree = 1 | endif
 augroup END
 
 " Rainbow Parentheses
@@ -1265,7 +1269,10 @@ endfunction
 
 " calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
-  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr() && &ft != 'gitcommit'
+  if !exists('g:last_nerdtree')
+    let g:last_nerdtree = 0
+  endif
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff && bufwinnr(t:NERDTreeBufName) != winnr() && &ft != 'gitcommit' && g:last_nerdtree
     let s:last_win = win_getid()
     if !win_id2win(s:last_win)
       exe 'NERDTreeCWD'
@@ -1280,6 +1287,7 @@ function! SyncTree()
       normal R
       exe win_id2win(s:last_win) . "wincmd w"
     endif
+    let g:last_nerdtree = 0
   endif
 endfunction
 
