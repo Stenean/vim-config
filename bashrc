@@ -113,8 +113,13 @@ if ! shopt -oq posix; then
   fi
 fi
 # >>> BEGIN ADDED BY CNCHI INSTALLER
-BROWSER=/usr/bin/chromium
-EDITOR=/usr/bin/vim
+export BROWSER=/usr/local/bin/chromium
+export EDITOR=/usr/local/bin/vim
+if [ "$(uname -s)" != "Darwin" ]; then
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+    export BROWSER=/usr/bin/chromium
+    export EDITOR=/usr/bin/vim
+fi
 # <<< END ADDED BY CNCHI INSTALLER
 
 if [ -s "$HOME/.gvm/scripts/gvm" ]; then
@@ -128,6 +133,11 @@ POWERLINE_BASH_SELECT=1
 
 xmodmap -e "keycode 166=Prior"
 xmodmap -e "keycode 167=Next"
+
+
+function whatsmyip() {
+    curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'
+}
 
 # Python and pyenv setup {{{
 if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then

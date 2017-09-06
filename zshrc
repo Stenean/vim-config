@@ -273,6 +273,12 @@ function devEnv() {
 }
 # }}}
 
+function whatsmyip() {
+# {{{
+    curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'
+}
+# }}}
+
 # }}}
 
 if [ -e "$HOME/.zshrc_local" ]; then
