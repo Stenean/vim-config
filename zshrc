@@ -275,7 +275,7 @@ function devEnv() {
 
 function whatsmyip() {
 # {{{
-    curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'
+    dig +short myip.opendns.com @resolver1.opendns.com
 }
 # }}}
 

@@ -136,7 +136,7 @@ xmodmap -e "keycode 167=Next"
 
 
 function whatsmyip() {
-    curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'
+    dig +short myip.opendns.com @resolver1.opendns.com
 }
 
 # Python and pyenv setup {{{
