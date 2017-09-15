@@ -424,7 +424,7 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 " set statusline+=\ %P    "percent through file%{fugitive#statusline()}
 " }}}
 
-" => Editing mappings {{{
+" => Key mappings {{{
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
@@ -433,17 +433,98 @@ vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
 vnoremap <C-h> <gv
 vnoremap <C-l> >gv
 
+noremap <xF1> <A-Right>
+noremap <xF2> <A-Left>
+noremap! <xF1> <A-Right>
+noremap! <xF2> <A-Left>
+
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
   nmap <D-k> <M-k>
   vmap <D-j> <C-j>
   vmap <D-k> <C-k>
+  set <xF1>=[1;3C
+  set <xF2>=[1;3D
+  nnoremap <silent> <xF1> :bnext<CR>
+  nnoremap <silent> <xF2> :bprev<CR>
+elseif system("grep -i 'windows' /proc/sys/kernel/osrelease") != ''
+  set <xF1>=[1;2C
+  set <xF2>=[1;2D
+  nnoremap <silent> <A-Right> :bnext<CR>
+  nnoremap <silent> <A-Left> :bprev<CR>
+else
+  set <xF1>=[1;3C
+  set <xF2>=[1;3D
+  nnoremap <silent> <A-Right> :bnext<CR>
+  nnoremap <silent> <A-Left> :bprev<CR>
 endif
 
 nnoremap <space> za
 vnoremap <space> zf
 
 inoremap jk <esc>
+
+" => custom plugin mapping {{{
+
+noremap <F8> :call OpenTreeOrUndo()<CR>
+noremap <S-F8> :call CloseTreeOrUndo()<CR>
+noremap <F7> :TagbarToggle<CR>
+noremap <F6> <Plug>TaskList
+cmap w!! w !sudo tee % >/dev/null
+cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
+
+nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
+
+nnoremap ] :YcmCompleter GoToDefinition<CR>
+
+noremap <leader>a :Autoformat<CR>
+
+nnoremap <leader>s :FSHere<CR>
+
+" }}}
+
+" => vimgrep searching and cope displaying {{{
+" When you press gv you vimgrep after the selected text
+vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
+
+" Open vimgrep and put the cursor in the right position
+noremap <leader>g :NoAutoVimGrep //j ./**/*.*<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+map <leader>gp :NoAutoVimGrep //j ./**/*.py<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+map <leader>gg :NoAutoVimGrep //j ./**/*.go<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+map <leader>ga :NoAutoVimGrep //j ./**/*.as<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+" Vimgreps in the current file
+map <leader><space> :NoAutoVimGrep // <C-R>%<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+
+" Do :help cope if you are unsure what cope is. It's super useful!
+"
+" When you search with vimgrep, display your results in cope by doing:
+"   <leader>cc
+"
+" To go to the next search result do:
+"   <leader>n
+"
+" To go to the previous search results do:
+"   <leader>p
+"
+
+map <silent> <leader>l :call ToggleList(g:location_list_name, 'l')<CR>
+map <silent> <leader>c :call ToggleList(g:quickfix_list_name, 'c')<CR>
+map <leader>n :cn<cr>
+map <leader>p :cp<cr>
+" }}}
+
 " }}}
 
 " => Autocommands {{{
@@ -542,49 +623,6 @@ augroup resCur
     endif
 augroup END
 
-" }}}
-
-" => Misc key mappings {{{
-noremap <F8> :call OpenTreeOrUndo()<CR>
-noremap <S-F8> :call CloseTreeOrUndo()<CR>
-noremap <F7> :TagbarToggle<CR>
-noremap <F6> <Plug>TaskList
-cmap w!! w !sudo tee % >/dev/null
-cnoreabbrev h <C-r>=(&columns >= 180 && getcmdtype() ==# ':' && getcmdpos() == 1 ? 'vertical botright help' : 'h')<CR>
-
-nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
-imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
-
-nmap <F5> <Plug>(JavaComplete-Imports-Add)
-imap <F5> <Plug>(JavaComplete-Imports-Add)
-
-noremap <xF1> <A-Right>
-noremap <xF2> <A-Left>
-noremap! <xF1> <A-Right>
-noremap! <xF2> <A-Left>
-
-if has("mac")
-  set <xF1>=[1;3C
-  set <xF2>=[1;3D
-  nnoremap <silent> <xF1> :bnext<CR>
-  nnoremap <silent> <xF2> :bprev<CR>
-elseif system("grep -i 'windows' /proc/sys/kernel/osrelease") != ''
-  set <xF1>=[1;2C
-  set <xF2>=[1;2D
-  nnoremap <silent> <A-Right> :bnext<CR>
-  nnoremap <silent> <A-Left> :bprev<CR>
-else
-  set <xF1>=[1;3C
-  set <xF2>=[1;3D
-  nnoremap <silent> <A-Right> :bnext<CR>
-  nnoremap <silent> <A-Left> :bprev<CR>
-endif
-
-nnoremap ] :YcmCompleter GoToDefinition<CR>
-
-noremap <leader>a :Autoformat<CR>
-
-nnoremap <leader>s :FSHere<CR>
 " }}}
 
 " => Plugin settings {{{
@@ -879,42 +917,6 @@ if isdirectory(s:local_session_directory)
   let g:session_directory = s:local_session_directory
 endif
 unlet s:local_session_directory
-" }}}
-
-" => vimgrep searching and cope displaying {{{
-" When you press gv you vimgrep after the selected text
-vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
-
-" Open vimgrep and put the cursor in the right position
-noremap <leader>g :NoAutoVimGrep //j ./**/*.*<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
-
-map <leader>gp :NoAutoVimGrep //j ./**/*.py<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
-
-map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
-
-map <leader>ga :NoAutoVimGrep //j ./**/*.as<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
-" Vimgreps in the current file
-map <leader><space> :NoAutoVimGrep // <C-R>%<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
-
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
-
-" Do :help cope if you are unsure what cope is. It's super useful!
-"
-" When you search with vimgrep, display your results in cope by doing:
-"   <leader>cc
-"
-" To go to the next search result do:
-"   <leader>n
-"
-" To go to the previous search results do:
-"   <leader>p
-"
-
-map <silent> <leader>l :call ToggleList(g:location_list_name, 'l')<CR>
-map <silent> <leader>c :call ToggleList(g:quickfix_list_name, 'c')<CR>
-map <leader>n :cn<cr>
-map <leader>p :cp<cr>
 " }}}
 
 " => Spell checking {{{
