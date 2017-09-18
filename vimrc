@@ -52,6 +52,7 @@ Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Plugin 'fisadev/vim-isort'
+Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
 Plugin 'hsanson/vim-android'
 Plugin 'hynek/vim-python-pep8-indent'
@@ -68,6 +69,7 @@ Plugin 'mbbill/undotree'
 Plugin 'mhinz/vim-signify'
 Plugin 'mxw/vim-jsx'
 Plugin 'pangloss/vim-javascript'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'python-rope/ropevim'
 Plugin 'raimondi/delimitmate'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -902,6 +904,12 @@ let php_parent_error_open=1
 let php_htmlInStrings=1
 let php_folding=1
 let php_noShortTags=1
+" }}}
+
+" vim-markdown {{{
+
+let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=dosini', 'http=json']
+
 " }}}
 
 " }}}
