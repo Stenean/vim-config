@@ -222,6 +222,10 @@ function precmd() {
 }
 # }}}
 
+# Syntax for setting up deve env directories:
+# dev_env_directories=(
+#     '<path to open>|<program to start>|<virtualenv to activate>'
+# )
 set -a dev_env_directories
 function devEnv() {
 # {{{
