@@ -509,6 +509,9 @@ map <leader><space> :NoAutoVimGrep // <C-R>%<right><right><right><right><right
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 
+" simple todo fix fixme searcher
+noremap <leader>t :NoAutoVimGrep /TODO:\\|FIX:\\|FIXME:/j ./**/*.*<CR>
+
 " Do :help cope if you are unsure what cope is. It's super useful!
 "
 " When you search with vimgrep, display your results in cope by doing:
