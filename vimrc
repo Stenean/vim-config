@@ -60,7 +60,6 @@ Plugin 'honza/vim-snippets'
 Plugin 'hsanson/vim-android'
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'idanarye/vim-vebugger'
-Plugin 'junegunn/rainbow_parentheses.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Konfekt/FastFold'
@@ -575,7 +574,7 @@ augroup END
 " Rainbow Parentheses
 augroup rainbow
   autocmd!
-  autocmd FileType * RainbowParentheses
+  autocmd FileType * call rainbow_parentheses#activate()
 augroup END
 
 " Cofee make
@@ -903,7 +902,8 @@ let g:go_highlight_build_constraints = 1
 " }}}
 
 " {{{ rainbow parentheses
-let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+" let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
 " }}}
 
 " {{{ php.vim
@@ -1348,6 +1348,11 @@ function! SameBuffer()
   else
     return 0
   endif
+endfunction
+
+function! RainbowEnable()
+  exe 'RainbowParentheses'
+  syntax on
 endfunction
 
 " }}}
