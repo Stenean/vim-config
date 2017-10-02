@@ -13,5 +13,3 @@ setl colorcolumn=100
 
 setl switchbuf=useopen
 setl foldmethod=expr
-
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]

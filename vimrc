@@ -1229,28 +1229,6 @@ function! MKSessionDir()
   let g:session_directory = b:sessiondir
 endfunction
 
-func! SetPythonSettings()
-    setl tabstop=4
-    setl softtabstop=4
-    setl shiftwidth=4
-    setl textwidth=99
-    setl fileformat=unix
-    setl expandtab
-    setl autoindent
-    setl completeopt+=longest
-    setl colorcolumn=100
-endfunc
-
-func! SetJSSettings()
-    setl foldmethod=syntax
-    setl tabstop=2
-    setl softtabstop=2
-    setl shiftwidth=2
-    setl textwidth=139
-    setl expandtab
-    setl colorcolumn=140
-endfunc
-
 function! s:my_cr_function()
   " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
