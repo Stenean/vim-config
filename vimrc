@@ -1,4 +1,4 @@
-" vim: set ts=2 sw=2 sts=2 et:
+" vim: set ts=2 sw=2 sts=2 et fdm=marker:
 " => General {{{
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -902,8 +902,11 @@ let g:go_highlight_build_constraints = 1
 " }}}
 
 " {{{ rainbow parentheses
+
 " let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
+let g:rainbow#forbidden = ['php']
+
 " }}}
 
 " {{{ php.vim

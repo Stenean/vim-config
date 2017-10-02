@@ -157,6 +157,10 @@ function! rainbow_parentheses#activate(...)
     return
   endif
 
+  if exists('g:rainbow#forbidden') && &ft =~ join(g:rainbow#forbidden, '\|')
+    return
+  endif
+
   let s:generation += 1
   let s:max_level = get(g:, 'rainbow#max_level', 16)
   let colors = exists('g:rainbow#colors') ?
