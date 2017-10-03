@@ -542,12 +542,14 @@ augroup whitespace
     autocmd!
     autocmd BufWrite *.py :call DeleteTrailingWS()
     autocmd BufWrite *.coffee :call DeleteTrailingWS()
-    autocmd BufWrite *.html :call DeleteTrailingWS()
+    autocmd BufWrite *.ts :call DeleteTrailingWS()
     autocmd BufWrite *.js :call DeleteTrailingWS()
+    autocmd BufWrite *.html :call DeleteTrailingWS()
     autocmd BufWrite *.cpp :call DeleteTrailingWS()
     autocmd BufWrite *.hpp :call DeleteTrailingWS()
     autocmd BufWrite *.as :call DeleteTrailingWS()
     autocmd BufWrite *.mxml :call DeleteTrailingWS()
+    autocmd BufWrite *.go :call DeleteTrailingWS()
 augroup END
 
 augroup android_settings
