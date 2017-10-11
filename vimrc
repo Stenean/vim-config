@@ -925,6 +925,17 @@ let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=do
 
 " }}}
 
+" vim-addon-local-vimrc {{{
+" }}}
+
+if !exists('g:local_vimrc')
+  let g:local_vimrc = {}
+endif
+if !exists("g:local_vimrc['names']")
+  let g:local_vimrc['names'] = []
+endif
+let g:local_vimrc['names'] += ['.local-vimrc']
+
 " }}}
 
 " => per directory session management {{{
