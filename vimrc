@@ -907,7 +907,7 @@ let g:go_highlight_build_constraints = 1
 " {{{ rainbow parentheses
 
 " let g:rainbow#pairs = [['(', ')'], ['[', ']']]
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 let g:rainbow#forbidden = ['php']
 
 " }}}
