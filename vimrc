@@ -1,10 +1,15 @@
 " vim: set ts=2 sw=2 sts=2 et fdm=marker:
 " => General {{{
 " Sets how many lines of history VIM has to remember
-set history=700
+set history=10000
 " set term=xterm-256color
 set term=screen-256color
 set t_ut=
+set t_ts=]2;
+set t_fs=\\
+
+set title
+set titleold=shell
 
 set nocompatible
 filetype off
