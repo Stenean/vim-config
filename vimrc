@@ -1273,6 +1273,11 @@ function! KillYcmd()
 endfunction
 
 function! OnResize()
+  if &columns > 100
+    :call OpenTreeOrUndo()
+  else
+    :call CloseTreeOrUndo()
+  endif
   if &columns > 180
     let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__# %{airline#util#wrap(go#statusline#Show(),0)}'
   else
