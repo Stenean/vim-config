@@ -880,6 +880,7 @@ let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
 let g:ycm_server_python_interpreter = 'python'
 let g:ycm_python_binary_path = 'python'
 let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
+let g:ycm_always_populate_location_list = 1
 
 " }}}
 
@@ -1130,27 +1131,20 @@ endfunction
 
 function! GoToMainWindow()
 " 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
-  if version >= 800
-    if !exists('g:window_id')
-      let g:window_id = 1000
+  let size = 0
+  let x = 0
+  let max_size = winnr('$')
+  let win_id = 0
+  let i = 1
+  while i <= max_size
+    let x = winheight(i) + winwidth(i)
+    if x > size
+      let size = x
+      let win_id = i
     endif
-    let s:curr_pos = win_id2win(g:window_id)
-    if s:curr_pos == 0
-      for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
-        if str2nr(sizes[1]) > 45
-          let g:window_id = win_getid(sizes[0])
-        endif
-      endfor
-    endif
-    exe win_id2win(g:window_id).'wincmd w'
-  else
-    for sizes in map(filter(split(winrestcmd(), '|'), 'v:val =~ "vert"'), "split(matchstr(v:val, '\\dresize \\d\\+'), 'resize ')")
-      if str2nr(sizes[1]) > 45
-        exe sizes[0].'wincmd w'
-        return
-      endif
-    endfor
-  endif
+    let i+= 1
+  endwhile
+  exe win_id.'wincmd w'
 endfunction
 
 function! ToggleList(bufname, pfx)
@@ -1170,7 +1164,6 @@ function! ToggleList(bufname, pfx)
   if a:pfx == 'c'
     let g:last_quickfix = 1
   endif
-  call GoToMainWindow()
   exec('botright '.a:pfx.'open')
 endfunction
 
@@ -1214,9 +1207,13 @@ endfunction
 command! -nargs=0 BCopen call OpenQuickfix()
 function! OpenQuickfix()
   let buflist = GetBufferList()
+  let allowed_count = 1
+  if IsNTOpen()
+    let allowed_count = 2
+  endif
   for bufname in [g:location_list_name, g:quickfix_list_name]
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-      if bufname =~ g:location_list_name && len(getloclist(0)) != 0
+      if bufname =~ g:location_list_name && len(getloclist(0)) != 0 && allowed_count == winnr('$')
         exe 'lclose'
         call GoToMainWindow()
         exe 'lopen'
