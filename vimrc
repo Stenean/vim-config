@@ -396,6 +396,13 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
+map <leader>1 :tabn 1<cr>
+map <leader>2 :tabn 2<cr>
+map <leader>3 :tabn 3<cr>
+map <leader>4 :tabn 4<cr>
+map <leader>5 :tabn 5<cr>
+map <leader>6 :tabn 6<cr>
+map <leader>7 :tabn 7<cr>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -1078,13 +1085,6 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
-func! OpenNERDTree()
-    exe "NERDTree"
-    exe "normal 30\<C-W>|"
-    call GoToMainWindow()
-    let g:nerd_tree_open = 1
-endfunc
-
 func! OpenTreeOrUndo()
     if !exists('g:nerd_tree_open')
         let g:nerd_tree_open = 1
@@ -1200,7 +1200,6 @@ endfunction
 
 function! Autorun()
     " :call ClearJediCache()
-    " :call OpenNERDTree()
     :call SyncTree()
 endfunction
 
