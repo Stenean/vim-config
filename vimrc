@@ -1086,25 +1086,32 @@ function! <SID>BufcloseCloseIt()
 endfunction
 
 func! OpenTreeOrUndo()
-    if !exists('g:nerd_tree_open')
-        let g:nerd_tree_open = 1
-        exe "UndotreeHide"
-        exe "NERDTreeClose"
-        exe "NERDTreeToggle"
+  if !exists('g:nerd_tree_open')
+    let g:nerd_tree_open = 1
+    exe "UndotreeHide"
+    exe "NERDTreeClose"
+    exe "NERDTreeToggle"
+  else
+    if g:nerd_tree_open == 0
+      let g:nerd_tree_open = 1
+      exe "UndotreeHide"
+      exe "NERDTreeToggle"
     else
-        if g:nerd_tree_open == 0
-            let g:nerd_tree_open = 1
-            exe "UndotreeHide"
-            exe "NERDTreeToggle"
-        else
-            let g:nerd_tree_open = 0
-            exe "NERDTreeClose"
-            exe "UndotreeShow"
-            exe "UndotreeFocus"
-        endif
+      let g:nerd_tree_open = 0
+      exe "NERDTreeClose"
+      exe "UndotreeShow"
+      exe "UndotreeFocus"
     endif
-    exe "normal 30\<C-W>|"
-    call GoToMainWindow()
+  endif
+  exe "normal 30\<C-W>|"
+  if GetMinWinWidth() <= 80
+    echom 'Screen not wide enough. Use `:e .` to open nerdtree in current window'
+    let g:nerd_tree_open = 0
+    exe "NERDTreeClose"
+    exe "UndotreeHide"
+    return
+  endif
+  call GoToMainWindow()
 endfunc
 
 func! CloseTreeOrUndo()
@@ -1129,22 +1136,27 @@ function! GetBufferList()
   return buflist
 endfunction
 
+function! GetWindowSizes()
+  let forbidden = ['nerdtree', 'undotree', 'diff']
+  let sizes = []
+  let i = 0
+  while i <= winnr('$')
+    if getwinvar(i, '&modifiable')
+      :call add(sizes, [winwidth(i), winheight(i), i])
+    endif
+    let i += 1
+  endwhile
+  return sizes
+endfunction
+
+function! GetMinWinWidth()
+  return min(map(GetWindowSizes(), {k, v -> v[0]}))
+endfunction
+
 function! GoToMainWindow()
 " 1resize 56|vert 1resize 30|2resize 56|vert 2resize 208|
-  let size = 0
-  let x = 0
-  let max_size = winnr('$')
-  let win_id = 0
-  let i = 1
-  while i <= max_size
-    let x = winheight(i) + winwidth(i)
-    if x > size
-      let size = x
-      let win_id = i
-    endif
-    let i+= 1
-  endwhile
-  exe win_id.'wincmd w'
+  let win_num = sort(map(GetWindowSizes(), {k, v -> [v[0] + v[1], v[2]]}), {v1, v2 -> v2[0] - v1[0]})[0][1]
+  exe win_num.'wincmd w'
 endfunction
 
 function! ToggleList(bufname, pfx)
