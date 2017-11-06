@@ -1085,47 +1085,67 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
+func! OpenNERDTree()
+  exe "UndotreeHide"
+  exe "NERDTreeClose"
+  exe "NERDTreeToggle"
+  let g:nerd_tree_open = 1
+  let g:undo_tree_open = 0
+endfunc
+
+func! OpenUNDOTree()
+  exe "NERDTreeClose"
+  exe "UndotreeShow"
+  exe "UndotreeFocus"
+  let g:nerd_tree_open = 0
+  let g:undo_tree_open = 1
+endfunc
+
 func! OpenTreeOrUndo()
-  if !exists('g:nerd_tree_open')
-    let g:nerd_tree_open = 1
-    exe "UndotreeHide"
-    exe "NERDTreeClose"
-    exe "NERDTreeToggle"
+  if !exists('g:nerd_tree_open') || !exists('g:undo_tree_open')
+    call OpenNERDTree()
   else
-    if g:nerd_tree_open == 0
-      let g:nerd_tree_open = 1
-      exe "UndotreeHide"
-      exe "NERDTreeToggle"
+    if g:nerd_tree_open == 0 && g:undo_tree_open == 1
+      call OpenNERDTree()
+    else if g:nerd_tree_open == 1 && g:undo_tree_open == 0
+      call OpenUNDOTree()
     else
-      let g:nerd_tree_open = 0
-      exe "NERDTreeClose"
-      exe "UndotreeShow"
-      exe "UndotreeFocus"
+      call OpenNERDTree()
     endif
   endif
-  exe "normal 30\<C-W>|"
-  if GetMinWinWidth() <= 80
-    echom 'Screen not wide enough. Use `:e .` to open nerdtree in current window'
-    let g:nerd_tree_open = 0
-    exe "NERDTreeClose"
-    exe "UndotreeHide"
-    return
+  call NormalizeTreeOrUndo()
+endfunc
+
+func! ToggleTreeOrUndo()
+  if !exists('g:nerd_tree_open') || !exists('g:undo_tree_open')
+    call OpenNERDTree()
+  else
+    if g:nerd_tree_open == 1 && g:undo_tree_open == 0
+      call OpenNERDTree()
+    else if g:nerd_tree_open == 0 && g:undo_tree_open == 1
+      call OpenUNDOTree()
+    endif
   endif
-  call GoToMainWindow()
+  call NormalizeTreeOrUndo()
+endfunc
+
+func! NormalizeTreeOrUndo()
+  if g:nerd_tree_open == 1 || g:undo_tree_open == 1
+    exe "normal 30\<C-W>|"
+    if GetMinWinWidth() <= 80
+      echom 'Screen not wide enough. Use `:e .` to open nerdtree in current window'
+      call CloseTreeOrUndo()
+      return
+    endif
+    call GoToMainWindow()
+  endif
 endfunc
 
 func! CloseTreeOrUndo()
-  if !exists('g:nerd_tree_open')
-    exe "UndotreeHide"
-    exe "NERDTreeClose"
-  else
-    if g:nerd_tree_open == 0
-      exe "UndotreeHide"
-    else
-      let g:nerd_tree_open = 0
-      exe "NERDTreeClose"
-    endif
-  endif
+  exe "UndotreeHide"
+  exe "NERDTreeClose"
+  let g:nerd_tree_open = 0
+  let g:undo_tree_open == 0
   call GoToMainWindow()
 endfunc
 
@@ -1282,9 +1302,11 @@ endfunction
 
 function! OnResize()
   if &columns > 100
-    :call OpenTreeOrUndo()
+    if g:nerd_tree_open == 0 && g:undo_tree_open == 0
+      call OpenTreeOrUndo()
+    endif
   else
-    :call CloseTreeOrUndo()
+    call CloseTreeOrUndo()
   endif
   if &columns > 180
     let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__# %{airline#util#wrap(go#statusline#Show(),0)}'
