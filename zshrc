@@ -285,7 +285,7 @@ function whatsmyip() {
 
 function to_git_branch {
 # {{{
-    echo "$1" | sed -e 's/[^a-zA-Z0-9 ]//g' -e 's/\s\+/_/g' -e 's/_\+$//g' -e 's/\(.*\)/\L\1/g'
+    echo "$1" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g' -e 's/[^a-zA-Z0-9 ]//g' -e 's/\s\+/_/g' -e 's/_\+$//g' -e 's/\(.*\)/\L\1/g'
 # }}}
 }
 
