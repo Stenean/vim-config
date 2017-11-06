@@ -140,6 +140,8 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 
 let g:last_nerdtree = 0
 let g:last_quickfix = 0
+let g:nerd_tree_open = 0
+let g:undo_tree_open = 0
 let g:last_buf_file = ''
 let g:first_refresh = 0
 " }}}
@@ -1091,6 +1093,7 @@ func! OpenNERDTree()
   exe "NERDTreeToggle"
   let g:nerd_tree_open = 1
   let g:undo_tree_open = 0
+  call NormalizeTreeOrUndo()
 endfunc
 
 func! OpenUNDOTree()
@@ -1099,6 +1102,7 @@ func! OpenUNDOTree()
   exe "UndotreeFocus"
   let g:nerd_tree_open = 0
   let g:undo_tree_open = 1
+  call NormalizeTreeOrUndo()
 endfunc
 
 func! OpenTreeOrUndo()
@@ -1107,13 +1111,17 @@ func! OpenTreeOrUndo()
   else
     if g:nerd_tree_open == 0 && g:undo_tree_open == 1
       call OpenNERDTree()
-    else if g:nerd_tree_open == 1 && g:undo_tree_open == 0
+      return
+    endif
+    if g:nerd_tree_open == 1 && g:undo_tree_open == 0
       call OpenUNDOTree()
-    else
+      return
+    endif
+    if (g:nerd_tree_open == 0 && g:undo_tree_open == 0) || (g:nerd_tree_open == 1 && g:undo_tree_open == 1)
       call OpenNERDTree()
+      return
     endif
   endif
-  call NormalizeTreeOrUndo()
 endfunc
 
 func! ToggleTreeOrUndo()
@@ -1122,11 +1130,13 @@ func! ToggleTreeOrUndo()
   else
     if g:nerd_tree_open == 1 && g:undo_tree_open == 0
       call OpenNERDTree()
-    else if g:nerd_tree_open == 0 && g:undo_tree_open == 1
+      return
+    endif
+    if g:nerd_tree_open == 0 && g:undo_tree_open == 1
       call OpenUNDOTree()
+      return
     endif
   endif
-  call NormalizeTreeOrUndo()
 endfunc
 
 func! NormalizeTreeOrUndo()
@@ -1145,7 +1155,7 @@ func! CloseTreeOrUndo()
   exe "UndotreeHide"
   exe "NERDTreeClose"
   let g:nerd_tree_open = 0
-  let g:undo_tree_open == 0
+  let g:undo_tree_open = 0
   call GoToMainWindow()
 endfunc
 
@@ -1301,7 +1311,7 @@ function! KillYcmd()
 endfunction
 
 function! OnResize()
-  if &columns > 100
+  if &columns > (&tw + 30)
     if g:nerd_tree_open == 0 && g:undo_tree_open == 0
       call OpenTreeOrUndo()
     endif
