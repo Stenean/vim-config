@@ -1139,7 +1139,7 @@ endfunction
 function! GetWindowSizes()
   let forbidden = ['nerdtree', 'undotree', 'diff']
   let sizes = []
-  let i = 0
+  let i = 1
   while i <= winnr('$')
     if getwinvar(i, '&modifiable')
       :call add(sizes, [winwidth(i), winheight(i), i])
