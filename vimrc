@@ -519,6 +519,8 @@ map <leader>gg :NoAutoVimGrep //j ./**/*.go<right><right><right><right><right>
 
 map <leader>gj :NoAutoVimGrep //j ./**/*.js ./**/*.coffee ./**/*.ts<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
+map <leader>gt :NoAutoVimGrep //j ./**/*.coffee ./**/*.ts<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+
 map <leader>ga :NoAutoVimGrep //j ./**/*.as<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 " Vimgreps in the current file
 map <leader><space> :NoAutoVimGrep // <C-R>%<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
