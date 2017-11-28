@@ -1,6 +1,7 @@
 setl tabstop=8
 setl softtabstop=8
 setl shiftwidth=8
+setl foldmethod=syntax
 
 augroup go_make_test
     " this one is which you're most likely to use?
