@@ -452,6 +452,9 @@ vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
 vnoremap <C-h> <gv
 vnoremap <C-l> >gv
 
+nnoremap <silent> <leader>, :tabprevious<CR>
+nnoremap <silent> <leader>. :tabnext<CR>
+
 noremap <xF1> <A-Right>
 noremap <xF2> <A-Left>
 noremap! <xF1> <A-Right>
