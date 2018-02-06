@@ -653,6 +653,12 @@ augroup resCur
     endif
 augroup END
 
+" Change viminfofile location on session load
+augroup viminfofileSet
+  autocmd!
+  autocmd SessionLoadPost * call AfterSessionLoad()
+augroup END
+
 " }}}
 
 " => Plugin settings {{{
@@ -1405,5 +1411,16 @@ function! RainbowEnable()
   exe 'RainbowParentheses'
   syntax on
 endfunction
+
+func! AfterSessionLoad()
+  if xolox#misc#os#is_win()
+    let &viminfofile = g:session_directory . '\_viminfo'
+  else
+    let &viminfofile = g:session_directory . '/.viminfo'
+  endif
+  if filereadable(&viminfofile)
+    exe 'rviminfo! '.&viminfofile
+  endif
+endfunc
 
 " }}}
