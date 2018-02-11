@@ -6,12 +6,22 @@
 if exists("current_compiler")
   finish
 endif
-let current_compiler = "python"
+
+if has('python')
+  command! -nargs=1 Python python <args>
+  let current_compiler = "python"
+elseif has('python3')
+  command! -nargs=1 Python python3 <args>
+  let current_compiler = "python3"
+else
+  echo "Error: Requires Vim compiled with +python or +python3"
+  finish
+endif
 
 let s:cpo_save = &cpo
 set cpo-=C
 
-python << EOF
+Python << EOF
 import vim
 import os
 
