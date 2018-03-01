@@ -267,9 +267,14 @@ function devEnv() {
             cmd="$cmd && ${data[2]}"
             name="${data[2]}"
         fi
+        short="$(echo $name | sed -e 's/^\(.\{6\}\).*/\1/g' -e 's/[ ]\+$//g')"
+        if [ "$(echo $name | wc -m)" -ne "$(echo $short | wc -m)" ]; then
+            short="$short.."
+        fi
         # tmux send-keys C-z "$cmd" Enter
+        tmux set-option allow-rename off
         tmux send-keys "$cmd" C-m
-        tmux rename-window "$name"
+        tmux rename-window "$short"
         # tmux send-keys -t :.4 C-z "cd \"$(pwd)\"; $*" Enter
     done
 
