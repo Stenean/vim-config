@@ -17,16 +17,19 @@ filetype off
 if $PYTHON_VERSION
     if $PYTHON_VERSION == 3
         python3 import sys
+        let g:ycm_python_binary_path = 'python3'
     else
         python import sys
+        let g:ycm_python_binary_path = 'python'
     endif
 endif
 
-if has('python')
-    let g:ycm_server_python_interpreter = system('python -c "import sys; sys.stdout.write(sys.executable)"')
-elseif has('python3')
-    let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
-endif
+let g:ycm_server_python_interpreter = expand('~/.pyenv/versions/2.7.13/bin/python')
+" if has('python')
+"     let g:ycm_server_python_interpreter = system('python -c "import sys; sys.stdout.write(sys.executable)"')
+" elseif has('python3')
+"     let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
+" endif
 
 set rtp+=~/.vim/bundle/Vundle.vim
 " {{{ Plugin definitions
@@ -735,8 +738,11 @@ let g:jedi#show_call_signatures = 2
 
 " Syntastic {{{
 let g:syntastic_python_checkers = ['flake8', 'pylint', 'py3kwarn', 'mypy']
+let g:syntastic_python3_checkers = ['flake8', 'pylint']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
+let g:syntastic_python3_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = '/usr/bin/python2.7'
+let g:syntastic_python3_python_exec = expand('~/.pyenv/versions/3.6.0/bin/python3')
 let g:syntastic_typescript_checkers = ['tslint']
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_aggregate_errors = 1
@@ -898,8 +904,6 @@ let g:ycm_key_list_stop_completion = ['<CR>']
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_server_log_level = 'debug'
 let g:ycm_extra_conf_globlist = ['~/Projekty/*', '~/Projects/*']
-let g:ycm_server_python_interpreter = 'python'
-let g:ycm_python_binary_path = 'python'
 let g:ycm_rust_src_path = '/opt/rust/rustc-1.12.0/src'
 let g:ycm_always_populate_location_list = 1
 
