@@ -24,7 +24,7 @@ if $PYTHON_VERSION
     endif
 endif
 
-let g:ycm_server_python_interpreter = expand('~/.pyenv/versions/2.7.13/bin/python')
+let g:ycm_server_python_interpreter = system('pyenv which python2')
 " if has('python')
 "     let g:ycm_server_python_interpreter = system('python -c "import sys; sys.stdout.write(sys.executable)"')
 " elseif has('python3')
