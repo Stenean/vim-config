@@ -741,9 +741,10 @@ let g:syntastic_python_checkers = ['flake8', 'pylint', 'py3kwarn', 'mypy']
 let g:syntastic_python3_checkers = ['flake8', 'pylint']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python3_flake8_args="--max-line-length=100 --max-complexity=10"
-let g:syntastic_python_python_exec = '/usr/bin/python2.7'
-let g:syntastic_python3_python_exec = expand('~/.pyenv/versions/3.6.0/bin/python3')
+let g:syntastic_python_python_exec = substitute(system('pyenv which python2'), '\n', '', '')
+let g:syntastic_python3_python_exec = substitute(system('pyenv which python3'), '\n', '', '')
 let g:syntastic_typescript_checkers = ['tslint']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1

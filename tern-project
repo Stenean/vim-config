@@ -3,6 +3,9 @@
     "browser"
   ],
   "plugins": {
-    "node": {}
-  }
+    "node": {},
+    "doc_comment": null,
+    "es_modules": {}
+  },
+  "ecmaVersion": 6
 }
