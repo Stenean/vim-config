@@ -4,6 +4,14 @@
 export SHELL="/bin/zsh"
 export PATH="$HOME/.vim/bin:$HOME/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$PATH"
 
+gpg_agent_command="gpg-agent --homedir $HOME/.gnupg --daemon"
+gpg_agent_not_good=$(ps -Aopid,command | sed -e ":$gpg_agent_command:!d" -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
+gpg_agent_pid=$(ps -Aopid,command | sed -e '/gpg-agent/!d' -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
+if [ -n "$gpg_agent_pid" -a -n "$gpg_agent_not_good" ]; then
+    kill -9 $gpg_agent_pid
+fi
+eval $(eval $gpg_agent_command 2>/dev/null)
+
 ## Functions {{{
 
 function gdb_window {
