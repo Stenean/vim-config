@@ -737,8 +737,8 @@ let g:jedi#show_call_signatures = 2
 " }}}
 
 " Syntastic {{{
-let g:syntastic_python_checkers = ['flake8', 'pylint', 'py3kwarn', 'mypy']
-let g:syntastic_python3_checkers = ['flake8', 'pylint']
+let g:syntastic_python_checkers = ['flake8', 'py3kwarn', 'mypy']
+let g:syntastic_python3_checkers = ['flake8']
 let g:syntastic_python_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python3_flake8_args="--max-line-length=100 --max-complexity=10"
 let g:syntastic_python_python_exec = substitute(system('pyenv which python2'), '\n', '', '')
