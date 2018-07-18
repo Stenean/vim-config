@@ -4,6 +4,9 @@
 export SHELL="/bin/zsh"
 export PATH="$HOME/.vim/bin:$HOME/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$PATH"
 
+export PROJECT_HOME="$HOME/Projects"
+export WORKON_HOME="$HOME/.virtualenvs"
+
 gpg_agent_command="gpg-agent --homedir $HOME/.gnupg --daemon"
 gpg_agent_not_good=$(ps -Aopid,command | sed -e "\:$gpg_agent_command:!d" -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
 gpg_agent_pid=$(ps -Aopid,command | sed -e '/gpg-agent/!d' -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
@@ -196,8 +199,6 @@ fi
 if [ -s "$HOME/.gvm/scripts/gvm" ]; then
     source "$HOME/.gvm/scripts/gvm"
 fi
-
-export PROJECT_HOME="$HOME/Projects"
 
 # Path to your oh-my-zsh installation.
 # export ZSH=$HOME/.oh-my-zsh

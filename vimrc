@@ -44,53 +44,80 @@ Plugin 'vim-scripts/TaskList.vim'
 Plugin 'vim-scripts/tComment'
 Plugin 'vim-scripts/The-NERD-tree'
 
+" Utils
 Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-sensible'
 
-Plugin 'Shougo/vimproc.vim'
-
-Plugin 'artur-shaik/vim-javacomplete2'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'chrisbra/csv.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'dag/vim2hs'
-Plugin 'derekwyatt/vim-fswitch'
-Plugin 'eagletmt/ghcmod-vim'
-Plugin 'eagletmt/neco-ghc'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'elzr/vim-json'
-Plugin 'fatih/vim-go'
-Plugin 'fisadev/vim-isort'
-Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
-Plugin 'hsanson/vim-android'
-Plugin 'hynek/vim-python-pep8-indent'
-Plugin 'idanarye/vim-vebugger'
-Plugin 'kchmck/vim-coffee-script'
+Plugin 'Shougo/vimproc.vim'
 Plugin 'kien/ctrlp.vim'
-Plugin 'Konfekt/FastFold'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'lervag/vimtex'
-Plugin 'majutsushi/tagbar'
 Plugin 'MarcWeber/vim-addon-local-vimrc'
-Plugin 'mbbill/undotree'
-Plugin 'mhinz/vim-signify'
-Plugin 'mxw/vim-jsx'
-Plugin 'pangloss/vim-javascript'
-Plugin 'pbrisbin/vim-syntax-shakespeare'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'python-rope/ropevim'
-Plugin 'raimondi/delimitmate'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'SirVer/ultisnips'
-Plugin 'sjl/gundo.vim'
+" Plugin 'majutsushi/tagbar'
+
+" Undo tree
+Plugin 'mbbill/undotree'
+
+" Git
+Plugin 'tpope/vim-fugitive'
+Plugin 'mhinz/vim-signify'
+
+" Haskell
+Plugin 'dag/vim2hs'
+Plugin 'eagletmt/ghcmod-vim'
+Plugin 'eagletmt/neco-ghc'
+
+" Docker
+Plugin 'ekalinin/Dockerfile.vim'
+
+" json
+Plugin 'elzr/vim-json'
+
+" Golang
+Plugin 'fatih/vim-go'
+
+" Python
+Plugin 'vim-python/python-syntax'
+Plugin 'fisadev/vim-isort'
+Plugin 'python-rope/ropevim'
 Plugin 'tmhedberg/SimpylFold'
+" Plugin 'hynek/vim-python-pep8-indent'
+
+" Arranging text in tables
+Plugin 'godlygeek/tabular'
+
+" Markdown - requires tabular
+Plugin 'plasticboy/vim-markdown'
+
+" Debugging
+" Plugin 'idanarye/vim-vebugger'
+
+" Folding
+Plugin 'Konfekt/FastFold'
+" Plugin 'Konfekt/FoldText'
+
+" Ecmascript
+Plugin 'leafgarland/typescript-vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+
+" TeX
+" Plugin 'lervag/vimtex'
+
+" Bracket closer
+Plugin 'raimondi/delimitmate'
+
+" Grep and AG wrapper
+Plugin 'mhinz/vim-grepper'
+
+" tmux integration and editing
 Plugin 'tmux-plugins/vim-tmux'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'christoomey/vim-tmux-navigator'
+
+" powerline like statusline for vim
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -517,8 +544,11 @@ nnoremap <leader>s :FSHere<CR>
 " When you press gv you vimgrep after the selected text
 vnoremap <silent> gv :call VisualSelection('gv')<CR><CR>
 
+" Open grepper
+map <leader>g :Grepper<cr>
+
 " Open vimgrep and put the cursor in the right position
-noremap <leader>g :NoAutoVimGrep //j ./**/*.*<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
+" noremap <leader>g :NoAutoVimGrep //j ./**/*.*<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
 map <leader>gp :NoAutoVimGrep //j ./**/*.py<right><right><right><right><right><right><right><right><right><right><right><right><right><right><right>
 
@@ -537,6 +567,11 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 
 " simple todo fix fixme searcher
 noremap <leader>t :NoAutoVimGrep /TODO:\\|FIX:\\|FIXME:/j ./**/*.*<CR>
+
+noremap <leader>rp :NoAutoGrep -t py -e ''<left>
+noremap <leader>rj :NoAutoGrep -t js -t coffeescript -e ''<left>
+noremap <leader>rg :NoAutoGrep -t go -e ''<left>
+noremap <leader>rr :NoAutoGrep -e ''<left>
 
 " Do :help cope if you are unsure what cope is. It's super useful!
 "
@@ -864,6 +899,9 @@ let g:vimtex_latexmk_options = "-pdf -e '$pdflatex=q/xelatex %O %S/' "
 " delimitmate {{{
 let delimitMate_nesting_quotes = ['"','`']
 let delimitMate_balance_matchpairs = 1
+let delimitMate_expand_space = 1
+let delimitMate_expand_cr = 1
+let delimitMate_jump_expansion = 1
 " }}}
 
 " {{{ vim-vebugger
@@ -958,8 +996,6 @@ let g:vim_markdown_fenced_languages = ['c++=cpp', 'viml=vim', 'bash=sh', 'ini=do
 " }}}
 
 " vim-addon-local-vimrc {{{
-" }}}
-
 if !exists('g:local_vimrc')
   let g:local_vimrc = {}
 endif
@@ -967,6 +1003,17 @@ if !exists("g:local_vimrc['names']")
   let g:local_vimrc['names'] = []
 endif
 let g:local_vimrc['names'] += ['.local-vimrc']
+" }}}
+
+" vim-grepper {{{
+if !exists('g:grepper')
+  let g:grepper = {}
+endif
+let g:grepper.next_tool = '<leader>g'
+let g:grepper.prompt_quote = 1
+let g:grepper.tools = ['rg']
+let g:grepper.stop = 500
+" }}}
 
 " }}}
 
@@ -1287,6 +1334,12 @@ endfunction
 command! -nargs=+ NoAutoVimGrep call <SID>MyVimGrep(<f-args>)
 function! <SID>MyVimGrep(...)
     exe 'noautocmd vimgrep '. join(a:000)
+    exe 'botright cwindow'
+endfunction
+
+command! -nargs=+ NoAutoGrep call <SID>MyGrep(<f-args>)
+function! <SID>MyGrep(...)
+    exe 'noautocmd grep! '. join(a:000)
     exe 'botright cwindow'
 endfunction
 
