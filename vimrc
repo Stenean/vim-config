@@ -80,6 +80,7 @@ Plugin 'fatih/vim-go'
 
 " Python
 Plugin 'vim-python/python-syntax'
+Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'fisadev/vim-isort'
 Plugin 'python-rope/ropevim'
 Plugin 'tmhedberg/SimpylFold'
@@ -149,6 +150,9 @@ set splitright
 syntax sync minlines=256
 set synmaxcol=300
 set re=1
+
+" Mouse support
+set mouse=a
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
