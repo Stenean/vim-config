@@ -8,6 +8,8 @@ case $- in
       *) return;;
 esac
 
+export PATH="$HOME/.vim/bin:$HOME/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$PATH"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -135,16 +137,37 @@ if [ -s "$HOME/.gvm/scripts/gvm" ]; then
 fi
 
 export PROJECT_HOME="$HOME/Projects"
+export WORKON_HOME="$HOME/.virtualenvs"
+
+
+DEFAULT_USER="kuba"
 
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
 
-xmodmap -e "keycode 166=Prior"
-xmodmap -e "keycode 167=Next"
-
+if [ -n "$(command -v xmodmap)" ]; then
+    xmodmap -e "keycode 166=Prior"
+    xmodmap -e "keycode 167=Next"
+fi
 
 function whatsmyip() {
     dig +short myip.opendns.com @resolver1.opendns.com
+}
+
+function find_and_activate_virtualenv() {
+    if [ -n "$(env | grep -E '^VIRTUAL_ENV')" ]; then
+        return;
+    fi
+
+    venvs=$(grep "$HOME" ~/.virtualenvs/*/.project | sed -e 's/\/.project//g' -e 's/\(.*\):\(.*\)/\2:\1/g')
+    for venv in $venvs; do
+        if [[ $PWD/ = $(echo $venv | sed -e 's/:.*//g')/* ]]; then
+            curr_pwd=$PWD
+            workon $(echo $venv | sed -e 's/.*://g' -e 's/.*\/\(.*\)$/\1/g')
+            cd $curr_pwd
+            return
+        fi
+    done
 }
 
 # Python and pyenv setup {{{
