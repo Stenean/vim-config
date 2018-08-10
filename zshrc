@@ -229,6 +229,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/git
     zgen oh-my-zsh plugins/command-not-found
     zgen oh-my-zsh plugins/docker
+    zgen oh-my-zsh plugins/docker-compose
     zgen oh-my-zsh plugins/jsontools
     zgen oh-my-zsh plugins/python
     zgen oh-my-zsh plugins/golang

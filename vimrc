@@ -478,6 +478,10 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 " }}}
 
 " => Key mappings {{{
+" Quit all open windows without saving
+nmap ZQ :qa!<CR>
+
+
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
