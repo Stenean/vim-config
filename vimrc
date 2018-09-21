@@ -1031,6 +1031,7 @@ let g:grepper.stop = 500
 " vim-grepper {{{
 
 let g:ale_set_balloons=1
+let g:ale_echo_msg_format='[%linter%] %code: %%s'
 
 " }}}
 
