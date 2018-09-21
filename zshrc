@@ -171,6 +171,7 @@ if [ "$(uname -s)" != "Darwin" ]; then
     export BROWSER=/usr/bin/chromium
     export EDITOR=/usr/bin/vim
 fi
+export PAGER="less -FRX"
 
 if [ -x "$(command -v git)" ] && [ "diffconflicts" != "$(git config --global merge.tool)" ]; then
 # Git config {{{

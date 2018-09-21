@@ -138,7 +138,7 @@ fi
 
 export PROJECT_HOME="$HOME/Projects"
 export WORKON_HOME="$HOME/.virtualenvs"
-
+export PAGER="less -FRX"
 
 DEFAULT_USER="kuba"
 
