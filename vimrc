@@ -154,6 +154,9 @@ set re=1
 
 " Mouse support
 set mouse=a
+set ttymouse=sgr
+set ballooneval
+set balloonevalterm
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -1022,6 +1025,13 @@ let g:grepper.next_tool = '<leader>g'
 let g:grepper.prompt_quote = 1
 let g:grepper.tools = ['rg']
 let g:grepper.stop = 500
+" }}}
+
+
+" vim-grepper {{{
+
+let g:ale_set_balloons=1
+
 " }}}
 
 " }}}
