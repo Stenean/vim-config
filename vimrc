@@ -155,8 +155,12 @@ set re=1
 " Mouse support
 set mouse=a
 set ttymouse=sgr
-set ballooneval
-set balloonevalterm
+if has('ballooneval')
+  set ballooneval
+endif
+if has('balloonevalterm')
+  set balloonevalterm
+endif
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
