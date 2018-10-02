@@ -266,7 +266,7 @@ fi
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=10"
 
 # You may need to manually set your language environment
-export LANG=pl_PL.UTF-8
+export LANG=en_GB.UTF-8
 
 # Aliases {{{
 
@@ -293,6 +293,9 @@ elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerli
 elif [ -f "/usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
     . /usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
     powerline-daemon -q
+elif [ -f "/usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    . /usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    powerline-daemon -q
 fi
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
@@ -308,8 +311,9 @@ fi
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-pyenv virtualenvwrapper
+# pyenv virtualenvwrapper
 
+[[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
 # }}}
 
 unsetopt allexport

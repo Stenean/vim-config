@@ -190,4 +190,6 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenvwrapper
 
+[[ -s "/etc/grc.bashrc"  ]] && source /etc/grc.bashrc
+
 # }}}
