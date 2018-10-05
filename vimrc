@@ -87,6 +87,9 @@ Plugin 'python-rope/ropevim'
 Plugin 'tmhedberg/SimpylFold'
 " Plugin 'hynek/vim-python-pep8-indent'
 
+" Coffeescript
+Plugin 'kchmck/vim-coffee-script'
+
 " Arranging text in tables
 Plugin 'godlygeek/tabular'
 
