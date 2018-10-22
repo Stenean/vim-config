@@ -2,7 +2,7 @@
 # User configuration
 # export TERM="xterm-256color"
 export SHELL="/bin/zsh"
-export PATH="$HOME/.vim/bin:$HOME/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$PATH"
+export PATH="$HOME/.vim/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:$PATH"
 
 export PROJECT_HOME="$HOME/Projects"
 export WORKON_HOME="$HOME/.virtualenvs"
