@@ -551,7 +551,7 @@ imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
 
-nnoremap ] :YcmCompleter GoToDefinition<CR>
+nnoremap ] :YcmCompleter GoToDeclaration<CR>
 
 noremap <leader>a :Autoformat<CR>
 
