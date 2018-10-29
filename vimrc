@@ -1160,10 +1160,22 @@ endfunc
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
+   let l:buf_regex = '.* "\(.*\)" *line.*'
+   let l:ju_regex = '\d\+\s\+\d\+\s\+\d\+\s\+\(.*\)\s*$'
    let l:currentBufNum = bufnr("%")
    let l:alternateBufNum = bufnr("#")
+   let l:buffers = map(split(GetBufferList(), '\n'), "trim(substitute(v:val, '".l:buf_regex."', '\\1', 'g'))")
+   let l:jumps = map(sort(split(GetJumpList(), '\n')), "trim(substitute(v:val, '".l:ju_regex."', '\\1', 'g'))")
 
-   if buflisted(l:alternateBufNum)
+   for l:jump in l:jumps
+     if index(l:buffers, l:jump) >= 0
+       let l:prevBufJump = l:jump
+       break
+     endif
+   endfor
+   if exists('l:prevBufJump')
+     execute("b ".l:prevBufJump)
+   elseif buflisted(l:alternateBufNum)
      buffer #
    else
      bprevious
@@ -1257,6 +1269,13 @@ function! GetBufferList()
   return buflist
 endfunction
 
+function! GetJumpList()
+  redir =>buflist
+  silent! ju
+  redir END
+  return buflist
+endfunction
+
 function! GetWindowSizes()
   let forbidden = ['nerdtree', 'undotree', 'diff']
   let sizes = []
@@ -1282,7 +1301,8 @@ endfunction
 
 function! ToggleList(bufname, pfx)
   let buflist = GetBufferList()
-  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+  let l:b_filter = filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"')
+  for bufnum in map(l:b_filter, 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
       exec(a:pfx.'close')
       call GoToMainWindow()
