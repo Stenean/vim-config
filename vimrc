@@ -551,7 +551,12 @@ imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
 
-nnoremap ] :YcmCompleter GoToDeclaration<CR>
+nnoremap ] :YcmCompleter GoTo<CR>
+
+augroup python_ycmd
+  autocmd!
+  autocmd FileType python nnoremap <buffer> ] :YcmCompleter GoToDeclaration<CR>
+augroup END
 
 noremap <leader>a :Autoformat<CR>
 
