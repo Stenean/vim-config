@@ -126,8 +126,18 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
+" Completion and goto support
+Plugin 'runoshun/tscompletejob'
+
+" Plugin 'prabirshrestha/async.vim'
+" Plugin 'prabirshrestha/vim-lsp'
+" Plugin 'prabirshrestha/asyncomplete.vim'
+" Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+" Plugin 'prabirshrestha/asyncomplete-tscompletejob.vim'
+" Plugin 'prabirshrestha/asyncomplete-ultisnips.vim'
+" Plugin 'prabirshrestha/asyncomplete-file.vim'
+" Plugin 'Valloric/YouCompleteMe'
+" Plugin 'rdnetto/YCM-Generator'
 
 call vundle#end()
 " }}}
@@ -176,6 +186,8 @@ nmap <leader>w :w!<cr>
 " Yanks to global system clipboard
 set clipboard^=unnamed
 set clipboard^=unnamedplus
+
+set completeopt=menu,menuone,preview,noselect,noinsert
 
 let g:skipview_files = [
 \ '[EXAMPLE PLUGIN BUFFER]'
@@ -551,16 +563,15 @@ imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
 
-nnoremap ] :YcmCompleter GoTo<CR>
-
-augroup python_ycmd
-  autocmd!
-  autocmd FileType python nnoremap <buffer> ] :YcmCompleter GoToDeclaration<CR>
-augroup END
+nnoremap ] :ALEGoToDefinition<CR>
 
 noremap <leader>a :Autoformat<CR>
 
 nnoremap <leader>s :FSHere<CR>
+
+imap <C-c> <Plug>(ale_show_completion_menu)
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
 " }}}
 
@@ -653,12 +664,18 @@ augroup enter_exit_settings
     autocmd WinLeave * if &buftype == 'quickfix' | let g:last_quickfix = 1 | endif
     autocmd BufEnter * if &ft == 'nerdtree' | let g:last_nerdtree = 1 | endif
     autocmd BufLeave * :call SaveBufFileName()
+    autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup END
 
 " Rainbow Parentheses
 augroup rainbow
   autocmd!
   autocmd FileType * call rainbow_parentheses#activate()
+augroup END
+
+augroup disable_wrapping_for_lists
+  autocmd!
+  autocmd FileType qf setlocal nowrap
 augroup END
 
 " Cofee make
@@ -1039,11 +1056,65 @@ let g:grepper.tools = ['rg']
 let g:grepper.stop = 500
 " }}}
 
-
-" vim-grepper {{{
+" ALE {{{
 
 let g:ale_set_balloons=1
 let g:ale_echo_msg_format='[%linter%] %code: %%s'
+let g:ale_linters = {
+\   'javascript': ['eslint', 'tsserver'],
+\   'python': ['pyls', 'flake8', 'mypy', 'pylint'],
+\}
+let g:ale_completion_enabled = 1
+
+" }}}
+
+" vim-lsp {{{
+
+" augroup asyncmplete
+"   au!
+" 
+" if executable('pyls')
+"   " pip install python-language-server
+"   au User lsp_setup call lsp#register_server({
+"       \ 'name': 'pyls',
+"       \ 'cmd': {server_info->['pyls']},
+"       \ 'whitelist': ['python'],
+"       \ })
+" endif
+" 
+" if executable('typescript-language-server')
+"   au User lsp_setup call lsp#register_server({
+"     \ 'name': 'typescript-language-server',
+"     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"     \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+"     \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
+"     \ })
+" endif
+" 
+"   au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+"           \ 'name': 'ultisnips',
+"           \ 'whitelist': ['*'],
+"           \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+"           \ }))
+" 
+"   au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+"       \ 'name': 'file',
+"       \ 'whitelist': ['*'],
+"       \ 'priority': 10,
+"       \ 'completor': function('asyncomplete#sources#file#completor')
+"       \ }))
+" 
+" augroup END
+
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('~/vim-lsp.log')
+
+" }}}
+
+" asyncomplete.vim {{{
+
+let g:asyncomplete_smart_completion = 1
+let g:asyncomplete_auto_popup = 1
 
 " }}}
 
@@ -1532,5 +1603,26 @@ func! AfterSessionLoad()
     exe 'rviminfo! '.&viminfofile
   endif
 endfunc
+
+" Use TAB to complete when typing words, else inserts TABs as usual.  Uses
+" dictionary, source files, and completor to find matching words to complete.
+
+" Note: usual completion is on <C-n> but more trouble to press all the time.
+" Never type the same word twice and maybe learn a new spellings!
+" Use the Linux dictionary when spelling is in doubt.
+function! Tab_Or_Complete() abort
+  " If completor is already open the `tab` cycles through suggested completions.
+  if pumvisible()
+    return "\<C-N>"
+  " If completor is not open and we are in the middle of typing a word then
+  " `tab` opens completor menu.
+  elseif col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+    return "\<C-R>=completor#do('complete')\<CR>"
+  else
+    " If we aren't typing a word and we press `tab` simply do the normal `tab`
+    " action.
+    return "\<Tab>"
+  endif
+endfunction
 
 " }}}
