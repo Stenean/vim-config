@@ -284,6 +284,9 @@ set incsearch
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
 
+" Highlight current cursor line
+set cursorline
+
 " For regular expressions turn magic on
 set magic
 
@@ -676,6 +679,7 @@ augroup END
 augroup disable_wrapping_for_lists
   autocmd!
   autocmd FileType qf setlocal nowrap
+  autocmd FileType qf setlocal cursorline
 augroup END
 
 " Cofee make
