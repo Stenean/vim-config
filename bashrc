@@ -142,9 +142,6 @@ export PAGER="less -FRX"
 
 DEFAULT_USER="kuba"
 
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-
 if [ -n "$(command -v xmodmap)" ]; then
     xmodmap -e "keycode 166=Prior"
     xmodmap -e "keycode 167=Next"
@@ -171,6 +168,9 @@ function find_and_activate_virtualenv() {
 }
 
 # Python and pyenv setup {{{
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+
 if [ -e "$(which powerline-daemon)" ]; then
     powerline-daemon -q
 fi
