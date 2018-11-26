@@ -171,15 +171,20 @@ function find_and_activate_virtualenv() {
 }
 
 # Python and pyenv setup {{{
-if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
-    . /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+if [ -e "$(which powerline-daemon)" ]; then
     powerline-daemon -q
+fi
+
+if [ -f "/usr/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
+    . /usr/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh
+elif [ -f "/usr/local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
+    . /usr/local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh
+elif [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
+    . /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
 elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" ]; then
     . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
-    powerline-daemon -q
 elif [ -f "/usr/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh" ]; then
     . /usr/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
-    powerline-daemon -q
 fi
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"

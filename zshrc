@@ -281,24 +281,26 @@ alias sudo='sudo '
 
 # }}}
 
-if [ -e "$(where xmodmap)" ]; then
+if [ -e "$(which xmodmap)" ]; then
     xmodmap -e "keycode 166=Prior"
     xmodmap -e "keycode 167=Next"
 fi
 
 # Python and pyenv setup {{{
-if [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+if [ -e "$(which powerline-daemon)" ]; then
     powerline-daemon -q
+fi
+
+if [ -f "/usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    . /usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+elif [ -f "/usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    . /usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+elif [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
+    . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
     . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
-    powerline-daemon -q
 elif [ -f "/usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
     . /usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
-    powerline-daemon -q
-elif [ -f "/usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
-    powerline-daemon -q
 fi
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
