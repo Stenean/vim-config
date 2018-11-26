@@ -8,6 +8,8 @@ export PROJECT_HOME="$HOME/Projects"
 export WORKON_HOME="$HOME/.virtualenvs"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+zmodload zsh/zprof
+
 gpg_agent_command="gpg-agent --homedir $HOME/.gnupg --daemon"
 gpg_agent_not_good=$(ps -Aopid,command | sed -e "\:$gpg_agent_command:!d" -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
 gpg_agent_pid=$(ps -Aopid,command | sed -e '/gpg-agent/!d' -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
@@ -225,11 +227,11 @@ if ! zgen saved; then
 
     zgen oh-my-zsh
 
-    zgen load RobSis/zsh-completion-generator
-    zgen load petervanderdoes/git-flow-completion
+    # zgen load RobSis/zsh-completion-generator
+    # zgen load petervanderdoes/git-flow-completion
 
     zgen oh-my-zsh plugins/git
-    zgen oh-my-zsh plugins/command-not-found
+    # zgen oh-my-zsh plugins/command-not-found
     zgen oh-my-zsh plugins/docker
     zgen oh-my-zsh plugins/docker-compose
     zgen oh-my-zsh plugins/jsontools
@@ -247,7 +249,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/history
     zgen oh-my-zsh plugins/pip
     zgen oh-my-zsh plugins/urltools
-    zgen oh-my-zsh plugins/aws
+    # zgen oh-my-zsh plugins/aws
     zgen oh-my-zsh plugins/colored-man-pages
     zgen oh-my-zsh plugins/colorize
     zgen oh-my-zsh plugins/cp
