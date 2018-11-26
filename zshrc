@@ -6,6 +6,7 @@ export PATH="$HOME/.vim/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sb
 
 export PROJECT_HOME="$HOME/Projects"
 export WORKON_HOME="$HOME/.virtualenvs"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 gpg_agent_command="gpg-agent --homedir $HOME/.gnupg --daemon"
 gpg_agent_not_good=$(ps -Aopid,command | sed -e "\:$gpg_agent_command:!d" -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
