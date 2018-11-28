@@ -40,14 +40,15 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 
+" Utils
+Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+
 Plugin 'vim-scripts/TaskList.vim'
 Plugin 'vim-scripts/tComment'
 Plugin 'vim-scripts/The-NERD-tree'
-
-" Utils
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-sensible'
 
 Plugin 'honza/vim-snippets'
 Plugin 'Shougo/vimproc.vim'
@@ -127,7 +128,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 " Completion and goto support
-Plugin 'runoshun/tscompletejob'
+" Plugin 'runoshun/tscompletejob'
 
 " Plugin 'prabirshrestha/async.vim'
 " Plugin 'prabirshrestha/vim-lsp'
