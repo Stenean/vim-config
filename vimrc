@@ -905,14 +905,11 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#branch#displayed_head_limit = 10
 let g:airline#extensions#branch#format = 1
 let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#ale#enabled = 1
 let g:airline_exclude_preview = 1
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
-endif
-
-if &columns > 180
-  let g:airline_section_c = '%<%f%m %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__# %{airline#util#wrap(go#statusline#Show(),0)}'
 endif
 " }}}
 
@@ -1063,13 +1060,17 @@ let g:grepper.stop = 500
 
 " ALE {{{
 
-let g:ale_set_balloons=1
+let g:ale_set_balloons = 1
 let g:ale_echo_msg_format='[%linter%] %code: %%s'
 let g:ale_linters = {
 \   'javascript': ['eslint', 'tsserver'],
-\   'python': ['pyls', 'flake8', 'mypy', 'pylint'],
+"\   'python': ['pyls', 'flake8', 'mypy', 'pylint'],
+\   'python': ['pyls'],
+\   'cpp': ['clangd'],
 \}
 let g:ale_completion_enabled = 1
+let g:ale_history_log_output = 1
+" let g:ale_lint_on_text_changed = 'normal'
 
 " }}}
 

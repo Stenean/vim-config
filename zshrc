@@ -8,7 +8,6 @@ export PROJECT_HOME="$HOME/Projects"
 export WORKON_HOME="$HOME/.virtualenvs"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-zmodload zsh/zprof
 
 gpg_agent_command="gpg-agent --homedir $HOME/.gnupg --daemon"
 gpg_agent_not_good=$(ps -Aopid,command | sed -e "\:$gpg_agent_command:!d" -e '/sed/d' -e 's/^[ \t]*//g' | cut -d' ' -f1)
@@ -221,7 +220,7 @@ DEFAULT_USER="kuba"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git, command-not-found, docker, jsontools, python, suprevisor, virtualenvwrapper)
 
-if ! zgen saved; then
+if [ ! -f "$HOME/.zgen/init.zsh" ]; then
 # Zgen config {{{
     echo "Creating a zgen save"
 
@@ -236,24 +235,23 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/docker-compose
     zgen oh-my-zsh plugins/jsontools
     zgen oh-my-zsh plugins/python
-    zgen oh-my-zsh plugins/golang
-    zgen oh-my-zsh plugins/supervisor
+    # zgen oh-my-zsh plugins/golang
     zgen oh-my-zsh plugins/virtualenvwrapper
     zgen oh-my-zsh plugins/bgnotify
     zgen oh-my-zsh plugins/sudo
-    zgen oh-my-zsh plugins/tmux
-    zgen oh-my-zsh plugins/tmux-cssh
+    # zgen oh-my-zsh plugins/tmux
+    # zgen oh-my-zsh plugins/tmux-cssh
     zgen oh-my-zsh plugins/compleat
     zgen oh-my-zsh plugins/encode64
     zgen oh-my-zsh plugins/httpie
     zgen oh-my-zsh plugins/history
-    zgen oh-my-zsh plugins/pip
+    # zgen oh-my-zsh plugins/pip
     zgen oh-my-zsh plugins/urltools
     # zgen oh-my-zsh plugins/aws
     zgen oh-my-zsh plugins/colored-man-pages
     zgen oh-my-zsh plugins/colorize
-    zgen oh-my-zsh plugins/cp
-    zgen oh-my-zsh plugins/catimg
+    # zgen oh-my-zsh plugins/cp
+    # zgen oh-my-zsh plugins/catimg
     zgen oh-my-zsh plugins/nmap
 
     zgen load zsh-users/zsh-syntax-highlighting
@@ -314,8 +312,25 @@ if [ -d "$PYENV_ROOT/plugins" -a ! -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapp
     popd
 fi
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# Lazy load pyenv
+if type pyenv &> /dev/null; then
+    function pyenv() {
+        unset -f pyenv > /dev/null 2>&1
+        eval "$(command pyenv init -)"
+        pyenv "$@"
+    }
+fi
+# eval "$(pyenv init -")
+
+# Lazy load pyenv-virtualenv
+if type pyenv-virtualenv &> /dev/null; then
+    function pyenv-virtualenv() {
+        unset -f pyenv-virtualenv > /dev/null 2>&1
+        eval "$(command pyenv virtualenv-init -)"
+        pyenv-virtualenv "$@"
+    }
+fi
+# eval "$(pyenv virtualenv-init -)"
 # pyenv virtualenvwrapper
 
 [[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
