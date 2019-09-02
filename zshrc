@@ -1,7 +1,7 @@
 # vim: set fdm=marker:
 # User configuration
 # export TERM="xterm-256color"
-export SHELL="/bin/zsh"
+export SHELL="/usr/local/bin/zsh"
 export PATH="$HOME/.vim/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:$PATH"
 
 export PROJECT_HOME="$HOME/Projects"
@@ -151,7 +151,7 @@ function whatsmyip() {
 
 function to_git_branch {
 # {{{
-    echo "$1" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g' -e 's/[^a-zA-Z0-9 ]//g' -e 's/\s\+/_/g' -e 's/_\+$//g' -e 's/\(.*\)/\L\1/g'
+    echo "$1\n" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g' -e 's/[^a-zA-Z0-9 ]//g' -e 's/\s\+/_/g' -e 's/_\+$//g' -e 's/\(.*\)/\L\1/g'
 # }}}
 }
 
@@ -234,7 +234,7 @@ if [ ! -f "$HOME/.zgen/init.zsh" ]; then
     zgen oh-my-zsh plugins/docker
     zgen oh-my-zsh plugins/docker-compose
     zgen oh-my-zsh plugins/jsontools
-    zgen oh-my-zsh plugins/python
+    # zgen oh-my-zsh plugins/python
     # zgen oh-my-zsh plugins/golang
     zgen oh-my-zsh plugins/virtualenvwrapper
     zgen oh-my-zsh plugins/bgnotify
@@ -255,7 +255,7 @@ if [ ! -f "$HOME/.zgen/init.zsh" ]; then
     zgen oh-my-zsh plugins/nmap
 
     zgen load zsh-users/zsh-syntax-highlighting
-    zgen load arzzen/calc.plugin.zsh
+    # zgen load arzzen/calc.plugin.zsh
     zgen load dgnest/zsh-gvm-plugin
 
     # autosuggestions should be loaded last
@@ -306,11 +306,11 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-if [ -d "$PYENV_ROOT/plugins" -a ! -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper" ]; then
-    pushd ~
-    git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $PYENV_ROOT/plugins/pyenv-virtualenvwrapper
-    popd
-fi
+# if [ -d "$PYENV_ROOT/plugins" -a ! -d "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper" ]; then
+#     pushd ~
+#     git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $PYENV_ROOT/plugins/pyenv-virtualenvwrapper
+#     popd
+# fi
 
 # Lazy load pyenv
 if type pyenv &> /dev/null; then
@@ -333,7 +333,8 @@ fi
 # eval "$(pyenv virtualenv-init -)"
 # pyenv virtualenvwrapper
 
-[[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
+[[ -s "/usr/local/etc/grc.bashrc"  ]] && source /usr/local/etc/grc.bashrc
+# [[ -s "/usr/local/etc/grc.zsh"  ]] && source /usr/local/etc/grc.zsh
 # }}}
 
 unsetopt allexport

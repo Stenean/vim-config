@@ -52,7 +52,7 @@ Plugin 'vim-scripts/The-NERD-tree'
 
 Plugin 'honza/vim-snippets'
 Plugin 'Shougo/vimproc.vim'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'MarcWeber/vim-addon-local-vimrc'
 " Plugin 'scrooloose/syntastic'
 Plugin 'w0rp/ale'
@@ -60,7 +60,7 @@ Plugin 'SirVer/ultisnips'
 " Plugin 'majutsushi/tagbar'
 
 " Undo tree
-Plugin 'mbbill/undotree'
+Plugin 'simnalamburt/vim-mundo'
 
 " Git
 Plugin 'tpope/vim-fugitive'
