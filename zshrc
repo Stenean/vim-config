@@ -290,16 +290,18 @@ if [ -e "$(which powerline-daemon)" ]; then
 fi
 
 if [ -f "/usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    export POWERLINE_ROOT=/usr/lib/python3.7/site-packages/powerline
 elif [ -f "/usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/local/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    export POWERLINE_ROOT=/usr/local/lib/python3.7/site-packages/powerline
 elif [ -f "/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    export POWERLINE_ROOT=/usr/local/lib/python2.7/site-packages/powerline
 elif [ -f "/usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/local/lib/python2.7/dist-packages/powerline/bindings/zsh/powerline.zsh
+    export POWERLINE_ROOT=/usr/local/lib/python2.7/dist-packages/powerline
 elif [ -f "/usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh" ]; then
-    . /usr/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    export POWERLINE_ROOT=/usr/lib/python2.7/site-packages/powerline
 fi
+
+. $POWERLINE_ROOT/bindings/zsh/powerline.zsh
 
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1

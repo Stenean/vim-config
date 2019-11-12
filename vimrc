@@ -30,8 +30,13 @@ let g:ycm_server_python_interpreter = substitute(system('pyenv which python2'), 
 " elseif has('python3')
 "     let g:ycm_server_python_interpreter = system('python3 -c "import sys; sys.stdout.write(sys.executable)"')
 " endif
-
 set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=$POWERLINE_ROOT/bindings/vim
+
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
 " {{{ Plugin definitions
 call vundle#begin()
 
@@ -124,8 +129,8 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'christoomey/vim-tmux-navigator'
 
 " powerline like statusline for vim
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
 
 " Completion and goto support
 " Plugin 'runoshun/tscompletejob'
@@ -567,13 +572,13 @@ imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
 
-nnoremap ] :ALEGoToDefinition<CR>
+nnoremap <C-g> :ALEGoToDefinition<CR>
 
 noremap <leader>a :Autoformat<CR>
 
 nnoremap <leader>s :FSHere<CR>
 
-imap <C-c> <Plug>(ale_show_completion_menu)
+imap <C-space> <Plug>(ale_show_completion_menu)
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
